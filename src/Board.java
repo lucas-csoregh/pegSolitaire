@@ -11,6 +11,8 @@ public class Board {
     this way, we can pass the valid x and y coordinates as values
      */
     private Hole[] validCoordinates;
+    private int pegCount = 0;
+    private int holeCount = 0;
 
     HoleStatus[][] english_cross = {
             /*
@@ -31,6 +33,9 @@ public class Board {
                 3 = empty
                 4 = player
 
+                peg = !off limits, !ruler, !empty
+                hole = !off limits, !ruler
+
             is still symbolically equivalent to HoleStatus[][] english_cross
             };*/
             {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
@@ -42,26 +47,6 @@ public class Board {
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
     };
-
-    // create peg when {(pseudocode) HoleStatus !OFF_LIMITS && !EMPTY}
-    public void createPeg(HoleStatus[][] board, int x, int y) {
-        boolean createPeg = (board[x][y] != HoleStatus.OFF_LIMITS) && (board[x][y] != HoleStatus.EMPTY);
-        int pegCount = 0;
-        if(createPeg) {
-            pegs[pegCount] = new Peg(x, y);
-            pegCount++;
-        }
-    }
-
-    // create hole when {(pseudocode) !HoleStatus.OFF_LIMITS}
-    public void createHole(HoleStatus[][] board, int x, int y) {
-        boolean createHole = board[x][y] != HoleStatus.OFF_LIMITS;
-        int holeCount = 0;
-        if(createHole) {
-            validCoordinates[holeCount] = new Hole(x, y);
-            holeCount++;
-        }
-    }
 
     // draw the right thing based on the current enum from the loop
     public void drawSquare(HoleStatus[][] board, int x, int y, StringBuilder sb) {
@@ -84,32 +69,59 @@ public class Board {
         }
     }
 
-    public String reset(HoleStatus[][] board) {
+    public String reset(HoleStatus[][] boardTemplate) {
+        System.out.println("-- RESET --\n");
+        pegCount = 0;
+        holeCount = 0;
+        pegs = new Peg[maxPegs];
+        validCoordinates = new Hole[maxHoles];
         StringBuilder sb = new StringBuilder();
-        int size=board.length;
+
+        StringBuilder graph = new StringBuilder();
+
+        int size=boardTemplate.length;
         // Draw the grid (/Looping over the HoleStatus[][])
         for(int y=0; y<size; y++) {
             for(int x=0; x<size; x++) {
                 // Conditionally create peg
-                createPeg(board, x, y);
+                boolean createPeg = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.EMPTY)  && (boardTemplate[x][y] != HoleStatus.RULER);
+                Peg peg = new Peg(0,0);
+                if(createPeg) {
+                    peg = new Peg(x, y);
+                    pegs[pegCount] = peg;
+                    pegCount++;
+                }
 
                 // Conditionally create hole
-                createHole(board, x, y);
+                boolean createHole = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.RULER);
+                if(createHole) {
+                    Hole hole = new Hole(x, y);
+                    hole.setPeg(peg);
+                    validCoordinates[holeCount] = hole;
+                    holeCount++;
+                }
 
                 // Conditionally draw square
-                drawSquare(board, x, y, sb);
+                drawSquare(boardTemplate, x, y, sb);
+                graph.append("{x="+x+", y="+y+"}");
             }
             sb.append("\n");
+            graph.append("\n");
         }
-        return sb.toString();
+        //return sb.toString();
+        return graph.toString();
     }
 
     public Board() {
-         pegs = new Peg[maxPegs];
-         validCoordinates = new Hole[maxHoles];
+        //reset(english_cross);
 
         // Command Line Representation
         System.out.print(reset(english_cross));
 
+        System.out.println();
+
+        for(Hole hole: validCoordinates) {
+            System.out.println(hole.getPeg());
+        }
     }
 }

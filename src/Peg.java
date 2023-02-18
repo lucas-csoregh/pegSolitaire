@@ -27,4 +27,14 @@ public class Peg {
     public void setY(int y) {
         this.y = y;
     }
+
+    @Override
+    public String toString() {
+        String[] strs = {"???", "b", "c", "d", "e", "f", "g", "!!!"};
+        String str = strs[x];
+        return "Peg{" +
+                "x=" + str +
+                ", y=" + y +
+                '}';
+    }
 }

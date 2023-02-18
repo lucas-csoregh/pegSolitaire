@@ -1,0 +1,44 @@
+@startuml
+class Player {
+    -playerPeg:Peg
+    -movesHistory[]:ArrayList<Hole>
+    +jumpVertically():void
+    +jumpHorizontally():void
+}
+class Board {
+    -maxHoles:final int = 33
+    -maxPegs:final int = 32
+    -pegs[maxPegs]:Peg
+    -validCoordinates[maxHoles]:Hole
+    +reset():void
+}
+class Hole {
+    -x:int
+    -y:int
+    +getX():int
+    +getY():int
+    +isEmpty():boolean
+    +isEndGame():boolean
+}
+class Peg{
+    -x:int
+    -y:int
+    +Peg(int x, int y):Peg
+    +Peg():Peg
+    +getX():int
+    +getY():int
+    +setX():int
+    +setY():int
+}
+class Scoreboard {
+    -finished[]:ArrayList<Hole>
+}
+
+Hole "*" --* "1" Board
+Peg "*" --o "1" Board
+Player *-- Peg
+Player "1" --- "1" Peg: Moves >
+Peg "1" --- "1" Hole: Into >
+Peg "1" --- "1" Hole: From >
+Player "1" --- "1" Scoreboard: Saved in >
+@enduml

@@ -14,7 +14,9 @@ public class Board {
     private int pegCount = 0;
     private int holeCount = 0;
     private Hole[][] grid = new Hole[8][8];
+    static Player player;
 
+    // Functions like a mere template. Has no relevance anymore after the board has already been created.
     HoleStatus[][] english_cross = {
             /*
                 OLD
@@ -54,16 +56,21 @@ public class Board {
         return chars[index -1];
     }
 
-    // TODO: create a function that retrieves a peg based on its coordinates on the board
-    // TODO: create a gethole function that takes a peg as a parameter and based on that can find that
+    // TODO: test this function
+    // [x]: create a gethole function that takes a peg as a parameter and based on that can find that
+    public Hole getHole(Peg peg) {
+        return grid[peg.getX()][peg.getY()];
+    }
 
-    public Hole getHole(int x, int y, HoleStatus[][] boardTemplate) {
+    // TODO: test this function
+    // [x]: create a function that retrieves a peg based on its coordinates on the board
+    public Hole getHole(int x, int y, Hole[][] board) {
 
         /*
         Right now I don't see any other way to fix this problem than to simply loop over the 2D array
         and returning when x==xLoopIndex, y==yLoopIndex if you get what I mean.
          */
-        int size = boardTemplate.length;
+        int size = board.length;
 
         for(int yi=0; yi<size; yi++) {
             for(int xi=0; xi<size; xi++) {
@@ -132,8 +139,6 @@ public class Board {
                     }
                 }
 
-
-                // Conditionally draw square
                 drawSquare(boardTemplate, x, y, sb);
                 //graph.append("{x="+x+", y="+y+"}");
             }
@@ -142,6 +147,12 @@ public class Board {
         }
         //System.out.print("\n"+ graph + "\n");
         return sb.toString();
+    }
+
+
+
+    public void setPlayerPeg(int x, int y) {
+        player = new Player(getHole(x, y, grid).getPeg());
     }
 
     public Board() {

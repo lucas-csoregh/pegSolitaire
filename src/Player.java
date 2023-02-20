@@ -1,6 +1,7 @@
 public class Player {
     Peg playerPeg;
 
+
     public Player(Peg playerPeg) {
         this.playerPeg = playerPeg;
     }
@@ -10,9 +11,5 @@ public class Player {
     }
     public void jumpHorizontally() {
         // implement logic (requires javaFX)
-    }
-
-    public void choosePeg(Peg peg) {
-        Peg.setPlayerPeg(peg);
     }
 }

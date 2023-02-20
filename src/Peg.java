@@ -4,7 +4,14 @@ public class Peg {
 
     int id;
     static int pegCount =0;
-    static Player playerPeg;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 
     public Peg(int x, int y) {
         this.x = x;
@@ -13,9 +20,6 @@ public class Peg {
         id = pegCount;
     }
 
-    static void setPlayerPeg(Peg peg) {
-        playerPeg = new Player(peg);
-    }
 
     /*
     public Peg() {

@@ -84,22 +84,26 @@ public class Board {
         for(int y=0; y<size; y++) {
             for(int x=0; x<size; x++) {
                 // Conditionally create peg
-                boolean createPeg = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.EMPTY)  && (boardTemplate[x][y] != HoleStatus.RULER);
-                Peg peg = new Peg(0,0);
-                if(createPeg) {
-                    peg = new Peg(x, y);
-                    pegs[pegCount] = peg;
-                    pegCount++;
-                }
+                boolean createPeg = (boardTemplate[x][y] != HoleStatus.EMPTY);
+                boolean createHole = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.RULER);
 
                 // Conditionally create hole
-                boolean createHole = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.RULER);
                 if(createHole) {
                     Hole hole = new Hole(x, y);
-                    hole.setPeg(peg);
                     validCoordinates[holeCount] = hole;
                     holeCount++;
+
+                    if(createPeg) {
+                        Peg peg = new Peg(x, y);
+
+                        hole.setPeg(peg);
+                        System.out.println("Hole: "+holeCount+", Peg: "+peg);
+
+                        pegs[pegCount] = peg;
+                        pegCount++;
+                    }
                 }
+
 
                 // Conditionally draw square
                 drawSquare(boardTemplate, x, y, sb);
@@ -108,8 +112,8 @@ public class Board {
             sb.append("\n");
             graph.append("\n");
         }
-        //return sb.toString();
-        return graph.toString();
+        System.out.print("\n"+ graph + "\n");
+        return sb.toString();
     }
 
     public Board() {

@@ -2,9 +2,14 @@ public class Peg {
     private int x;
     private int y;
 
+    int id;
+    static int pegCount =0;
+
     public Peg(int x, int y) {
         this.x = x;
         this.y = y;
+        pegCount++;
+        id = pegCount;
     }
 
     public Peg() {
@@ -28,13 +33,17 @@ public class Peg {
         this.y = y;
     }
 
+    // TODO: still bugged, fix whatever is causing the numbers to go outside of the expected range
     @Override
     public String toString() {
-        String[] strs = {"???", "b", "c", "d", "e", "f", "g", "!!!"};
+        /*
+        String[] strs = {"a", "b", "c", "d", "e", "f", "g", "!!!"};
         String str = strs[x];
         return "Peg{" +
                 "x=" + str +
                 ", y=" + y +
                 '}';
+        */
+        return String.format("%d Peg{%d, %d}",id, x, y);
     }
 }

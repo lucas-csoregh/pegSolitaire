@@ -14,6 +14,11 @@ public class Board {
     private int pegCount = 0;
     private int holeCount = 0;
 
+    public char getXchar(int index) {
+        char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
+        return chars[index -1];
+    }
+
     HoleStatus[][] english_cross = {
             /*
                 OLD
@@ -63,8 +68,7 @@ public class Board {
             if(y != 0) {
                 sb.append(" "+y+" ");
             } else {
-                char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
-                sb.append(" "+chars[x -1]+" ");
+                sb.append(" "+getXchar(x)+" ");
             }
         }
     }
@@ -124,8 +128,15 @@ public class Board {
 
         System.out.println();
 
+
+        System.out.println("Presenting valid coordinates and their contents");
         for(Hole hole: validCoordinates) {
-            System.out.println(hole.getPeg());
+            System.out.printf("x:%s, y:%s\t", getXchar(hole.getX()), hole.getY());
+            if(hole.getPeg() != null) {
+                System.out.print(hole.getPeg() + "\n");
+            } else {
+                System.out.print("This coordinate is empty\n");
+            }
         }
     }
 }

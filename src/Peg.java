@@ -36,14 +36,12 @@ public class Peg {
     // TODO: still bugged, fix whatever is causing the numbers to go outside of the expected range
     @Override
     public String toString() {
-        /*
-        String[] strs = {"a", "b", "c", "d", "e", "f", "g", "!!!"};
-        String str = strs[x];
+        String[] strs = {"a", "b", "c", "d", "e", "f", "g"};
+        String str = strs[x-1];
         return "Peg{" +
                 "x=" + str +
                 ", y=" + y +
                 '}';
-        */
-        return String.format("%d Peg{%d, %d}",id, x, y);
+        //return String.format("%d Peg{%d, %d}",id, x, y);
     }
 }

@@ -3,6 +3,16 @@ public class Hole {
     private int y = 0;
     private Peg peg;
 
+    private HoleStatus holeStatus;
+
+    public void setHoleStatus(HoleStatus holeStatus) {
+        this.holeStatus = holeStatus;
+    }
+
+    public HoleStatus getHoleStatus() {
+        return holeStatus;
+    }
+
     public void setPeg(Peg peg) {
         this.peg = peg;
     }
@@ -14,9 +24,10 @@ public class Hole {
     public int getX() { return x; }
     public int getY() { return y; }
 
-    public Hole(int x, int y) {
+    public Hole(int x, int y, HoleStatus holeStatus) {
         this.x = x;
         this.y = y;
+        this.holeStatus = holeStatus;
     }
 
     public void isEndGame() {

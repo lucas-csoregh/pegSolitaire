@@ -13,21 +13,7 @@ public class Board {
     private Hole[] validCoordinates;
     private int pegCount = 0;
     private int holeCount = 0;
-
-    public char getXchar(int index) {
-        char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
-        return chars[index -1];
-    }
-
-    public Peg getPeg(int x, int y) {
-        // TODO: create a function that retrieves a peg based on its coordinates on the board
-
-        /*
-        Right now I don't see any other way to fix this problem than to simply loop over the 2D array
-        and returning when x==xLoopIndex, y==yLoopIndex if you get what I mean.
-         */
-       return null;
-    }
+    private Hole[][] grid = new Hole[8][8];
 
     HoleStatus[][] english_cross = {
             /*
@@ -63,6 +49,33 @@ public class Board {
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
     };
 
+    public char getXchar(int index) {
+        char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
+        return chars[index -1];
+    }
+
+    // TODO: create a function that retrieves a peg based on its coordinates on the board
+    // TODO: create a gethole function that takes a peg as a parameter and based on that can find that
+
+    public Hole getHole(int x, int y, HoleStatus[][] boardTemplate) {
+
+        /*
+        Right now I don't see any other way to fix this problem than to simply loop over the 2D array
+        and returning when x==xLoopIndex, y==yLoopIndex if you get what I mean.
+         */
+        int size = boardTemplate.length;
+
+        for(int yi=0; yi<size; yi++) {
+            for(int xi=0; xi<size; xi++) {
+                if(y == yi && x == xi) {
+                    return grid[x][y];
+                }
+            }
+        }
+       return null;
+    }
+
+
     // draw the right thing based on the current enum from the loop
     public void drawSquare(HoleStatus[][] board, int x, int y, StringBuilder sb) {
         if(board[x][y] == HoleStatus.MARBLE) {
@@ -96,13 +109,15 @@ public class Board {
         // Draw the grid (/Looping over the HoleStatus[][])
         for(int y=0; y<size; y++) {
             for(int x=0; x<size; x++) {
+                Hole hole = new Hole(x, y, boardTemplate[x][y]);
+                grid[x][y] = hole;
+
                 // Conditionally create peg
                 boolean createPeg = (boardTemplate[x][y] != HoleStatus.EMPTY);
-                boolean createHole = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.RULER);
+                boolean validCoordinate = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.RULER);
 
-                // Conditionally create hole
-                if(createHole) {
-                    Hole hole = new Hole(x, y);
+                // Conditionally add hole to valid coordinates
+                if(validCoordinate) {
                     validCoordinates[holeCount] = hole;
                     holeCount++;
 

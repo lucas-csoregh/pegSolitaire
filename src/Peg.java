@@ -4,12 +4,17 @@ public class Peg {
 
     int id;
     static int pegCount =0;
+    static Player playerPeg;
 
     public Peg(int x, int y) {
         this.x = x;
         this.y = y;
         pegCount++;
         id = pegCount;
+    }
+
+    static void setPlayerPeg(Peg peg) {
+        playerPeg = new Player(peg);
     }
 
     /*
@@ -19,6 +24,7 @@ public class Peg {
     }
     */
 
+    /*
     public int getX() {
         return x;
     }
@@ -34,6 +40,7 @@ public class Peg {
     public void setY(int y) {
         this.y = y;
     }
+    */
 
     @Override
     public String toString() {

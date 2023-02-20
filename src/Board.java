@@ -19,6 +19,16 @@ public class Board {
         return chars[index -1];
     }
 
+    public Peg getPeg(int x, int y) {
+        // TODO: create a function that retrieves a peg based on its coordinates on the board
+
+        /*
+        Right now I don't see any other way to fix this problem than to simply loop over the 2D array
+        and returning when x==xLoopIndex, y==yLoopIndex if you get what I mean.
+         */
+       return null;
+    }
+
     HoleStatus[][] english_cross = {
             /*
                 OLD
@@ -47,7 +57,7 @@ public class Board {
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
             {HoleStatus.RULER, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE},
-            {HoleStatus.RULER, HoleStatus.MARBLE, HoleStatus.PLAYER, HoleStatus.MARBLE, HoleStatus.EMPTY, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE},
+            {HoleStatus.RULER, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.EMPTY, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE},
             {HoleStatus.RULER, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
@@ -80,8 +90,7 @@ public class Board {
         pegs = new Peg[maxPegs];
         validCoordinates = new Hole[maxHoles];
         StringBuilder sb = new StringBuilder();
-
-        StringBuilder graph = new StringBuilder();
+        //StringBuilder graph = new StringBuilder();
 
         int size=boardTemplate.length;
         // Draw the grid (/Looping over the HoleStatus[][])
@@ -101,7 +110,7 @@ public class Board {
                         Peg peg = new Peg(x, y);
 
                         hole.setPeg(peg);
-                        System.out.println("Hole: "+holeCount+", Peg: "+peg);
+                        //System.out.println("Hole: "+holeCount+", Peg: "+peg);
 
                         pegs[pegCount] = peg;
                         pegCount++;
@@ -111,25 +120,23 @@ public class Board {
 
                 // Conditionally draw square
                 drawSquare(boardTemplate, x, y, sb);
-                graph.append("{x="+x+", y="+y+"}");
+                //graph.append("{x="+x+", y="+y+"}");
             }
             sb.append("\n");
-            graph.append("\n");
+            //graph.append("\n");
         }
-        System.out.print("\n"+ graph + "\n");
+        //System.out.print("\n"+ graph + "\n");
         return sb.toString();
     }
 
     public Board() {
         //reset(english_cross);
 
-        // Command Line Representation
         System.out.print(reset(english_cross));
 
-        System.out.println();
-
-
-        System.out.println("Presenting valid coordinates and their contents");
+        /*
+        System.out.println("\nPresenting valid coordinates and their contents (sanity check, must match)");
+        System.out.println("--------------------------------------------------------------------------");
         for(Hole hole: validCoordinates) {
             System.out.printf("x:%s, y:%s\t", getXchar(hole.getX()), hole.getY());
             if(hole.getPeg() != null) {
@@ -138,5 +145,6 @@ public class Board {
                 System.out.print("This coordinate is empty\n");
             }
         }
+         */
     }
 }

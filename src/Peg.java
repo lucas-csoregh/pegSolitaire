@@ -12,10 +12,12 @@ public class Peg {
         id = pegCount;
     }
 
+    /*
     public Peg() {
         this.x = 0;
         this.y = 0;
     }
+    */
 
     public int getX() {
         return x;
@@ -33,7 +35,6 @@ public class Peg {
         this.y = y;
     }
 
-    // TODO: still bugged, fix whatever is causing the numbers to go outside of the expected range
     @Override
     public String toString() {
         String[] strs = {"a", "b", "c", "d", "e", "f", "g"};

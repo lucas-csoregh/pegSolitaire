@@ -1,5 +1,10 @@
 public class Player {
-    Peg playerPeg = new Peg();
+    Peg playerPeg;
+
+    public Player(Peg playerPeg) {
+        this.playerPeg = playerPeg;
+    }
+
     public void jumpVertically() {
         // implement logic (requires javaFX)
     }

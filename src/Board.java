@@ -19,13 +19,11 @@ public class Board {
     // Functions like a mere template. Has no relevance anymore after the board has already been created.
     HoleStatus[][] english_cross = {
             /*
-                OLD
-
                 {2, 2, 2, 2, 2, 2, 2, 2},
                 {2, 1, 1, 0, 0, 0, 1, 1},
                 {2, 1, 1, 0, 0, 0, 1, 1},
                 {2, 0, 0, 0, 0, 0, 0, 0},
-                {2, 0, 4, 0, 3, 0, 0, 0},
+                {2, 0, 0, 0, 3, 0, 0, 0},
                 {2, 0, 0, 0, 0, 0, 0, 0},
                 {2, 1, 1, 0, 0, 0, 1, 1},
                 {2, 1, 1, 0, 0, 0, 1, 1}
@@ -38,8 +36,6 @@ public class Board {
 
                 peg = !off limits, !ruler, !empty
                 hole = !off limits, !ruler
-
-            is still symbolically equivalent to HoleStatus[][] english_cross
             };*/
             {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
@@ -56,14 +52,10 @@ public class Board {
         return chars[index -1];
     }
 
-    // TODO: test this function
-    // [x]: create a gethole function that takes a peg as a parameter and based on that can find that
     public Hole getHole(Peg peg) {
         return grid[peg.getX()][peg.getY()];
     }
 
-    // TODO: test this function
-    // [x]: create a function that retrieves a peg based on its coordinates on the board
     public Hole getHole(int x, int y, Hole[][] board) {
 
         /*
@@ -82,9 +74,9 @@ public class Board {
        return null;
     }
 
-
     // draw the right thing based on the current enum from the loop
     public void drawSquare(HoleStatus[][] board, int x, int y, StringBuilder sb) {
+
         if(board[x][y] == HoleStatus.MARBLE) {
             sb.append(" o ");
         } else if(board[x][y] == HoleStatus.PLAYER) {
@@ -102,6 +94,27 @@ public class Board {
             }
         }
     }
+
+    public void drawSquare(Hole[][] board, int x, int y, StringBuilder sb) {
+
+        if(board[x][y].getHoleStatus() == HoleStatus.MARBLE) {
+            sb.append(" o ");
+        } else if(board[x][y].getHoleStatus() == HoleStatus.PLAYER) {
+            // s for selected, selected = which marble the player moves is up to the player
+            sb.append(" S ");
+        } else if(board[x][y].getHoleStatus() == HoleStatus.OFF_LIMITS) {
+            sb.append("   ");
+        } else if(board[x][y].getHoleStatus() == HoleStatus.EMPTY) {
+            sb.append(" . ");
+        } else if(board[x][y].getHoleStatus() == HoleStatus.RULER) {
+            if(y != 0) {
+                sb.append(" "+y+" ");
+            } else {
+                sb.append(" "+getXchar(x)+" ");
+            }
+        }
+    }
+
 
     public String reset(HoleStatus[][] boardTemplate) {
         System.out.println("-- RESET --\n");
@@ -149,15 +162,21 @@ public class Board {
         return sb.toString();
     }
 
-
-
     public void setPlayerPeg(int x, int y) {
-        player = new Player(getHole(x, y, grid).getPeg());
+        // [x]: Change this holes' HoleStatus to the appropriate enum value
+        Hole hole = getHole(x, y, grid);
+        // changing the state of the board, which now needs to be refreshed
+        hole.setHoleStatus(HoleStatus.PLAYER);
+        // associating the player with the peg
+        player = new Player(hole.getPeg());
+
+        // refresh the board to show the player once the user has chosen the position they want to start in
+        System.out.println();
+        refreshBoard();
     }
 
     public Board() {
         //reset(english_cross);
-
         System.out.print(reset(english_cross));
 
         /*
@@ -172,5 +191,18 @@ public class Board {
             }
         }
          */
+    }
+
+    public void refreshBoard() {
+        int size = grid.length;
+        StringBuilder sb = new StringBuilder();
+        for(int y=0; y<size; y++) {
+            for (int x = 0; x < size; x++) {
+                //sb.append(grid[x][y]);
+                drawSquare(grid, x, y, sb);
+            }
+            sb.append("\n");
+        }
+        System.out.println(sb);
     }
 }

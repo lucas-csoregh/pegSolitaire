@@ -6,10 +6,12 @@ public class Player {
         this.playerPeg = playerPeg;
     }
 
+    /*
     public void jumpVertically() {
         // implement logic (requires javaFX)
     }
     public void jumpHorizontally() {
         // implement logic (requires javaFX)
     }
+    */
 }

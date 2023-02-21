@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -8,6 +7,14 @@ public class Main {
 
         // TODO: write code here to force the user to pick a valid coordinate (not off-limits, etc) with a while loop (/handle wrong input)
         // user can still choose anything on the table, including things that aren't marbles
+
+        /* Conditions (to check if move valid):
+            - the position you want to take over must be of type marble and
+            - must be right behind one of the 4 marbles adjacent to the hole you're jumping towards
+            - you must know from (a to b) where to where the player wants to move in order to be able to tell the player if
+              that move is legal or not and whether they will be asked to put in a valid one
+        */
+
         System.out.println("\nSelect your first marble!");
         Scanner scanner = new Scanner(System.in);
 
@@ -30,8 +37,5 @@ public class Main {
         chars.add('g');
         int xi = chars.indexOf(pickedChar.charAt(0)) + 1;
         board.setPlayerPeg(xi, pickedNum);
-        // [x]: change the player's peg to the appropriate HoleStatus.PLAYER enum instead of HoleStatus.MARBLE which it has now
-        // [x]: draw the next frame based on what has changed to the saved state of the board
-        //      (which we keep in our Hole[][] grid, that we generated based on a template with a starting status for everything on the board)
     }
 }

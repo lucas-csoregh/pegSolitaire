@@ -2,14 +2,6 @@ public class Board {
     final private int maxHoles = 33;
     final private int maxPegs = 32;
     private Peg[] pegs;
-    /*
-    when we loop over the HoleStatus[][] at creation,
-    we need to create ... when
-        pegs        !HoleStatus.OFF_LIMITS && !HoleStatusEMPTY
-        and holes   !HoleStatus.OFF_LIMITS
-
-    this way, we can pass the valid x and y coordinates as values
-     */
     private Hole[] validCoordinates;
     private int pegCount = 0;
     private int holeCount = 0;
@@ -123,16 +115,14 @@ public class Board {
         pegs = new Peg[maxPegs];
         validCoordinates = new Hole[maxHoles];
         StringBuilder sb = new StringBuilder();
-        //StringBuilder graph = new StringBuilder();
 
         int size=boardTemplate.length;
-        // Draw the grid (/Looping over the HoleStatus[][])
+        // Draw the grid (/Looping over the HoleStatus[][] / Template)
         for(int y=0; y<size; y++) {
             for(int x=0; x<size; x++) {
                 Hole hole = new Hole(x, y, boardTemplate[x][y]);
                 grid[x][y] = hole;
 
-                // Conditionally create peg
                 boolean createPeg = (boardTemplate[x][y] != HoleStatus.EMPTY);
                 boolean validCoordinate = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.RULER);
 
@@ -145,7 +135,6 @@ public class Board {
                         Peg peg = new Peg(x, y);
 
                         hole.setPeg(peg);
-                        //System.out.println("Hole: "+holeCount+", Peg: "+peg);
 
                         pegs[pegCount] = peg;
                         pegCount++;
@@ -153,17 +142,13 @@ public class Board {
                 }
 
                 drawSquare(boardTemplate, x, y, sb);
-                //graph.append("{x="+x+", y="+y+"}");
             }
             sb.append("\n");
-            //graph.append("\n");
         }
-        //System.out.print("\n"+ graph + "\n");
         return sb.toString();
     }
 
     public void setPlayerPeg(int x, int y) {
-        // [x]: Change this holes' HoleStatus to the appropriate enum value
         Hole hole = getHole(x, y, grid);
         // changing the state of the board, which now needs to be refreshed
         hole.setHoleStatus(HoleStatus.PLAYER);
@@ -176,21 +161,7 @@ public class Board {
     }
 
     public Board() {
-        //reset(english_cross);
         System.out.print(reset(english_cross));
-
-        /*
-        System.out.println("\nPresenting valid coordinates and their contents (sanity check, must match)");
-        System.out.println("--------------------------------------------------------------------------");
-        for(Hole hole: validCoordinates) {
-            System.out.printf("x:%s, y:%s\t", getXchar(hole.getX()), hole.getY());
-            if(hole.getPeg() != null) {
-                System.out.print(hole.getPeg() + "\n");
-            } else {
-                System.out.print("This coordinate is empty\n");
-            }
-        }
-         */
     }
 
     public void refreshBoard() {
@@ -198,7 +169,6 @@ public class Board {
         StringBuilder sb = new StringBuilder();
         for(int y=0; y<size; y++) {
             for (int x = 0; x < size; x++) {
-                //sb.append(grid[x][y]);
                 drawSquare(grid, x, y, sb);
             }
             sb.append("\n");

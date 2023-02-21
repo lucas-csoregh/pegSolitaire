@@ -6,7 +6,7 @@ public class Board {
     private int pegCount = 0;
     private int holeCount = 0;
     private Hole[][] grid = new Hole[8][8];
-    static Player player;
+    private Player player;
 
     // Functions like a mere template. Has no relevance anymore after the board has already been created.
     HoleStatus[][] english_cross = {
@@ -20,7 +20,7 @@ public class Board {
                 {2, 1, 1, 0, 0, 0, 1, 1},
                 {2, 1, 1, 0, 0, 0, 1, 1}
 
-                0 = marble
+                0 = PEG
                 1 = off limits
                 2 = ruler
                 3 = empty
@@ -30,13 +30,13 @@ public class Board {
                 hole = !off limits, !ruler
             };*/
             {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE},
-            {HoleStatus.RULER, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.EMPTY, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE},
-            {HoleStatus.RULER, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.MARBLE, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
+            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
+            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
+            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
+            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.EMPTY, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
+            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
+            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
+            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
     };
 
     public char getXchar(int index) {
@@ -69,10 +69,10 @@ public class Board {
     // draw the right thing based on the current enum from the loop
     public void drawSquare(HoleStatus[][] board, int x, int y, StringBuilder sb) {
 
-        if(board[x][y] == HoleStatus.MARBLE) {
+        if(board[x][y] == HoleStatus.PEG) {
             sb.append(" o ");
         } else if(board[x][y] == HoleStatus.PLAYER) {
-            // s for selected, selected = which marble the player moves is up to the player
+            // s for selected, selected = which PEG the player moves is up to the player
             sb.append(" S ");
         } else if(board[x][y] == HoleStatus.OFF_LIMITS) {
             sb.append("   ");
@@ -89,10 +89,10 @@ public class Board {
 
     public void drawSquare(Hole[][] board, int x, int y, StringBuilder sb) {
 
-        if(board[x][y].getHoleStatus() == HoleStatus.MARBLE) {
+        if(board[x][y].getHoleStatus() == HoleStatus.PEG) {
             sb.append(" o ");
         } else if(board[x][y].getHoleStatus() == HoleStatus.PLAYER) {
-            // s for selected, selected = which marble the player moves is up to the player
+            // s for selected, selected = which PEG the player moves is up to the player
             sb.append(" S ");
         } else if(board[x][y].getHoleStatus() == HoleStatus.OFF_LIMITS) {
             sb.append("   ");
@@ -175,4 +175,33 @@ public class Board {
         }
         System.out.println(sb);
     }
+
+
+    // TODO: write code here to force the user to pick a valid coordinate (not off-limits, etc) with a while loop (/handle wrong input)
+    // user can still choose anything on the table, including things that aren't PEGs
+
+    /* Conditions (to check if move valid):
+        - the position you want to take over must be of type PEG and
+        - must be right behind one of the 4 PEGs adjacent to the hole you're jumping towards
+        - you must know from (a to b) where to where the player wants to move in order to be able to tell the player if
+          that move is legal or not and whether they will be asked to put in a valid one
+    */
+
+    /* unfinished
+    public boolean moveIsValid(int x, int y) {
+        // test if playerPeg is empty
+        if(player.hasPeg()) {
+            // scenario 1: we need to know:
+            //      where(x, y) you want to jump to
+            player.jump
+        } {
+            // scenario 2: we need to know:
+            //      from where(x, y) you want to jump
+
+        }
+
+        return false;
+    }
+
+     */
 }

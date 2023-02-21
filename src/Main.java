@@ -5,17 +5,8 @@ public class Main {
     public static void main(String[] args) {
         Board board = new Board();
 
-        // TODO: write code here to force the user to pick a valid coordinate (not off-limits, etc) with a while loop (/handle wrong input)
-        // user can still choose anything on the table, including things that aren't marbles
-
-        /* Conditions (to check if move valid):
-            - the position you want to take over must be of type marble and
-            - must be right behind one of the 4 marbles adjacent to the hole you're jumping towards
-            - you must know from (a to b) where to where the player wants to move in order to be able to tell the player if
-              that move is legal or not and whether they will be asked to put in a valid one
-        */
-
-        System.out.println("\nSelect your first marble!");
+        // TODO: force the user to pick a valid coordinate (not off-limits, etc) with a while loop (/handle wrong input)
+        System.out.println("\nSelect your first PEG!");
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("pick a valid character: ");

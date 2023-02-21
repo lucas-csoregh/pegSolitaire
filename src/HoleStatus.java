@@ -1,5 +1,5 @@
 public enum HoleStatus {
-    MARBLE,
+    PEG,
     OFF_LIMITS,
     RULER,
     EMPTY,

@@ -164,7 +164,18 @@ public class Board {
         System.out.print(reset(english_cross));
     }
 
+    public void getValidDirections() {
+       // TODO: find out which of the directions (up, down, left, right) has an empty hole 2 spaces away from where the player is
+    }
+
     public void refreshBoard() {
+
+        /* TODO
+        after the player chooses their first peg,
+        the game should call some function that spits out the refreshed gamestate +
+        only showing the option to move (up, down, left or right ofcourse) if it is AVAILABLE
+         */
+
         int size = grid.length;
         StringBuilder sb = new StringBuilder();
         for(int y=0; y<size; y++) {

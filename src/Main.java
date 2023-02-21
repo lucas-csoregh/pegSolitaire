@@ -5,28 +5,39 @@ public class Main {
     public static void main(String[] args) {
         Board board = new Board();
 
-        // TODO: force the user to pick a valid coordinate (not off-limits, etc) with a while loop (/handle wrong input)
-        System.out.println("\nSelect your first PEG!");
+        System.out.println("\nSelect your starting position");
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("pick a valid character: ");
-        String pickedChar = scanner.next();
+        boolean validAnswer = false;
 
-        System.out.print("pick a valid number: ");
-        int pickedNum = scanner.nextInt();
+        while(!validAnswer) {
+            System.out.print("\nup: d2,\ndown: d6,\nleft: b4,\nright: f4\n\nEnter up/down/left/right: ");
+            String answer = scanner.next();
 
-        System.out.printf("Your choice: %s%d\n", pickedChar.toUpperCase(), pickedNum);
-
-        //char[] characters = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
-        ArrayList<Character> chars = new ArrayList<>();
-        chars.add('a');
-        chars.add('b');
-        chars.add('c');
-        chars.add('d');
-        chars.add('e');
-        chars.add('f');
-        chars.add('g');
-        int xi = chars.indexOf(pickedChar.charAt(0)) + 1;
-        board.setPlayerPeg(xi, pickedNum);
+            switch (answer) {
+                case "up":
+                    // d2
+                    board.setPlayerPeg(4, 2);
+                    validAnswer = true;
+                    break;
+                case "down":
+                    // d6
+                    board.setPlayerPeg(4, 6);
+                    validAnswer = true;
+                    break;
+                case "left":
+                    // b4
+                    board.setPlayerPeg(2, 4);
+                    validAnswer = true;
+                    break;
+                case "right":
+                    // f4
+                    board.setPlayerPeg(6, 4);
+                    validAnswer = true;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

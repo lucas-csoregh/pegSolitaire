@@ -158,21 +158,6 @@ public class Board {
         // refresh the board to show the player once the user has chosen the position they want to start in
         System.out.println();
         refreshBoard();
-        //Player.Dir[] dirs = getValidDirections();
-        dirs = getValidDirections();
-
-        System.out.println("Options:");
-        for(Player.Dir dir: dirs) {
-            if(dir!=null) {
-                System.out.println(dir.name());
-            }
-        }
-
-        System.out.println("\nEnter up/down/right/left");
-        Scanner scanner = new Scanner(System.in);
-        String direction =  scanner.next();
-
-
     }
 
     public Board() {
@@ -201,10 +186,10 @@ public class Board {
             down = grid[x][y+2].isEmpty() && grid[x][y+1].getHoleStatus() == HoleStatus.PEG;
         }
         if(x>=2) {
-            left = grid[x - 2][y].isEmpty() && grid[x - 1][y].getHoleStatus() == HoleStatus.PEG;
+            left = grid[x-2][y].isEmpty() && grid[x-1][y].getHoleStatus() == HoleStatus.PEG;
         }
         if(x < 6) {
-            right = grid[x + 2][y].isEmpty() && grid[x + 1][y].getHoleStatus() == HoleStatus.PEG;
+            right = grid[x+2][y].isEmpty() && grid[x+1][y].getHoleStatus() == HoleStatus.PEG;
         }
         Player.Dir[] directions = new Player.Dir[4];
 
@@ -242,10 +227,71 @@ public class Board {
             }
             sb.append("\n");
         }
+
+        System.out.println(sb);
+
         // TODO: allow the user to enter their choice (1, 2, ...)
         // TODO: if there is only one possible direction, automatically move the player there (but still show the option in the output)
 
-        System.out.println(sb);
+
+        //Player.Dir[] dirs = getValidDirections();
+        dirs = getValidDirections();
+
+        System.out.println("Options:");
+        int validDirs = 0;
+        for(Player.Dir dir: dirs) {
+            if(dir!=null) {
+                System.out.println(dir.name());
+                validDirs++;
+            }
+        }
+
+        if(validDirs == 0) {
+            System.out.println("NONE, pick a new position to continue");
+        } else {
+
+            //System.out.print("\nEnter up/down/right/left");
+            Scanner scanner = new Scanner(System.in);
+            //String direction =  scanner.next();
+
+            boolean validAnswer = false;
+
+            while(!validAnswer) {
+                System.out.print("\nEnter up/down/right/left: ");
+                String answer = scanner.next();
+
+                switch (answer) {
+                    case "up":
+                        // jump up
+                        player.jump(Player.Dir.UP, grid);
+                        validAnswer = true;
+                        break;
+                    case "down":
+                        // jump down
+                        player.jump(Player.Dir.DOWN, grid);
+                        validAnswer = true;
+                        break;
+                    case "left":
+                        player.jump(Player.Dir.LEFT, grid);
+                        // jump left
+                        validAnswer = true;
+                        break;
+                    case "right":
+                        player.jump(Player.Dir.RIGHT, grid);
+                        // jump right
+                        validAnswer = true;
+                        break;
+                    default:
+                        break;
+                }
+
+                System.out.println();
+
+        }
+
+
+            refreshBoard();
+        }
     }
 }
 

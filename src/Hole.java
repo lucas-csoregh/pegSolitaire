@@ -20,6 +20,11 @@ public class Hole {
     public Peg getPeg() {
         return peg;
     }
+    public Peg takePeg() {
+        Peg taken = peg;
+        peg = null;
+        return taken;
+    }
 
     public int getX() { return x; }
     public int getY() { return y; }
@@ -35,6 +40,6 @@ public class Hole {
     }
 
     public boolean isEmpty() {
-        return this.peg == null;
+        return this.peg == null && this.holeStatus == HoleStatus.EMPTY;
     }
 }

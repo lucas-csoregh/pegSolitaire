@@ -1,10 +1,11 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class Board {
     final private int maxHoles = 33;
     final private int maxPegs = 32;
     private Peg[] pegs;
     private Hole[] validCoordinates;
-    private int pegCount = 0;
-    private int holeCount = 0;
     private Hole[][] grid = new Hole[8][8];
     private Player player;
 
@@ -25,9 +26,6 @@ public class Board {
                 2 = ruler
                 3 = empty
                 4 = player
-
-                peg = !off limits, !ruler, !empty
-                hole = !off limits, !ruler
             };*/
             {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
@@ -110,8 +108,8 @@ public class Board {
 
     public String reset(HoleStatus[][] boardTemplate) {
         System.out.println("-- RESET --\n");
-        pegCount = 0;
-        holeCount = 0;
+        int pegCount = 0;
+        int holeCount = 0;
         pegs = new Peg[maxPegs];
         validCoordinates = new Hole[maxHoles];
         StringBuilder sb = new StringBuilder();
@@ -158,23 +156,76 @@ public class Board {
         // refresh the board to show the player once the user has chosen the position they want to start in
         System.out.println();
         refreshBoard();
+        Player.Dir[] dirs = getValidDirections();
+
+        System.out.println("Options:");
+        for(Player.Dir dir: dirs) {
+            if(dir!=null) {
+                System.out.println(dir.name());
+            }
+        }
+
+        System.out.println("\nChoose your direction up/down/right/left");
+        Scanner scanner = new Scanner(System.in);
+        String direction =  scanner.next();
+
+
     }
 
     public Board() {
         System.out.print(reset(english_cross));
     }
 
-    public void getValidDirections() {
-       // TODO: find out which of the directions (up, down, left, right) has an empty hole 2 spaces away from where the player is
+    public Player.Dir[] getValidDirections() {
+        StringBuilder sb = new StringBuilder();
+        Peg peg = player.playerPeg;
+        int x = peg.getX();
+        int y = peg.getY();
+        //StringBuilder sb = new StringBuilder();
+        //System.out.println(x+", "+y);
+        sb.append("\n");
+        int valid = 0;
+        // ---- START BUG AREA
+
+        boolean up = grid[x][y-2].isEmpty() && grid[x][y-1].getHoleStatus() == HoleStatus.PEG;
+        boolean down = grid[x][y+2].isEmpty() && grid[x][y+1].getHoleStatus() == HoleStatus.PEG;
+        boolean left = grid[x-2][y].isEmpty() && grid[x-1][y].getHoleStatus() == HoleStatus.PEG;
+        boolean right = grid[x+2][y].isEmpty() && grid[x+1][y].getHoleStatus() == HoleStatus.PEG;
+        // ---- END BUG AREA
+        Player.Dir[] directions = new Player.Dir[4];
+
+        // TODO: get the 'f6' type name of each position so you can show it here
+        sb.append(x).append(", ").append(y).append(" ").append("def\n");
+        if(up) {
+            sb.append(x).append(", ").append(y+2).append(" ").append("up\n");
+            directions[valid] = Player.Dir.UP;
+            valid++;
+        } else if (down) {
+            sb.append(x).append(", ").append(y-2).append(" ").append("down\n");
+            directions[valid] = Player.Dir.DOWN;
+            valid++;
+        } else if (right) {
+            sb.append(x+2).append(", ").append(y).append(" ").append("right\n");
+            directions[valid] = Player.Dir.RIGHT;
+            valid++;
+        } else if (left) {
+            sb.append(x-2).append(", ").append(y).append(" ").append("left\n");
+            directions[valid] = Player.Dir.LEFT;
+            valid++;
+        }
+
+        System.out.print(sb);
+
+        if(valid == 1) {
+            System.out.println("Excuting only option");
+            player.jump(directions[0], grid);
+            refreshBoard();
+        }
+
+        return directions;
     }
 
     public void refreshBoard() {
-
-        /* TODO
-        after the player chooses their first peg,
-        the game should call some function that spits out the refreshed gamestate +
-        only showing the option to move (up, down, left or right ofcourse) if it is AVAILABLE
-         */
 
         int size = grid.length;
         StringBuilder sb = new StringBuilder();
@@ -184,35 +235,13 @@ public class Board {
             }
             sb.append("\n");
         }
+        // TODO: allow the user to enter their choice (1, 2, ...)
+        // TODO: if there is only one possible direction, automatically move the player there (but still show the option in the output)
+
         System.out.println(sb);
     }
-
-
-    // TODO: write code here to force the user to pick a valid coordinate (not off-limits, etc) with a while loop (/handle wrong input)
-    // user can still choose anything on the table, including things that aren't PEGs
-
-    /* Conditions (to check if move valid):
-        - the position you want to take over must be of type PEG and
-        - must be right behind one of the 4 PEGs adjacent to the hole you're jumping towards
-        - you must know from (a to b) where to where the player wants to move in order to be able to tell the player if
-          that move is legal or not and whether they will be asked to put in a valid one
-    */
-
-    /* unfinished
-    public boolean moveIsValid(int x, int y) {
-        // test if playerPeg is empty
-        if(player.hasPeg()) {
-            // scenario 1: we need to know:
-            //      where(x, y) you want to jump to
-            player.jump
-        } {
-            // scenario 2: we need to know:
-            //      from where(x, y) you want to jump
-
-        }
-
-        return false;
-    }
-
-     */
 }
+
+/*
+TODO: Write the code so that the user can switch to another peg at any time during the game
+ */

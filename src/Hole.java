@@ -23,6 +23,7 @@ public class Hole {
     public Peg takePeg() {
         Peg taken = peg;
         peg = null;
+        // remove the appropriate peg from the `private Peg[] pegs;` var in Board.java
         return taken;
     }
 

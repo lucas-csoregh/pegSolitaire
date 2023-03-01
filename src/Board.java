@@ -165,7 +165,7 @@ public class Board {
             }
         }
 
-        System.out.println("\nChoose your direction up/down/right/left");
+        System.out.println("\nEnter up/down/right/left");
         Scanner scanner = new Scanner(System.in);
         String direction =  scanner.next();
 
@@ -187,46 +187,52 @@ public class Board {
         int valid = 0;
         // ---- START BUG AREA
 
+        //System.out.println(x +", "+ y);
+
         boolean up = grid[x][y-2].isEmpty() && grid[x][y-1].getHoleStatus() == HoleStatus.PEG;
-        boolean down = grid[x][y+2].isEmpty() && grid[x][y+1].getHoleStatus() == HoleStatus.PEG;
+        boolean down = false;
+        if(y < 6) {
+            down = grid[x][y+2].isEmpty() && grid[x][y+1].getHoleStatus() == HoleStatus.PEG;
+        }
         boolean left = grid[x-2][y].isEmpty() && grid[x-1][y].getHoleStatus() == HoleStatus.PEG;
         boolean right = grid[x+2][y].isEmpty() && grid[x+1][y].getHoleStatus() == HoleStatus.PEG;
         // ---- END BUG AREA
         Player.Dir[] directions = new Player.Dir[4];
 
         // TODO: get the 'f6' type name of each position so you can show it here
-        sb.append(x).append(", ").append(y).append(" ").append("def\n");
+        //sb.append(x).append(", ").append(y).append(" ").append("def\n");
         if(up) {
-            sb.append(x).append(", ").append(y+2).append(" ").append("up\n");
+            //sb.append(x).append(", ").append(y-2).append(" ").append("up\n");
             directions[valid] = Player.Dir.UP;
             valid++;
         } else if (down) {
-            sb.append(x).append(", ").append(y-2).append(" ").append("down\n");
+            //sb.append(x).append(", ").append(y+2).append(" ").append("down\n");
             directions[valid] = Player.Dir.DOWN;
             valid++;
         } else if (right) {
-            sb.append(x+2).append(", ").append(y).append(" ").append("right\n");
+            //sb.append(x+2).append(", ").append(y).append(" ").append("right\n");
             directions[valid] = Player.Dir.RIGHT;
             valid++;
         } else if (left) {
-            sb.append(x-2).append(", ").append(y).append(" ").append("left\n");
+            //sb.append(x-2).append(", ").append(y).append(" ").append("left\n");
             directions[valid] = Player.Dir.LEFT;
             valid++;
         }
 
         System.out.print(sb);
 
+        /*
         if(valid == 1) {
             System.out.println("Excuting only option");
             player.jump(directions[0], grid);
             refreshBoard();
         }
+        */
 
         return directions;
     }
 
     public void refreshBoard() {
-
         int size = grid.length;
         StringBuilder sb = new StringBuilder();
         for(int y=0; y<size; y++) {

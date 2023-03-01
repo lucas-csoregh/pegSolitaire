@@ -43,16 +43,17 @@ public class Player {
     //public void bunnyhop()
     public void jump(Dir direction, Hole board[][]) {
         Hole fromHole = board[playerPeg.getX()][playerPeg.getY()];
-        // 33 is default, just filled it with something to the .. has might not have been initialized avoid errors
+        // [3][3] is default, just filled it with something to avoid the `.. has might not have been initialized` errors
+            // the contents don't matter
         Hole takenPegHole = board[3][3];
         Hole toHole = board[3][3];
 
         if(direction == Dir.UP) {
-            takenPegHole = board[playerPeg.getX()][playerPeg.getY() +1];
-            toHole = board[playerPeg.getX()][playerPeg.getY() +2];
-        } else if(direction == Dir.DOWN) {
             takenPegHole = board[playerPeg.getX()][playerPeg.getY() -1];
             toHole = board[playerPeg.getX()][playerPeg.getY() -2];
+        } else if(direction == Dir.DOWN) {
+            takenPegHole = board[playerPeg.getX()][playerPeg.getY() +1];
+            toHole = board[playerPeg.getX()][playerPeg.getY() +2];
         } else if(direction == Dir.LEFT) {
             takenPegHole = board[playerPeg.getX() -1][playerPeg.getY()];
             toHole = board[playerPeg.getX() -2][playerPeg.getY()];

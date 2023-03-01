@@ -2,10 +2,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Board {
-    final private int maxHoles = 33;
-    final private int maxPegs = 32;
     private Peg[] pegs;
     private Hole[] validCoordinates;
+
+    // gamestate
     private Hole[][] grid = new Hole[8][8];
     private Player player;
 
@@ -80,9 +80,9 @@ public class Board {
             sb.append(" . ");
         } else if(board[x][y] == HoleStatus.RULER) {
             if(y != 0) {
-                sb.append(" "+y+" ");
+                sb.append(" ").append(y).append(" ");
             } else {
-                sb.append(" "+getXchar(x)+" ");
+                sb.append(" ").append(getXchar(x)).append(" ");
             }
         }
     }
@@ -100,9 +100,9 @@ public class Board {
             sb.append(" . ");
         } else if(board[x][y].getHoleStatus() == HoleStatus.RULER) {
             if(y != 0) {
-                sb.append(" "+y+" ");
+                sb.append(" ").append(y).append(" ");
             } else {
-                sb.append(" "+getXchar(x)+" ");
+                sb.append(" ").append(getXchar(x)).append(" ");
             }
         }
     }
@@ -112,7 +112,9 @@ public class Board {
         System.out.println("-- RESET --\n");
         int pegCount = 0;
         int holeCount = 0;
+        int maxPegs = 32;
         pegs = new Peg[maxPegs];
+        int maxHoles = 33;
         validCoordinates = new Hole[maxHoles];
         StringBuilder sb = new StringBuilder();
 
@@ -193,7 +195,7 @@ public class Board {
         }
         Player.Dir[] directions = new Player.Dir[4];
 
-        // TODO: get the 'f6' type name of each position so you can show it here
+        // EXTRA: get the 'f6' type name of each position so you can show it here
         //sb.append(x).append(", ").append(y).append(" ").append("def\n");
         if(up) {
             //sb.append(x).append(", ").append(y-2).append(" ").append("up\n");
@@ -218,6 +220,7 @@ public class Board {
         return directions;
     }
 
+    // read board from gamestate and get new player action
     public void refreshBoard() {
         int size = grid.length;
         StringBuilder sb = new StringBuilder();
@@ -230,14 +233,11 @@ public class Board {
 
         System.out.println(sb);
 
-        // TODO: allow the user to enter their choice (1, 2, ...)
-        // TODO: if there is only one possible direction, automatically move the player there (but still show the option in the output)
-
-
         //Player.Dir[] dirs = getValidDirections();
         dirs = getValidDirections();
 
         System.out.println("Options:");
+        // show all valid directions
         int validDirs = 0;
         for(Player.Dir dir: dirs) {
             if(dir!=null) {
@@ -246,18 +246,24 @@ public class Board {
             }
         }
 
-        if(validDirs == 0) {
-            System.out.println("NONE, pick a new position to continue");
-        } else {
+        // TODO show all valid coordinates to select as new playerPeg
 
+        Scanner scanner = new Scanner(System.in);
+        if(validDirs == 0) {
+
+            System.out.print("\nSpecify coordinate (ex. a1): ");
+            String answer = scanner.next();
+
+            // TODO: Write the code so that the user can switch to another peg at any time during the game
+        } else {
             //System.out.print("\nEnter up/down/right/left");
-            Scanner scanner = new Scanner(System.in);
             //String direction =  scanner.next();
 
             boolean validAnswer = false;
 
             while(!validAnswer) {
-                System.out.print("\nEnter up/down/right/left: ");
+                // a1 as in the coordinate scheme that reflects the rulers on the board
+                System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
                 String answer = scanner.next();
 
                 switch (answer) {
@@ -284,17 +290,9 @@ public class Board {
                     default:
                         break;
                 }
-
                 System.out.println();
-
-        }
-
-
+            }
             refreshBoard();
         }
     }
 }
-
-/*
-TODO: Write the code so that the user can switch to another peg at any time during the game
- */

@@ -31,7 +31,7 @@ public class Hole {
     }
 
     public void isEndGame() {
-        // berekenen of de knikker in de middelste positie/coordinaat zit
+        // berekenen of er meer dan 1 knikker over is
     }
 
     public boolean isEmpty() {

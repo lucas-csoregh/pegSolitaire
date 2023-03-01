@@ -5,6 +5,8 @@ public class Board {
     private Hole[] validCoordinates;
     private int pegCount = 0;
     private int holeCount = 0;
+
+    // gameState
     private Hole[][] grid = new Hole[8][8];
     private Player player;
 
@@ -165,7 +167,12 @@ public class Board {
     }
 
     public void getValidDirections() {
-       // TODO: find out which of the directions (up, down, left, right) has an empty hole 2 spaces away from where the player is
+        // TODO: find out which of the directions (up, down, left, right)
+        //  has an empty hole 2 spaces away from where the player is
+
+        // TODO find out where the player's coordinates
+
+        // TODO find out what is on the board in each available move/coordinate (from up/down/left/right)
     }
 
     public void refreshBoard() {

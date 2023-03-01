@@ -9,6 +9,8 @@ public class Board {
     private Hole[][] grid = new Hole[8][8];
     private Player player;
 
+    private Player.Dir[] dirs;
+
     // Functions like a mere template. Has no relevance anymore after the board has already been created.
     HoleStatus[][] english_cross = {
             /*
@@ -156,7 +158,8 @@ public class Board {
         // refresh the board to show the player once the user has chosen the position they want to start in
         System.out.println();
         refreshBoard();
-        Player.Dir[] dirs = getValidDirections();
+        //Player.Dir[] dirs = getValidDirections();
+        dirs = getValidDirections();
 
         System.out.println("Options:");
         for(Player.Dir dir: dirs) {
@@ -185,18 +188,24 @@ public class Board {
         //System.out.println(x+", "+y);
         sb.append("\n");
         int valid = 0;
-        // ---- START BUG AREA
 
-        //System.out.println(x +", "+ y);
-
-        boolean up = grid[x][y-2].isEmpty() && grid[x][y-1].getHoleStatus() == HoleStatus.PEG;
         boolean down = false;
+        boolean up = false;
+        boolean left = false;
+        boolean right = false;
+
+        if(y>=2) {
+            up = grid[x][y-2].isEmpty() && grid[x][y-1].getHoleStatus() == HoleStatus.PEG;
+        }
         if(y < 6) {
             down = grid[x][y+2].isEmpty() && grid[x][y+1].getHoleStatus() == HoleStatus.PEG;
         }
-        boolean left = grid[x-2][y].isEmpty() && grid[x-1][y].getHoleStatus() == HoleStatus.PEG;
-        boolean right = grid[x+2][y].isEmpty() && grid[x+1][y].getHoleStatus() == HoleStatus.PEG;
-        // ---- END BUG AREA
+        if(x>=2) {
+            left = grid[x - 2][y].isEmpty() && grid[x - 1][y].getHoleStatus() == HoleStatus.PEG;
+        }
+        if(x < 6) {
+            right = grid[x + 2][y].isEmpty() && grid[x + 1][y].getHoleStatus() == HoleStatus.PEG;
+        }
         Player.Dir[] directions = new Player.Dir[4];
 
         // TODO: get the 'f6' type name of each position so you can show it here
@@ -220,14 +229,6 @@ public class Board {
         }
 
         System.out.print(sb);
-
-        /*
-        if(valid == 1) {
-            System.out.println("Excuting only option");
-            player.jump(directions[0], grid);
-            refreshBoard();
-        }
-        */
 
         return directions;
     }

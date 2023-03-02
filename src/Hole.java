@@ -23,7 +23,7 @@ public class Hole {
     public Peg takePeg() {
         Peg taken = peg;
         peg = null;
-        // remove the appropriate peg from the `private Peg[] pegs;` var in Board.java
+        // TODO remove the appropriate peg from the `private Peg[] pegs;` var in Board.java
         return taken;
     }
 
@@ -37,10 +37,18 @@ public class Hole {
     }
 
     public void isEndGame() {
-        // berekenen of er meer dan 1 knikker over is
+        // TODO berekenen of er meer dan 1 knikker over is
     }
 
     public boolean isEmpty() {
         return this.peg == null && this.holeStatus == HoleStatus.EMPTY;
+    }
+
+
+    @Override
+    public String toString() {
+        String[] strs = {"a", "b", "c", "d", "e", "f", "g"};
+        String str = strs[x-1];
+        return str + y;
     }
 }

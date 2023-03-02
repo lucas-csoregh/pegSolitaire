@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Board {
@@ -166,14 +167,44 @@ public class Board {
         System.out.print(reset(english_cross));
     }
 
-    public Player.Dir[] getValidDirections() {
-        StringBuilder sb = new StringBuilder();
-        Peg peg = player.playerPeg;
-        int x = peg.getX();
-        int y = peg.getY();
+    public Hole[] possiblePlayerPositions() {
+        // DO LATER: undo hard coding
+        Hole[] possiblePlayerPositions = new Hole[33];
+        int validPositions = 0;
+        int size = grid.length;
+        for(int y=0; y<size; y++) {
+            for(int x = 0; x < size; x++) {
+                /*
+                System.out.println(validPositions);
+                System.out.println(getValidDirections(x, y).length);
+                System.out.println(Arrays.toString(getValidDirections(x, y)));
+                */
+                Player.Dir[] dirs = getValidDirections(x, y);
+                int validDirs = 0;
+                for(Player.Dir dir: dirs) {
+                    if(dir != null) {
+                        validDirs++;
+                    }
+                }
+
+
+
+                if(validDirs > 0) {
+                    possiblePlayerPositions[validPositions] = getHole(x, y, grid);
+                    validPositions++;
+                }
+            }
+        }
+
+        return possiblePlayerPositions;
+    }
+
+    public Player.Dir[] getValidDirections(int x, int y) {
+        //StringBuilder sb = new StringBuilder();
         //StringBuilder sb = new StringBuilder();
         //System.out.println(x+", "+y);
-        sb.append("\n");
+        //sb.append("\n");
+
         int valid = 0;
 
         boolean down = false;
@@ -215,12 +246,13 @@ public class Board {
             valid++;
         }
 
-        System.out.print(sb);
+        //System.out.print(sb);
 
         return directions;
     }
 
-    // read board from gamestate and get new player action
+
+    // read board from gamestate (Hole[][] grid) and get new player action
     public void refreshBoard() {
         int size = grid.length;
         StringBuilder sb = new StringBuilder();
@@ -234,7 +266,11 @@ public class Board {
         System.out.println(sb);
 
         //Player.Dir[] dirs = getValidDirections();
-        dirs = getValidDirections();
+
+        Peg peg = player.playerPeg;
+        int x = peg.getX();
+        int y = peg.getY();
+        dirs = getValidDirections(x, y);
 
         System.out.println("Options:");
         // show all valid directions
@@ -247,12 +283,21 @@ public class Board {
         }
 
         // TODO show all valid coordinates to select as new playerPeg
+        Hole[] possiblePositions = possiblePlayerPositions();
+        int validPositions = 0;
+        for(Hole possiblePosition: possiblePositions) {
+            if(possiblePosition != null) {
+                System.out.println(possiblePosition);
+            }
+        }
 
         Scanner scanner = new Scanner(System.in);
         if(validDirs == 0) {
 
             System.out.print("\nSpecify coordinate (ex. a1): ");
             String answer = scanner.next();
+            System.out.println(answer);
+            System.out.println(answer.toCharArray());
 
             // TODO: Write the code so that the user can switch to another peg at any time during the game
         } else {
@@ -266,29 +311,34 @@ public class Board {
                 System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
                 String answer = scanner.next();
 
-                switch (answer) {
-                    case "up":
-                        // jump up
-                        player.jump(Player.Dir.UP, grid);
-                        validAnswer = true;
-                        break;
-                    case "down":
-                        // jump down
-                        player.jump(Player.Dir.DOWN, grid);
-                        validAnswer = true;
-                        break;
-                    case "left":
-                        player.jump(Player.Dir.LEFT, grid);
-                        // jump left
-                        validAnswer = true;
-                        break;
-                    case "right":
-                        player.jump(Player.Dir.RIGHT, grid);
-                        // jump right
-                        validAnswer = true;
-                        break;
-                    default:
-                        break;
+                char[] charr =  answer.toCharArray();
+                if(Character.isDigit(charr[1])) {
+                    System.out.println("is coordinate");
+                } else {
+                    switch (answer) {
+                        case "up":
+                            // jump up
+                            player.jump(Player.Dir.UP, grid);
+                            validAnswer = true;
+                            break;
+                        case "down":
+                            // jump down
+                            player.jump(Player.Dir.DOWN, grid);
+                            validAnswer = true;
+                            break;
+                        case "left":
+                            player.jump(Player.Dir.LEFT, grid);
+                            // jump left
+                            validAnswer = true;
+                            break;
+                        case "right":
+                            player.jump(Player.Dir.RIGHT, grid);
+                            // jump right
+                            validAnswer = true;
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 System.out.println();
             }

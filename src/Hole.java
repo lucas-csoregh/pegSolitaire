@@ -24,6 +24,9 @@ public class Hole {
         Peg taken = peg;
         peg = null;
         // TODO remove the appropriate peg from the `private Peg[] pegs;` var in Board.java
+        // TODO show the taken pegs in a row of o's under the board, include it w each refresh of the gamestate
+        // TODO LATER change the names of everything to stuff that makes more sense like readGamestate instead of refreshBoard, yadayadad
+        // TODO LATER add detailed documentation for everything
         return taken;
     }
 

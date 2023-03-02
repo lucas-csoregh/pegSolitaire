@@ -251,6 +251,30 @@ public class Board {
         return directions;
     }
 
+    public int[] translateChessCoordinates(char[] charr) {
+        int x=0;
+        int y=0;
+
+        char[] strs = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
+        /*
+        String[] strs = {"a", "b", "c", "d", "e", "f", "g"};
+        String str = strs[x-1];
+        return str + y;
+        */
+        for(int i=0; i<strs.length; i++) {
+            if(strs[i] == charr[0]) {
+                x = i+1;
+            }
+        }
+
+        System.out.println("translateCoordinates charr[1]:"+ y);
+        y = charr[1];
+
+        System.out.println("translateCoordinates charr[1]:"+ y);
+
+        return new int[]{x, y};
+    }
+
     public boolean containsCoordinate(Hole[] possiblePositions, int x, int y) {
         boolean result = false;
         for(Hole hole: possiblePositions) {
@@ -319,12 +343,23 @@ public class Board {
             */
             if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
                 // TODO translate a1 type coord to the proper x and y values
+                    // x -> translate `Character.isDigit(charr[0])`
+                    // y -> translate `Character.isDigit(charr[1])`
                 // WAIT do something if valid pos
-                boolean contains = containsCoordinate(possiblePositions, x, y);
+                System.out.println("char[1] yT: " + charr[1]);
+                System.out.println("char[0] xT: " + charr[0]);
+                int[] xy = translateChessCoordinates(charr);
+                int xT = xy[0];
+                int yT = xy[1];
+
+                boolean contains = containsCoordinate(possiblePositions, xT, yT);
                 if (contains) {
                     System.out.println("valid coordinate");
+                    // TODO set player peg to this coordinate
+                    // setPlayerPeg();
                 } else {
                     System.out.println("is coordinate");
+                    // TODO show prompt again until user enters valid input
                 }
 
 

@@ -251,6 +251,19 @@ public class Board {
         return directions;
     }
 
+    public boolean containsCoordinate(Hole[] possiblePositions, int x, int y) {
+        boolean result = false;
+        for(Hole hole: possiblePositions) {
+            System.out.println(hole.getX()+" "+hole.getY() +" | "+ x+" "+y);
+            System.out.println();
+            //System.out.println(hole);
+            if(hole!= null && hole.getX() == x && hole.getY() == y) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
 
     // read board from gamestate (Hole[][] grid) and get new player action
     public void refreshBoard() {
@@ -282,9 +295,8 @@ public class Board {
             }
         }
 
-        // TODO show all valid coordinates to select as new playerPeg
         Hole[] possiblePositions = possiblePlayerPositions();
-        int validPositions = 0;
+        //int validPositions = 0;
         for(Hole possiblePosition: possiblePositions) {
             if(possiblePosition != null) {
                 System.out.println(possiblePosition);
@@ -296,14 +308,30 @@ public class Board {
 
             System.out.print("\nSpecify coordinate (ex. a1): ");
             String answer = scanner.next();
+            //System.out.println(answer.toCharArray());
+            char[] charr =  answer.toCharArray();
+            System.out.println(charr);
+            // TODO keep asking the user to enter a valid position
+                // (or direction)
+                // if the answer is one of the valid coordinates listed, use setPlayerPeg(x, y)
+            /*
             System.out.println(answer);
-            System.out.println(answer.toCharArray());
+            */
+            if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
+                // TODO translate a1 type coord to the proper x and y values
+                // WAIT do something if valid pos
+                boolean contains = containsCoordinate(possiblePositions, x, y);
+                if (contains) {
+                    System.out.println("valid coordinate");
+                } else {
+                    System.out.println("is coordinate");
+                }
 
-            // TODO: Write the code so that the user can switch to another peg at any time during the game
+
+            }
+
+            // WAIT: Write the code so that the user can switch to another peg at any time during the game
         } else {
-            //System.out.print("\nEnter up/down/right/left");
-            //String direction =  scanner.next();
-
             boolean validAnswer = false;
 
             while(!validAnswer) {
@@ -312,35 +340,55 @@ public class Board {
                 String answer = scanner.next();
 
                 char[] charr =  answer.toCharArray();
-                if(Character.isDigit(charr[1])) {
+                if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
                     System.out.println("is coordinate");
-                } else {
-                    switch (answer) {
-                        case "up":
-                            // jump up
-                            player.jump(Player.Dir.UP, grid);
-                            validAnswer = true;
-                            break;
-                        case "down":
-                            // jump down
-                            player.jump(Player.Dir.DOWN, grid);
-                            validAnswer = true;
-                            break;
-                        case "left":
-                            player.jump(Player.Dir.LEFT, grid);
-                            // jump left
-                            validAnswer = true;
-                            break;
-                        case "right":
-                            player.jump(Player.Dir.RIGHT, grid);
-                            // jump right
-                            validAnswer = true;
-                            break;
-                        default:
-                            break;
-                    }
+                } else if(answer.equals("up")) {
+                    // jump up
+                    player.jump(Player.Dir.UP, grid);
+                    validAnswer = true;
+                } else if(answer.equals("down")) {
+                    // jump down
+                    player.jump(Player.Dir.DOWN, grid);
+                    validAnswer = true;
+                } else if(answer.equals("left")) {
+                    player.jump(Player.Dir.LEFT, grid);
+                    // jump left
+                    validAnswer = true;
+                } else if(answer.equals("right")) {
+                    player.jump(Player.Dir.LEFT, grid);
+                    // jump left
+                    validAnswer = true;
                 }
-                System.out.println();
+                    /*
+                switch (answer) {
+                    case "up":
+                        // jump up
+                        player.jump(Player.Dir.UP, grid);
+                        validAnswer = true;
+                        break;
+                    case "down":
+                        // jump down
+                        player.jump(Player.Dir.DOWN, grid);
+                        validAnswer = true;
+                        break;
+                    case "left":
+                        player.jump(Player.Dir.LEFT, grid);
+                        // jump left
+                        validAnswer = true;
+                        break;
+                    case "right":
+                        player.jump(Player.Dir.RIGHT, grid);
+                        // jump right
+                        validAnswer = true;
+                        break;
+                    case Character.isDigit(charr[1]):
+                        System.out.println("is coordinate");
+                        break;
+                    default:
+                        break;
+                }
+                 */
+            System.out.println();
             }
             refreshBoard();
         }

@@ -253,7 +253,8 @@ public class Board {
 
     public int[] translateChessCoordinates(char[] charr) {
         int x=0;
-        int y=0;
+        System.out.println(charr[0]);
+        System.out.println(charr[1]);
 
         char[] strs = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
         /*
@@ -267,18 +268,24 @@ public class Board {
             }
         }
 
-        System.out.println("translateCoordinates charr[1]:"+ y);
-        y = charr[1];
 
-        System.out.println("translateCoordinates charr[1]:"+ y);
+        System.out.println("translateCoordinates charr:"+ Arrays.toString(charr));
+        System.out.println("translateCoordinates charr[0]:"+ x);
+        System.out.println("translateCoordinates charr[1]:"+ charr[1]);
+        //y = (int)charr[1];
 
-        return new int[]{x, y};
+        System.out.println("translateCoordinates charr[0]:"+ x);
+        System.out.println("translateCoordinates charr[1]:"+ charr[1]);
+
+        return new int[]{x, charr[1]};
     }
 
     public boolean containsCoordinate(Hole[] possiblePositions, int x, int y) {
         boolean result = false;
         for(Hole hole: possiblePositions) {
+            // TODO Bug (START)
             System.out.println(hole.getX()+" "+hole.getY() +" | "+ x+" "+y);
+            // Bug (END)
             System.out.println();
             //System.out.println(hole);
             if(hole!= null && hole.getX() == x && hole.getY() == y) {
@@ -346,11 +353,13 @@ public class Board {
                     // x -> translate `Character.isDigit(charr[0])`
                     // y -> translate `Character.isDigit(charr[1])`
                 // WAIT do something if valid pos
-                System.out.println("char[1] yT: " + charr[1]);
-                System.out.println("char[0] xT: " + charr[0]);
+                //System.out.println("char[1] yT: " + charr[1]);
+                //System.out.println("char[0] xT: " + charr[0]);
+                System.out.println("passed charr (to translateChessCoordinates): " + Arrays.toString(charr));
                 int[] xy = translateChessCoordinates(charr);
                 int xT = xy[0];
                 int yT = xy[1];
+                System.out.println("received from translateChessCoordinates: " + Arrays.toString(charr));
 
                 boolean contains = containsCoordinate(possiblePositions, xT, yT);
                 if (contains) {

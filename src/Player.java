@@ -62,17 +62,15 @@ public class Player {
             toHole = board[playerPeg.getX() +2][playerPeg.getY()];
         }
 
-        boolean toHoleIsEmpty = toHole.getHoleStatus() == HoleStatus.EMPTY;
+        boolean toHoleIsEmpty = toHole.getHoleStatus() == HoleStatus.VACANT;
         if(toHoleIsEmpty) {
             int x = fromHole.getX();
             int y = fromHole.getY();
-            fromHole.setHoleStatus(HoleStatus.EMPTY);
-            takenPegHole.setHoleStatus(HoleStatus.EMPTY);
+            fromHole.setHoleStatus(HoleStatus.VACANT);
+            takenPegHole.setHoleStatus(HoleStatus.VACANT);
             taken.add(takenPegHole.takePeg());
             toHole.setHoleStatus(HoleStatus.PLAYER);
             toHole.setPeg(playerPeg);
         }
-
-
     }
 }

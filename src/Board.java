@@ -1,3 +1,7 @@
+// TODO BEFORE LAST code golf (iow try to make everything as short as possible)
+// TODO LAST make one or two coordinate classes (regular or chess)
+//      to do everything to do w coordinates if you think it would make your code more clean/impressive
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -34,7 +38,7 @@ public class Board {
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
             {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.EMPTY, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
+            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.VACANT, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
             {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
@@ -77,7 +81,7 @@ public class Board {
             sb.append(" S ");
         } else if(board[x][y] == HoleStatus.OFF_LIMITS) {
             sb.append("   ");
-        } else if(board[x][y] == HoleStatus.EMPTY) {
+        } else if(board[x][y] == HoleStatus.VACANT) {
             sb.append(" . ");
         } else if(board[x][y] == HoleStatus.RULER) {
             if(y != 0) {
@@ -97,7 +101,7 @@ public class Board {
             sb.append(" S ");
         } else if(board[x][y].getHoleStatus() == HoleStatus.OFF_LIMITS) {
             sb.append("   ");
-        } else if(board[x][y].getHoleStatus() == HoleStatus.EMPTY) {
+        } else if(board[x][y].getHoleStatus() == HoleStatus.VACANT) {
             sb.append(" . ");
         } else if(board[x][y].getHoleStatus() == HoleStatus.RULER) {
             if(y != 0) {
@@ -126,7 +130,7 @@ public class Board {
                 Hole hole = new Hole(x, y, boardTemplate[x][y]);
                 grid[x][y] = hole;
 
-                boolean createPeg = (boardTemplate[x][y] != HoleStatus.EMPTY);
+                boolean createPeg = (boardTemplate[x][y] != HoleStatus.VACANT);
                 boolean validCoordinate = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.RULER);
 
                 // Conditionally add hole to valid coordinates
@@ -152,11 +156,34 @@ public class Board {
     }
 
     public void setPlayerPeg(int x, int y) {
-        Hole hole = getHole(x, y, grid);
-        // changing the state of the board, which now needs to be refreshed
-        hole.setHoleStatus(HoleStatus.PLAYER);
+        // TODO get fromHole from where the player was if it had been
+        //      set before aka you cant get fromHole if you haven't called setPlayer once
+        // TODO MAYBE make playerSpawned an attribute of player instead of a local var
+        int playerX = 0;
+        int playerY = 0;
+        // if(player.hasPeg()) { // gives bugs
+        Hole playerHole = new Hole();
+        // TODO update playerHole (aka fromHole) after every time you move
+        System.out.println("player is null: " + (player == null));
+        if(player != null) {
+            System.out.println("HELLO");
+            // only happens after the player has already chosen a position
+            // iow wait until the player has spawned
+            Peg peg = player.playerPeg;
+            playerX = peg.getX();
+            playerY = peg.getY();
+            playerHole = getHole(playerX, playerY, grid);
+            // TODO set fromHole to an empty place/an available hole/unoccupied space
+            playerHole.setHoleStatus(HoleStatus.VACANT);
+        }
+
+
+        Hole toHole = getHole(x, y, grid);
+        toHole.setHoleStatus(HoleStatus.PLAYER);
         // associating the player with the peg
-        player = new Player(hole.getPeg());
+        // TODO only call `player = new Player(toHole.getPeg());` once
+
+        player = new Player(toHole.getPeg());
 
         // refresh the board to show the player once the user has chosen the position they want to start in
         System.out.println();
@@ -290,7 +317,9 @@ public class Board {
                 // TODO set player peg to this coordinate
                 // setPlayerPeg();
                 // TODO BUGS AREA
-                    // TODO when I set the playerPeg again w setPlayerPeg w the intent to move it,  there are 2 S's instead of that one S being moved
+                    // TODO when I set the playerPeg again w setPlayerPeg w the intent to move it, there are 2 S's instead of that one S being moved
+                System.out.println(xy[0]);
+                System.out.println(xy[1]);
                 setPlayerPeg(xy[0], xy[1]);
             } else {
                 // IS COORDINATE

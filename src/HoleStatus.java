@@ -2,6 +2,6 @@ public enum HoleStatus {
     PEG,
     OFF_LIMITS,
     RULER,
-    EMPTY,
+    VACANT,
     PLAYER
 }

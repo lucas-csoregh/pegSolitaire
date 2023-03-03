@@ -277,18 +277,26 @@ public class Board {
         System.out.println("translateCoordinates charr[0]:"+ x);
         System.out.println("translateCoordinates charr[1]:"+ charr[1]);
 
-        return new int[]{x, charr[1]};
+
+        /*
+        In Java, you can convert a character that represents a digit to an integer by subtracting the Unicode value of the character '0' from the Unicode value of the digit.
+        This works because the Unicode value of the character '0' is 48,
+        and the Unicode values of the digits '0' to '9' are consecutive integers from 48 to 57.
+
+        Here is an example code snippet that shows how to convert a character representing a digit to an integer:
+
+        char myChar = '5';
+        int myInt = myChar - '0';
+         */
+        return new int[]{x, charr[1] - '0'};
     }
 
     public boolean containsCoordinate(Hole[] possiblePositions, int x, int y) {
         boolean result = false;
         for(Hole hole: possiblePositions) {
-            // TODO Bug (START)
-            System.out.println(hole.getX()+" "+hole.getY() +" | "+ x+" "+y);
-            // Bug (END)
-            System.out.println();
-            //System.out.println(hole);
             if(hole!= null && hole.getX() == x && hole.getY() == y) {
+                System.out.println(hole.getX()+" "+hole.getY() +" | "+ x+" "+y);
+                //System.out.println();
                 result = true;
             }
         }
@@ -359,7 +367,7 @@ public class Board {
                 int[] xy = translateChessCoordinates(charr);
                 int xT = xy[0];
                 int yT = xy[1];
-                System.out.println("received from translateChessCoordinates: " + Arrays.toString(charr));
+                System.out.println("received from translateChessCoordinates: " + Arrays.toString(xy));
 
                 boolean contains = containsCoordinate(possiblePositions, xT, yT);
                 if (contains) {

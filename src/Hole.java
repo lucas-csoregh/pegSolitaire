@@ -58,11 +58,18 @@ public class Hole {
         return this.peg == null && this.holeStatus == HoleStatus.VACANT;
     }
 
-
-    @Override
-    public String toString() {
+    public String getCoordinate() {
         String[] strs = {"a", "b", "c", "d", "e", "f", "g"};
         String str = strs[x-1];
         return str + y;
+    }
+
+    @Override
+    public String toString() {
+        return "Hole{" +
+                getCoordinate() +
+                ", x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

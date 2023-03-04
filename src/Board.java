@@ -16,6 +16,8 @@ public class Board {
 
     private Player.Dir[] dirs;
 
+    static ArrayList<Hole> history = new ArrayList<>();
+
     // Functions like a mere template. Has no relevance anymore after the board has already been created.
     HoleStatus[][] english_cross = {
             /*
@@ -152,47 +154,39 @@ public class Board {
         return sb.toString();
     }
 
+    public void movePlayer(int toX, int toY) {
+        //Hole fromHole = Board.history.get(Board.history.size() -1);
+        int fromX = player.playerPeg.getX();
+        int fromY = player.playerPeg.getX();
+        Hole fromHole = grid[fromX][fromY];
 
-    // TODO Split function into several functions instead of trying to use it in too many places w different needs
-    public void setPlayerPeg(int x, int y) {
-        // TODO Bug: the top left corner [0][0] gets made into an empty
+        Board.history.add(fromHole);
+        //System.out.println("fromHole moveplayer(toX, toY): " + fromHole);
+        System.out.println("fromHole movePlayer(x: "+ fromHole.getX() + ",y: "+ fromHole.getY() + ")");
+        fromHole.setHoleStatus(HoleStatus.VACANT);
 
-        // TODO get fromHole from where the player was if it had been
-        //      set before aka you cant get fromHole if you haven't called setPlayer once
-        Peg playerPeg = new Peg();
-        if(player != null) {
-            // only happens after the player has already chosen a position
-            // iow wait until the player has spawned
-            Hole fromHole = grid[playerPeg.getX()][playerPeg.getY()];
-            playerPeg = player.playerPeg;
-            fromHole.removePeg(playerPeg);
-
-            // TODO BUG playerPeg position is one move/turn behind
-            System.out.println("playerPeg: "+playerPeg);
-            System.out.println("fromHole setPlayerPeg(x, y): "+fromHole);
-            // TODO set fromHole to an empty place/an available hole/unoccupied space
-            fromHole.setHoleStatus(HoleStatus.VACANT);
-        }
-        Hole toHole = grid[x][y];
-        System.out.println("toHole setPlayerPeg("+toHole.getX()+", "+toHole.getY()+")");
-        System.out.println("toHole setPlayerPeg(x, y): "+toHole);
+        Hole toHole = grid[toX][toY];
         toHole.setHoleStatus(HoleStatus.PLAYER);
+        System.out.println("toHole movePlayer(x: "+ toX + ",y: "+ toY + ")");
 
-        if(player == null) {
-            player = new Player(toHole.getPeg());
-        } else {
-            toHole.setPeg(player.playerPeg);
-        }
+        toHole.setPeg(player.playerPeg);
 
+        System.out.println();
+        refreshBoard();
+    }
+
+    public void spawnPlayer(int x, int y) {
+        Hole hole = grid[x][y];
+        // changing the state of the board, which now needs to be refreshed
+        hole.setHoleStatus(HoleStatus.PLAYER);
         // associating the player with the peg
-        // TODO only call `player = new Player(toHole.getPeg());` once
-
-
+        player = new Player(hole.getPeg());
 
         // refresh the board to show the player once the user has chosen the position they want to start in
         System.out.println();
         refreshBoard();
     }
+
 
     public Board() {
         System.out.print(reset(english_cross));
@@ -320,12 +314,12 @@ public class Board {
             if (contains) {
                 System.out.println("valid coordinate");
                 // TODO set player peg to this coordinate
-                // setPlayerPeg();
+                // movePlayer();
                 // TODO BUGS AREA
-                // TODO BUG when I set the playerPeg again w setPlayerPeg w the intent to move it, there are 2 S's instead of that one S being moved
+                // TODO BUG when I set the playerPeg again w movePlayer w the intent to move it, there are 2 S's instead of that one S being moved
                 // TODO BUG this function isn't called
-                System.out.println("passed to setPlayerPeg(x: "+ xy[0] + ",y: "+ xy[1]+")");
-                setPlayerPeg(xy[0], xy[1]);
+                System.out.println("passed to movePlayer(x: "+ xy[0] + ",y: "+ xy[1]+", "+ Arrays.toString(charr) +")");
+                movePlayer(xy[0], xy[1]);
             } else {
                 // IS COORDINATE
                 System.out.println("Correct format, but not a valid option.\nPlease select one of the coordinates listed above.");

@@ -17,22 +17,22 @@ public class Main {
             switch (answer) {
                 case "up":
                     // d2
-                    board.setPlayerPeg(4, 2);
+                    board.spawnPlayer(4, 2);
                     validAnswer = true;
                     break;
                 case "down":
                     // d6
-                    board.setPlayerPeg(4, 6);
+                    board.spawnPlayer(4, 6);
                     validAnswer = true;
                     break;
                 case "left":
                     // b4
-                    board.setPlayerPeg(2, 4);
+                    board.spawnPlayer(2, 4);
                     validAnswer = true;
                     break;
                 case "right":
                     // f4
-                    board.setPlayerPeg(6, 4);
+                    board.spawnPlayer(6, 4);
                     validAnswer = true;
                     break;
                 default:

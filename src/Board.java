@@ -1,7 +1,7 @@
 // TODO BEFORE LAST code golf (iow try to make everything as short as possible)
 // TODO LAST make one or two coordinate classes (regular or chess)
 //      to do everything to do w coordinates if you think it would make your code more clean/impressive
-
+// TODO MAYBE make playerSpawned an attribute of player instead of a local var
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -19,6 +19,8 @@ public class Board {
     // Functions like a mere template. Has no relevance anymore after the board has already been created.
     HoleStatus[][] english_cross = {
             /*
+                Template:
+                ---------
                 {2, 2, 2, 2, 2, 2, 2, 2},
                 {2, 1, 1, 0, 0, 0, 1, 1},
                 {2, 1, 1, 0, 0, 0, 1, 1},
@@ -33,6 +35,18 @@ public class Board {
                 2 = ruler
                 3 = empty
                 4 = player
+
+
+                CLI Result:
+                -----------
+                    a  b  c  d  e  f  g
+                 1        o  o  o
+                 2        o  o  o
+                 3  o  o  o  o  o  o  o
+                 4  o  o  o  .  o  o  o
+                 5  o  o  o  o  o  o  o
+                 6        o  o  o
+                 7        o  o  o
             };*/
             {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
@@ -158,7 +172,6 @@ public class Board {
     public void setPlayerPeg(int x, int y) {
         // TODO get fromHole from where the player was if it had been
         //      set before aka you cant get fromHole if you haven't called setPlayer once
-        // TODO MAYBE make playerSpawned an attribute of player instead of a local var
         int playerX = 0;
         int playerY = 0;
         // if(player.hasPeg()) { // gives bugs
@@ -173,6 +186,8 @@ public class Board {
             playerX = peg.getX();
             playerY = peg.getY();
             playerHole = getHole(playerX, playerY, grid);
+
+            System.out.println("fromHole(x: "+ playerX + ",y: "+ playerY +")");
             // TODO set fromHole to an empty place/an available hole/unoccupied space
             playerHole.setHoleStatus(HoleStatus.VACANT);
         }
@@ -317,9 +332,9 @@ public class Board {
                 // TODO set player peg to this coordinate
                 // setPlayerPeg();
                 // TODO BUGS AREA
-                    // TODO when I set the playerPeg again w setPlayerPeg w the intent to move it, there are 2 S's instead of that one S being moved
-                System.out.println(xy[0]);
-                System.out.println(xy[1]);
+                // TODO BUG when I set the playerPeg again w setPlayerPeg w the intent to move it, there are 2 S's instead of that one S being moved
+                // TODO BUG this function isn't called
+                System.out.println("toHole(x: "+ xy[0] + ",y: "+ xy[1]+")");
                 setPlayerPeg(xy[0], xy[1]);
             } else {
                 // IS COORDINATE
@@ -381,6 +396,7 @@ public class Board {
                 char[] charr =  answer.toCharArray();
                 if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
                     System.out.println("is coordinate");
+                    specifyCoordinatePrompt(possiblePositions, scanner);
                 } else if(answer.equals("up")) {
                     // jump up
                     player.jump(Player.Dir.UP, grid);

@@ -31,6 +31,10 @@ public class Hole {
         return taken;
     }
 
+    public void removePeg(Peg peg) {
+        peg = null;
+    }
+
     public int getX() { return x; }
     public int getY() { return y; }
 

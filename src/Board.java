@@ -67,23 +67,6 @@ public class Board {
         return grid[peg.getX()][peg.getY()];
     }
 
-    public Hole getHole(int x, int y, Hole[][] board) {
-
-        /*
-        Right now I don't see any other way to fix this problem than to simply loop over the 2D array
-        and returning when x==xLoopIndex, y==yLoopIndex if you get what I mean.
-         */
-        int size = board.length;
-
-        for(int yi=0; yi<size; yi++) {
-            for(int xi=0; xi<size; xi++) {
-                if(y == yi && x == xi) {
-                    return grid[x][y];
-                }
-            }
-        }
-       return null;
-    }
 
     // draw the right thing based on the current enum from the loop
     public void drawSquare(HoleStatus[][] board, int x, int y, StringBuilder sb) {
@@ -175,30 +158,33 @@ public class Board {
         int playerX = 0;
         int playerY = 0;
         // if(player.hasPeg()) { // gives bugs
-        Hole playerHole = new Hole();
-        // TODO update playerHole (aka fromHole) after every time you move
         System.out.println("player is null: " + (player == null));
+        Peg playerPeg = new Peg();
         if(player != null) {
             System.out.println("HELLO");
             // only happens after the player has already chosen a position
             // iow wait until the player has spawned
-            Peg peg = player.playerPeg;
-            playerX = peg.getX();
-            playerY = peg.getY();
-            playerHole = getHole(playerX, playerY, grid);
+            Hole fromHole = grid[playerPeg.getX()][playerPeg.getY()];
+            playerPeg = player.playerPeg;
+            fromHole.removePeg(playerPeg);
 
-            System.out.println("fromHole(x: "+ playerX + ",y: "+ playerY +")");
+            System.out.println("fromHole(x: "+ playerPeg.getX() + ",y: "+ playerPeg.getY() +")");
             // TODO set fromHole to an empty place/an available hole/unoccupied space
-            playerHole.setHoleStatus(HoleStatus.VACANT);
+            fromHole.setHoleStatus(HoleStatus.VACANT);
+        }
+            Hole toHole = grid[x][y];
+            toHole.setHoleStatus(HoleStatus.PLAYER);
+
+        if(player == null) {
+            player = new Player(toHole.getPeg());
         }
 
+        toHole.setPeg(player.playerPeg);
 
-        Hole toHole = getHole(x, y, grid);
-        toHole.setHoleStatus(HoleStatus.PLAYER);
         // associating the player with the peg
         // TODO only call `player = new Player(toHole.getPeg());` once
 
-        player = new Player(toHole.getPeg());
+
 
         // refresh the board to show the player once the user has chosen the position they want to start in
         System.out.println();
@@ -225,7 +211,7 @@ public class Board {
                 }
 
                 if(validDirs > 0) {
-                    possiblePlayerPositions[validPositions] = getHole(x, y, grid);
+                    possiblePlayerPositions[validPositions] = grid[x][y];
                     validPositions++;
                 }
             }
@@ -283,6 +269,7 @@ public class Board {
         int x=0;
         int y=charr[1] - '0';
 
+        // make it automatically scale to a bigger board template (needs more characters, so add the rest of the alphabet)
         char[] strs = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
         /*
         String[] strs = {"a", "b", "c", "d", "e", "f", "g"};

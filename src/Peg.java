@@ -20,6 +20,13 @@ public class Peg {
         id = pegCount;
     }
 
+    public Peg() {
+        this.x = 0;
+        this.y = 0;
+        pegCount++;
+        id = pegCount;
+    }
+
     @Override
     public String toString() {
         String[] strs = {"a", "b", "c", "d", "e", "f", "g"};

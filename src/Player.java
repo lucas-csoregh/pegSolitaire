@@ -12,6 +12,10 @@ public class Player {
 
     Peg playerPeg;
 
+    public void setPlayerPeg(Peg playerPeg) {
+        this.playerPeg = playerPeg;
+    }
+
     public Player(Peg playerPeg) {
         this.playerPeg = playerPeg;
     }

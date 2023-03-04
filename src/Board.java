@@ -164,11 +164,14 @@ public class Board {
         //System.out.println("fromHole moveplayer(toX, toY): " + fromHole);
         System.out.println("fromHole movePlayer(x: "+ fromHole.getX() + ",y: "+ fromHole.getY() + ")");
         fromHole.setHoleStatus(HoleStatus.VACANT);
+        fromHole.removePeg(player.playerPeg);
 
         Hole toHole = grid[toX][toY];
         toHole.setHoleStatus(HoleStatus.PLAYER);
         System.out.println("toHole movePlayer(x: "+ toX + ",y: "+ toY + ")");
 
+
+        player.setPlayerPeg(toHole.getPeg());
         toHole.setPeg(player.playerPeg);
 
         System.out.println();

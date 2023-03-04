@@ -152,34 +152,37 @@ public class Board {
         return sb.toString();
     }
 
+
+    // TODO Split function into several functions instead of trying to use it in too many places w different needs
     public void setPlayerPeg(int x, int y) {
+        // TODO Bug: the top left corner [0][0] gets made into an empty
+
         // TODO get fromHole from where the player was if it had been
         //      set before aka you cant get fromHole if you haven't called setPlayer once
-        int playerX = 0;
-        int playerY = 0;
-        // if(player.hasPeg()) { // gives bugs
-        System.out.println("player is null: " + (player == null));
         Peg playerPeg = new Peg();
         if(player != null) {
-            System.out.println("HELLO");
             // only happens after the player has already chosen a position
             // iow wait until the player has spawned
             Hole fromHole = grid[playerPeg.getX()][playerPeg.getY()];
             playerPeg = player.playerPeg;
             fromHole.removePeg(playerPeg);
 
-            System.out.println("fromHole(x: "+ playerPeg.getX() + ",y: "+ playerPeg.getY() +")");
+            // TODO BUG playerPeg position is one move/turn behind
+            System.out.println("playerPeg: "+playerPeg);
+            System.out.println("fromHole setPlayerPeg(x, y): "+fromHole);
             // TODO set fromHole to an empty place/an available hole/unoccupied space
             fromHole.setHoleStatus(HoleStatus.VACANT);
         }
-            Hole toHole = grid[x][y];
-            toHole.setHoleStatus(HoleStatus.PLAYER);
+        Hole toHole = grid[x][y];
+        System.out.println("toHole setPlayerPeg("+toHole.getX()+", "+toHole.getY()+")");
+        System.out.println("toHole setPlayerPeg(x, y): "+toHole);
+        toHole.setHoleStatus(HoleStatus.PLAYER);
 
         if(player == null) {
             player = new Player(toHole.getPeg());
+        } else {
+            toHole.setPeg(player.playerPeg);
         }
-
-        toHole.setPeg(player.playerPeg);
 
         // associating the player with the peg
         // TODO only call `player = new Player(toHole.getPeg());` once
@@ -321,7 +324,7 @@ public class Board {
                 // TODO BUGS AREA
                 // TODO BUG when I set the playerPeg again w setPlayerPeg w the intent to move it, there are 2 S's instead of that one S being moved
                 // TODO BUG this function isn't called
-                System.out.println("toHole(x: "+ xy[0] + ",y: "+ xy[1]+")");
+                System.out.println("passed to setPlayerPeg(x: "+ xy[0] + ",y: "+ xy[1]+")");
                 setPlayerPeg(xy[0], xy[1]);
             } else {
                 // IS COORDINATE

@@ -16,6 +16,7 @@ public class Player {
         this.playerPeg = playerPeg;
     }
 
+    /*
     public boolean hasPeg() {
         return playerPeg != null;
     }
@@ -38,11 +39,12 @@ public class Player {
     public Hole getLeft(Hole[][] grid, int x, int y) {
         return grid[x-2][y];
     }
-
+    */
 
     //public void bunnyhop()
     public void jump(Dir direction, Hole board[][]) {
         Hole fromHole = board[playerPeg.getX()][playerPeg.getY()];
+        System.out.println("fromHole jump(Dir): " + fromHole);
         // [3][3] is default, just filled it with something to avoid the `.. has might not have been initialized` errors
             // the contents don't matter
         Hole takenPegHole = board[3][3];
@@ -62,10 +64,10 @@ public class Player {
             toHole = board[playerPeg.getX() +2][playerPeg.getY()];
         }
 
+        System.out.println("toHole jump(Dir): " + toHole);
+
         boolean toHoleIsEmpty = toHole.getHoleStatus() == HoleStatus.VACANT;
         if(toHoleIsEmpty) {
-            int x = fromHole.getX();
-            int y = fromHole.getY();
             fromHole.setHoleStatus(HoleStatus.VACANT);
             takenPegHole.setHoleStatus(HoleStatus.VACANT);
             taken.add(takenPegHole.takePeg());

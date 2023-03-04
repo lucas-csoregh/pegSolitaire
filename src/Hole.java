@@ -4,7 +4,7 @@
 public class Hole {
     private int x = 0;
     private int y = 0;
-    private Peg peg;
+    //private Peg peg;
 
     private HoleStatus holeStatus;
 
@@ -14,25 +14,6 @@ public class Hole {
 
     public HoleStatus getHoleStatus() {
         return holeStatus;
-    }
-
-    public void setPeg(Peg peg) {
-        this.peg = peg;
-    }
-
-    public Peg getPeg() {
-        return peg;
-    }
-    public Peg takePeg() {
-        Peg taken = peg;
-        peg = null;
-        // TODO remove the appropriate peg from the `private Peg[] pegs;` var in Board.java
-        // TODO show the taken pegs in a row of o's under the board, include it w each refresh of the gamestate
-        return taken;
-    }
-
-    public void removePeg(Peg peg) {
-        peg = null;
     }
 
     public int getX() { return x; }
@@ -55,7 +36,8 @@ public class Hole {
     }
 
     public boolean isEmpty() {
-        return this.peg == null && this.holeStatus == HoleStatus.VACANT;
+        //return this.peg == null && this.holeStatus == HoleStatus.VACANT;
+        return this.holeStatus == HoleStatus.VACANT;
     }
 
     public String getCoordinate() {

@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Board {
-    private Peg[] pegs;
+    //private Peg[] pegs;
     private Hole[] validCoordinates;
 
     // gamestate
@@ -17,6 +17,8 @@ public class Board {
     private Player.Dir[] dirs;
 
     static ArrayList<Hole> history = new ArrayList<>();
+
+
 
     // Functions like a mere template. Has no relevance anymore after the board has already been created.
     HoleStatus[][] english_cross = {
@@ -65,9 +67,11 @@ public class Board {
         return chars[index -1];
     }
 
+    /*
     public Hole getHole(Peg peg) {
         return grid[peg.getX()][peg.getY()];
     }
+    */
 
 
     // draw the right thing based on the current enum from the loop
@@ -117,7 +121,7 @@ public class Board {
         int pegCount = 0;
         int holeCount = 0;
         int maxPegs = 32;
-        pegs = new Peg[maxPegs];
+        //pegs = new Peg[maxPegs];
         int maxHoles = 33;
         validCoordinates = new Hole[maxHoles];
         StringBuilder sb = new StringBuilder();
@@ -129,7 +133,7 @@ public class Board {
                 Hole hole = new Hole(x, y, boardTemplate[x][y]);
                 grid[x][y] = hole;
 
-                boolean createPeg = (boardTemplate[x][y] != HoleStatus.VACANT);
+                //boolean createPeg = (boardTemplate[x][y] != HoleStatus.VACANT);
                 boolean validCoordinate = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.RULER);
 
                 // Conditionally add hole to valid coordinates
@@ -137,6 +141,7 @@ public class Board {
                     validCoordinates[holeCount] = hole;
                     holeCount++;
 
+                    /*
                     if(createPeg) {
                         Peg peg = new Peg(x, y);
 
@@ -145,6 +150,8 @@ public class Board {
                         pegs[pegCount] = peg;
                         pegCount++;
                     }
+
+                     */
                 }
 
                 drawSquare(boardTemplate, x, y, sb);
@@ -155,35 +162,37 @@ public class Board {
     }
 
     public void movePlayer(int toX, int toY) {
-        //Hole fromHole = Board.history.get(Board.history.size() -1);
-        int fromX = player.playerPeg.getX();
-        int fromY = player.playerPeg.getX();
-        Hole fromHole = grid[fromX][fromY];
+        if(containsCoordinate(possiblePlayerPositions(), toX, toY)) {
+            System.out.println("valid coordinate");
 
-        Board.history.add(fromHole);
-        //System.out.println("fromHole moveplayer(toX, toY): " + fromHole);
-        System.out.println("fromHole movePlayer(x: "+ fromHole.getX() + ",y: "+ fromHole.getY() + ")");
-        fromHole.setHoleStatus(HoleStatus.VACANT);
-        fromHole.removePeg(player.playerPeg);
+            Hole fromHole = grid[player.getX()][player.getY()];
 
-        Hole toHole = grid[toX][toY];
-        toHole.setHoleStatus(HoleStatus.PLAYER);
-        System.out.println("toHole movePlayer(x: "+ toX + ",y: "+ toY + ")");
+            Board.history.add(fromHole);
+            System.out.println("fromHole movePlayer(x: "+ fromHole.getX() + ",y: "+ fromHole.getY() + ")");
+            fromHole.setHoleStatus(HoleStatus.PEG);
+
+            Hole toHole = grid[toX][toY];
+            toHole.setHoleStatus(HoleStatus.PLAYER);
+            System.out.println("toHole movePlayer(x: "+ toX + ",y: "+ toY + ")");
 
 
-        player.setPlayerPeg(toHole.getPeg());
-        toHole.setPeg(player.playerPeg);
+            //System.out.println("passed to movePlayer(x: "+ xy[0] + ",y: "+ xy[1]+", "+ Arrays.toString(charr) +")");
+            //movePlayer(xy[0], xy[1]);
 
-        System.out.println();
-        refreshBoard();
+            System.out.println();
+            refreshBoard();
+        } else {
+
+            // IS COORDINATE
+            System.out.println("Correct format, but not a valid option.\nPlease select one of the coordinates listed above.");
+            // TODO OPTIONAL show the options again to the user
+            Scanner scanner = new Scanner(System.in);
+            specifyCoordinatePrompt(scanner);
+        }
     }
 
     public void spawnPlayer(int x, int y) {
-        Hole hole = grid[x][y];
-        // changing the state of the board, which now needs to be refreshed
-        hole.setHoleStatus(HoleStatus.PLAYER);
-        // associating the player with the peg
-        player = new Player(hole.getPeg());
+        player = new Player(grid, x, y);
 
         // refresh the board to show the player once the user has chosen the position they want to start in
         System.out.println();
@@ -296,39 +305,25 @@ public class Board {
     }
 
     public boolean containsCoordinate(Hole[] possiblePositions, int x, int y) {
-        boolean result = false;
+        boolean containsCoordinate = false;
         for(Hole hole: possiblePositions) {
             if(hole!= null && hole.getX() == x && hole.getY() == y) {
                 //System.out.println(hole.getX()+" "+hole.getY() +" | "+ x+" "+y);
-                result = true;
+                containsCoordinate  = true;
             }
         }
-        return result;
+        return containsCoordinate;
     }
 
-    public void specifyCoordinatePrompt(Hole[] possiblePositions, Scanner scanner) {
+    public void specifyCoordinatePrompt(Scanner scanner) {
         System.out.print("\nSpecify coordinate (ex. a1): ");
         String answer = scanner.next();
         char[] charr =  answer.toCharArray();
         //System.out.println(charr);
         if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
             int[] xy = translateChessCoordinates(charr);
-            boolean contains = containsCoordinate(possiblePositions, xy[0], xy[1]);
-            if (contains) {
-                System.out.println("valid coordinate");
-                // TODO set player peg to this coordinate
-                // movePlayer();
-                // TODO BUGS AREA
-                // TODO BUG when I set the playerPeg again w movePlayer w the intent to move it, there are 2 S's instead of that one S being moved
-                // TODO BUG this function isn't called
-                System.out.println("passed to movePlayer(x: "+ xy[0] + ",y: "+ xy[1]+", "+ Arrays.toString(charr) +")");
-                movePlayer(xy[0], xy[1]);
-            } else {
-                // IS COORDINATE
-                System.out.println("Correct format, but not a valid option.\nPlease select one of the coordinates listed above.");
-                // TODO OPTIONAL show the options again to the user
-                specifyCoordinatePrompt(possiblePositions, scanner);
-            }
+            movePlayer(xy[0], xy[1]);
+
         }
         // TODO LATER: Write the code so that the user can switch to another peg at any time during the game
     }
@@ -346,9 +341,10 @@ public class Board {
 
         System.out.println(sb);
 
-        Peg peg = player.playerPeg;
-        int x = peg.getX();
-        int y = peg.getY();
+        //Peg peg = player.playerPeg;
+        player.getPlayerPos(grid);
+        int x = player.getX();
+        int y = player.getY();
         dirs = getValidDirections(x, y);
 
         System.out.println("Options:");
@@ -370,7 +366,7 @@ public class Board {
 
         Scanner scanner = new Scanner(System.in);
         if(validDirs == 0) {
-            specifyCoordinatePrompt(possiblePositions, scanner);
+            specifyCoordinatePrompt(scanner);
         } else {
             boolean validAnswer = false;
 
@@ -379,11 +375,12 @@ public class Board {
                 System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
                 String answer = scanner.next();
 
-                // TODO keep asking the user to enter a oordinate (or valid position) here as well
                 char[] charr =  answer.toCharArray();
                 if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
                     System.out.println("is coordinate");
-                    specifyCoordinatePrompt(possiblePositions, scanner);
+                    int[] coord = translateChessCoordinates(charr);
+                    movePlayer(coord[0], coord[1]);
+                    specifyCoordinatePrompt(scanner);
                 } else if(answer.equals("up")) {
                     // jump up
                     player.jump(Player.Dir.UP, grid);

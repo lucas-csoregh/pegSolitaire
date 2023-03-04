@@ -8,8 +8,11 @@ public class Player {
         RIGHT
     }
 
-    ArrayList<Peg> taken = new ArrayList<>();
 
+    //ArrayList<Peg> taken = new ArrayList<>();
+
+
+    /*
     Peg playerPeg;
 
     public void setPlayerPeg(Peg playerPeg) {
@@ -19,6 +22,7 @@ public class Player {
     public Player(Peg playerPeg) {
         this.playerPeg = playerPeg;
     }
+    */
 
     /*
     public boolean hasPeg() {
@@ -45,9 +49,64 @@ public class Player {
     }
     */
 
+
+
+    public Player(Hole[][] gamestate, int x, int y) {
+        int size = gamestate.length;
+        for(int Y=0; Y<size; Y++) {
+            for (int X = 0; X < size; X++) {
+               if(X==x && Y==y) {
+                   gamestate[x][y].setHoleStatus(HoleStatus.PLAYER);
+               }
+            }
+        }
+    }
+
+    private int x = 0;
+    private int y = 0;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    /*
+    public int[] getPlayerPos(Hole[][] gamestate) {
+        int[] result = new int[2];
+        int size = gamestate.length;
+        for(int y=0; y<size; y++) {
+            for(int x=0; x<size; x++) {
+                if(gamestate[x][y].getHoleStatus() == HoleStatus.PLAYER) {
+                    result[0] = x;
+                    result[1] = y;
+                    this.x = x;
+                    this.y = y;
+                }
+            }
+        }
+        return result;
+    }
+    */
+
+
+    public void getPlayerPos(Hole[][] gamestate) {
+        int size = gamestate.length;
+        for(int y=0; y<size; y++) {
+            for(int x=0; x<size; x++) {
+                if(gamestate[x][y].getHoleStatus() == HoleStatus.PLAYER) {
+                    this.x = x;
+                    this.y = y;
+                }
+            }
+        }
+    }
+
     //public void bunnyhop()
     public void jump(Dir direction, Hole board[][]) {
-        Hole fromHole = board[playerPeg.getX()][playerPeg.getY()];
+        Hole fromHole = board[x][y];
         System.out.println("fromHole jump(Dir): " + fromHole);
         // [3][3] is default, just filled it with something to avoid the `.. has might not have been initialized` errors
             // the contents don't matter
@@ -55,17 +114,17 @@ public class Player {
         Hole toHole = board[3][3];
 
         if(direction == Dir.UP) {
-            takenPegHole = board[playerPeg.getX()][playerPeg.getY() -1];
-            toHole = board[playerPeg.getX()][playerPeg.getY() -2];
+            takenPegHole = board[x][y -1];
+            toHole = board[x][y -2];
         } else if(direction == Dir.DOWN) {
-            takenPegHole = board[playerPeg.getX()][playerPeg.getY() +1];
-            toHole = board[playerPeg.getX()][playerPeg.getY() +2];
+            takenPegHole = board[x][y +1];
+            toHole = board[x][y +2];
         } else if(direction == Dir.LEFT) {
-            takenPegHole = board[playerPeg.getX() -1][playerPeg.getY()];
-            toHole = board[playerPeg.getX() -2][playerPeg.getY()];
+            takenPegHole = board[x -1][y];
+            toHole = board[x -2][y];
         } else if(direction == Dir.RIGHT) {
-            takenPegHole = board[playerPeg.getX() +1][playerPeg.getY()];
-            toHole = board[playerPeg.getX() +2][playerPeg.getY()];
+            takenPegHole = board[x +1][y];
+            toHole = board[x +2][y];
         }
 
         System.out.println("toHole jump(Dir): " + toHole);
@@ -75,9 +134,9 @@ public class Player {
             Board.history.add(fromHole);
             fromHole.setHoleStatus(HoleStatus.VACANT);
             takenPegHole.setHoleStatus(HoleStatus.VACANT);
-            taken.add(takenPegHole.takePeg());
+            //taken.add(takenPegHole.takePeg());
             toHole.setHoleStatus(HoleStatus.PLAYER);
-            toHole.setPeg(playerPeg);
+            //toHole.setPeg(playerPeg);
         }
     }
 }

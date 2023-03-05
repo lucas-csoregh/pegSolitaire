@@ -1,18 +1,19 @@
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Board board = new Board();
 
-        System.out.println("\nSelect your starting position");
         Scanner scanner = new Scanner(System.in);
 
         boolean validAnswer = false;
 
         while(!validAnswer) {
-            System.out.print("\nup: d2,\ndown: d6,\nleft: b4,\nright: f4\n\nEnter up/down/left/right: ");
+            System.out.print("\nOptions:\nUP\nDOWN\nLEFT\nRIGHT\n\nEnter up/down/left/right: ");
             String answer = scanner.next();
+            answer = answer.toLowerCase();
 
             switch (answer) {
                 case "up":

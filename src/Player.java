@@ -8,49 +8,6 @@ public class Player {
         RIGHT
     }
 
-
-    //ArrayList<Peg> taken = new ArrayList<>();
-
-
-    /*
-    Peg playerPeg;
-
-    public void setPlayerPeg(Peg playerPeg) {
-        this.playerPeg = playerPeg;
-    }
-
-    public Player(Peg playerPeg) {
-        this.playerPeg = playerPeg;
-    }
-    */
-
-    /*
-    public boolean hasPeg() {
-        return playerPeg != null;
-    }
-
-    Hole up;
-    Hole down;
-    Hole left;
-    Hole right;
-
-
-    public Hole getUp(Hole[][] grid, int x, int y) {
-        return grid[x][y-2];
-    }
-    public Hole getDown(Hole[][] grid, int x, int y) {
-        return grid[x][y+1];
-    }
-    public Hole getRight(Hole[][] grid, int x, int y) {
-        return grid[x+1][y];
-    }
-    public Hole getLeft(Hole[][] grid, int x, int y) {
-        return grid[x-2][y];
-    }
-    */
-
-
-
     public Player(Hole[][] gamestate, int x, int y) {
         int size = gamestate.length;
         for(int Y=0; Y<size; Y++) {
@@ -73,25 +30,6 @@ public class Player {
         return y;
     }
 
-    /*
-    public int[] getPlayerPos(Hole[][] gamestate) {
-        int[] result = new int[2];
-        int size = gamestate.length;
-        for(int y=0; y<size; y++) {
-            for(int x=0; x<size; x++) {
-                if(gamestate[x][y].getHoleStatus() == HoleStatus.PLAYER) {
-                    result[0] = x;
-                    result[1] = y;
-                    this.x = x;
-                    this.y = y;
-                }
-            }
-        }
-        return result;
-    }
-    */
-
-
     public void getPlayerPos(Hole[][] gamestate) {
         int size = gamestate.length;
         for(int y=0; y<size; y++) {
@@ -107,11 +45,12 @@ public class Player {
     //public void bunnyhop()
     public void jump(Dir direction, Hole board[][]) {
         Hole fromHole = board[x][y];
-        System.out.println("fromHole jump(Dir): " + fromHole);
         // [3][3] is default, just filled it with something to avoid the `.. has might not have been initialized` errors
             // the contents don't matter
         Hole takenPegHole = board[3][3];
         Hole toHole = board[3][3];
+
+        //System.out.println("fromHole jump(Dir): " + fromHole);
 
         if(direction == Dir.UP) {
             takenPegHole = board[x][y -1];
@@ -127,7 +66,7 @@ public class Player {
             toHole = board[x +2][y];
         }
 
-        System.out.println("toHole jump(Dir): " + toHole);
+        //System.out.println("toHole jump(Dir): " + toHole);
 
         boolean toHoleIsEmpty = toHole.getHoleStatus() == HoleStatus.VACANT;
         if(toHoleIsEmpty) {
@@ -136,7 +75,6 @@ public class Player {
             takenPegHole.setHoleStatus(HoleStatus.VACANT);
             //taken.add(takenPegHole.takePeg());
             toHole.setHoleStatus(HoleStatus.PLAYER);
-            //toHole.setPeg(playerPeg);
         }
     }
 }

@@ -14,6 +14,8 @@ public class Board {
     private Hole[][] grid = new Hole[8][8];
     private Player player;
 
+    private int frames = 0;
+
     private Player.Dir[] dirs;
 
     static ArrayList<Hole> history = new ArrayList<>();
@@ -162,32 +164,24 @@ public class Board {
     }
 
     public void movePlayer(int toX, int toY) {
-        if(containsCoordinate(possiblePlayerPositions(), toX, toY)) {
-            System.out.println("valid coordinate");
+        if(containsCoordinate(getPossiblePlayerPositions(), toX, toY)) {
+            //System.out.println("valid coordinate");
 
             Hole fromHole = grid[player.getX()][player.getY()];
 
             Board.history.add(fromHole);
-            System.out.println("fromHole movePlayer(x: "+ fromHole.getX() + ",y: "+ fromHole.getY() + ")");
             fromHole.setHoleStatus(HoleStatus.PEG);
 
             Hole toHole = grid[toX][toY];
             toHole.setHoleStatus(HoleStatus.PLAYER);
-            System.out.println("toHole movePlayer(x: "+ toX + ",y: "+ toY + ")");
 
-
-            //System.out.println("passed to movePlayer(x: "+ xy[0] + ",y: "+ xy[1]+", "+ Arrays.toString(charr) +")");
-            //movePlayer(xy[0], xy[1]);
-
-            System.out.println();
+            //System.out.println();
             refreshBoard();
         } else {
-
             // IS COORDINATE
-            System.out.println("Correct format, but not a valid option.\nPlease select one of the coordinates listed above.");
+            System.out.println("Correct format, but not a valid option.\nPlease select one of the possible player coordinates listed above.");
             // TODO OPTIONAL show the options again to the user
-            Scanner scanner = new Scanner(System.in);
-            specifyCoordinatePrompt(getValidDirections(player.getX(), player.getY()), possiblePlayerPositions());
+            specifyCoordinatePrompt(getValidDirections(player.getX(), player.getY()), getPossiblePlayerPositions());
         }
     }
 
@@ -204,7 +198,11 @@ public class Board {
         System.out.print(reset(english_cross));
     }
 
-    public Hole[] possiblePlayerPositions() {
+    public Hole[] getPossiblePlayerPositions() {
+        // TODO BUG: If i wan to move my player to the new peg
+        //  i will bunnyhop to my old position with,
+        //  it doesn't work. It doesn't show my coordinate as an option because I'm still standing in it
+        
         // DO LATER: undo hard coding
         Hole[] possiblePlayerPositions = new Hole[33];
         int validPositions = 0;
@@ -315,6 +313,16 @@ public class Board {
         return containsCoordinate;
     }
 
+    public boolean containsDirection(Player.Dir[] dirs, Player.Dir findDir) {
+        boolean containsDirection = false;
+        for(Player.Dir dir: dirs) {
+            if(dir != null && dir == findDir) {
+                containsDirection = true;
+            }
+        }
+        return containsDirection;
+    }
+
     /*
     public void specifyCoordinatePrompt(Scanner scanner) {
         System.out.print("\nSpecify coordinate (ex. a1): ");
@@ -329,16 +337,12 @@ public class Board {
     }
     */
 
-    // TODO don't do it with mode, do it with possiblePlayerPositions() and getValidDirections()
     public void specifyCoordinatePrompt(Player.Dir[] dirs, Hole[] coords) {
         /* Modes
             1. choose coord
             2. chooose coord or direction
             3. choose direction
          */
-        // TODO BUG: If i wan to move my player to the new peg
-        //  i will bunnyhop to my old position with,
-        //  it doesn't work. It doesn't show my coordinate as an option because I'm still standing in it
         int validDirs=0;
         int validCoords=0;
         for(Player.Dir dir: dirs) {
@@ -373,7 +377,7 @@ public class Board {
         if(mode == 2 || mode == 1) {
             char[] charr =  answer.toCharArray();
             if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
-                System.out.println("is coordinate");
+                //System.out.println("is coordinate");
                 int[] coord = translateChessCoordinates(charr);
                 movePlayer(coord[0], coord[1]);
             }
@@ -381,26 +385,26 @@ public class Board {
 
 
         if(mode == 2) {
-            System.out.println("Available dir:");
+            Player.Dir dir = Player.Dir.DOWN;
             if (answer.equals("up")) {
-                // jump up
-                player.jump(Player.Dir.UP, grid);
+                dir = Player.Dir.UP;
             } else if (answer.equals("down")) {
-                // jump down
-                player.jump(Player.Dir.DOWN, grid);
+                dir = Player.Dir.DOWN;
             } else if (answer.equals("left")) {
-                player.jump(Player.Dir.LEFT, grid);
-                // jump left
+                dir = Player.Dir.LEFT;
             } else if (answer.equals("right")) {
-                player.jump(Player.Dir.LEFT, grid);
-                // jump left
+                dir = Player.Dir.RIGHT;
+            }
+            if(containsDirection(dirs, dir)) {
+                player.jump(dir, grid);
             }
         }
-
     }
 
     // read board from gamestate (Hole[][] grid) and get new player action
     public void refreshBoard() {
+        frames++;
+        System.out.println("move #" + frames);
         int size = grid.length;
         StringBuilder sb = new StringBuilder();
         for(int y=0; y<size; y++) {
@@ -428,15 +432,14 @@ public class Board {
             }
         }
 
-        Hole[] possiblePositions = possiblePlayerPositions();
+        Hole[] possiblePositions = getPossiblePlayerPositions();
         for(Hole possiblePosition: possiblePositions) {
             if(possiblePosition != null) {
                 System.out.println(possiblePosition);
             }
         }
 
-    specifyCoordinatePrompt(getValidDirections(player.getX(), player.getY()), possiblePlayerPositions());
-    refreshBoard();
-
+        specifyCoordinatePrompt(getValidDirections(player.getX(), player.getY()), getPossiblePlayerPositions());
+        refreshBoard();
     }
 }

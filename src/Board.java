@@ -315,6 +315,7 @@ public class Board {
         return containsCoordinate;
     }
 
+    /*
     public void specifyCoordinatePrompt(Scanner scanner) {
         System.out.print("\nSpecify coordinate (ex. a1): ");
         String answer = scanner.next();
@@ -323,9 +324,65 @@ public class Board {
         if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
             int[] xy = translateChessCoordinates(charr);
             movePlayer(xy[0], xy[1]);
-
         }
         // TODO LATER: Write the code so that the user can switch to another peg at any time during the game
+    }
+    */
+
+    public boolean specifyCoordinatePrompt(Scanner scanner, int mode) {
+        /* Modes
+            1. choose coord
+            2. chooose coord or direction
+            3. choose direction
+         */
+        // 0 = dir
+        // 1 = coord
+        // 1 = dir or coord
+        /*
+        System.out.print("\nSpecify coordinate (ex. a1): ");
+        String answer = scanner.next();
+        char[] charr =  answer.toCharArray();
+        //System.out.println(charr);
+        if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
+            int[] xy = translateChessCoordinates(charr);
+            movePlayer(xy[0], xy[1]);
+        }
+        // TODO LATER: Write the code so that the user can switch to another peg at any time during the game
+
+         */
+
+
+        // a1 as in the coordinate scheme that reflects the rulers on the board
+        System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
+        String answer = scanner.next();
+
+        char[] charr =  answer.toCharArray();
+        if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
+            System.out.println("is coordinate");
+            int[] coord = translateChessCoordinates(charr);
+            movePlayer(coord[0], coord[1]);
+            return true;
+        }
+
+        if(answer.equals("up")) {
+            // jump up
+            player.jump(Player.Dir.UP, grid);
+            return true;
+        } else if(answer.equals("down")) {
+            // jump down
+            player.jump(Player.Dir.DOWN, grid);
+            return true;
+        } else if(answer.equals("left")) {
+            player.jump(Player.Dir.LEFT, grid);
+            // jump left
+            return true;
+        } else if(answer.equals("right")) {
+            player.jump(Player.Dir.LEFT, grid);
+            // jump left
+            return true;
+        }
+
+        return false;
     }
 
     // read board from gamestate (Hole[][] grid) and get new player action
@@ -371,33 +428,7 @@ public class Board {
             boolean validAnswer = false;
 
             while(!validAnswer) {
-                // a1 as in the coordinate scheme that reflects the rulers on the board
-                System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
-                String answer = scanner.next();
-
-                char[] charr =  answer.toCharArray();
-                if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
-                    System.out.println("is coordinate");
-                    int[] coord = translateChessCoordinates(charr);
-                    movePlayer(coord[0], coord[1]);
-                    specifyCoordinatePrompt(scanner);
-                } else if(answer.equals("up")) {
-                    // jump up
-                    player.jump(Player.Dir.UP, grid);
-                    validAnswer = true;
-                } else if(answer.equals("down")) {
-                    // jump down
-                    player.jump(Player.Dir.DOWN, grid);
-                    validAnswer = true;
-                } else if(answer.equals("left")) {
-                    player.jump(Player.Dir.LEFT, grid);
-                    // jump left
-                    validAnswer = true;
-                } else if(answer.equals("right")) {
-                    player.jump(Player.Dir.LEFT, grid);
-                    // jump left
-                    validAnswer = true;
-                }
+                specifyCoordinatePrompt(scanner);
             System.out.println();
             }
             refreshBoard();

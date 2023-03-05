@@ -187,7 +187,7 @@ public class Board {
             System.out.println("Correct format, but not a valid option.\nPlease select one of the coordinates listed above.");
             // TODO OPTIONAL show the options again to the user
             Scanner scanner = new Scanner(System.in);
-            specifyCoordinatePrompt(scanner);
+            specifyCoordinatePrompt(getValidDirections(player.getX(), player.getY()), possiblePlayerPositions());
         }
     }
 
@@ -329,60 +329,74 @@ public class Board {
     }
     */
 
-    public boolean specifyCoordinatePrompt(Scanner scanner, int mode) {
+    // TODO don't do it with mode, do it with possiblePlayerPositions() and getValidDirections()
+    public void specifyCoordinatePrompt(Player.Dir[] dirs, Hole[] coords) {
         /* Modes
             1. choose coord
             2. chooose coord or direction
             3. choose direction
          */
-        // 0 = dir
-        // 1 = coord
-        // 1 = dir or coord
-        /*
-        System.out.print("\nSpecify coordinate (ex. a1): ");
-        String answer = scanner.next();
-        char[] charr =  answer.toCharArray();
-        //System.out.println(charr);
-        if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
-            int[] xy = translateChessCoordinates(charr);
-            movePlayer(xy[0], xy[1]);
+        // TODO BUG: If i wan to move my player to the new peg
+        //  i will bunnyhop to my old position with,
+        //  it doesn't work. It doesn't show my coordinate as an option because I'm still standing in it
+        int validDirs=0;
+        int validCoords=0;
+        for(Player.Dir dir: dirs) {
+            if(dir!=null) {
+                validDirs++;
+            }
         }
-        // TODO LATER: Write the code so that the user can switch to another peg at any time during the game
-
-         */
-
-
-        // a1 as in the coordinate scheme that reflects the rulers on the board
-        System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
-        String answer = scanner.next();
-
-        char[] charr =  answer.toCharArray();
-        if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
-            System.out.println("is coordinate");
-            int[] coord = translateChessCoordinates(charr);
-            movePlayer(coord[0], coord[1]);
-            return true;
+        for(Hole coord: coords) {
+            if(coord!=null) {
+               validCoords++;
+            }
+        }
+        int mode =0;
+        if(validDirs > 0 && validCoords > 0) {
+            mode = 2;
+        } else if(validCoords > 0 && validDirs == 0) {
+            mode = 1;
         }
 
-        if(answer.equals("up")) {
-            // jump up
-            player.jump(Player.Dir.UP, grid);
-            return true;
-        } else if(answer.equals("down")) {
-            // jump down
-            player.jump(Player.Dir.DOWN, grid);
-            return true;
-        } else if(answer.equals("left")) {
-            player.jump(Player.Dir.LEFT, grid);
-            // jump left
-            return true;
-        } else if(answer.equals("right")) {
-            player.jump(Player.Dir.LEFT, grid);
-            // jump left
-            return true;
+        Scanner scanner = new Scanner(System.in);
+        String answer = "";
+        if(mode == 2) {
+            // a1 as in the coordinate scheme that reflects the rulers on the board
+            System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
+            answer = scanner.next();
+        } else if(mode == 1) {
+            System.out.print("\nSpecify coordinate (ex. a1): ");
+            answer = scanner.next();
         }
 
-        return false;
+
+        if(mode == 2 || mode == 1) {
+            char[] charr =  answer.toCharArray();
+            if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
+                System.out.println("is coordinate");
+                int[] coord = translateChessCoordinates(charr);
+                movePlayer(coord[0], coord[1]);
+            }
+        }
+
+
+        if(mode == 2) {
+            System.out.println("Available dir:");
+            if (answer.equals("up")) {
+                // jump up
+                player.jump(Player.Dir.UP, grid);
+            } else if (answer.equals("down")) {
+                // jump down
+                player.jump(Player.Dir.DOWN, grid);
+            } else if (answer.equals("left")) {
+                player.jump(Player.Dir.LEFT, grid);
+                // jump left
+            } else if (answer.equals("right")) {
+                player.jump(Player.Dir.LEFT, grid);
+                // jump left
+            }
+        }
+
     }
 
     // read board from gamestate (Hole[][] grid) and get new player action
@@ -421,17 +435,8 @@ public class Board {
             }
         }
 
-        Scanner scanner = new Scanner(System.in);
-        if(validDirs == 0) {
-            specifyCoordinatePrompt(scanner);
-        } else {
-            boolean validAnswer = false;
+    specifyCoordinatePrompt(getValidDirections(player.getX(), player.getY()), possiblePlayerPositions());
+    refreshBoard();
 
-            while(!validAnswer) {
-                specifyCoordinatePrompt(scanner);
-            System.out.println();
-            }
-            refreshBoard();
-        }
     }
 }

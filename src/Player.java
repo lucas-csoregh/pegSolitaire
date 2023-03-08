@@ -34,9 +34,10 @@ public class Player {
         int size = gamestate.length;
         for(int y=0; y<size; y++) {
             for(int x=0; x<size; x++) {
-                if(gamestate[x][y].getHoleStatus() == HoleStatus.PLAYER) {
+                if(gamestate[x][y].getHoleStatus().equals(HoleStatus.PLAYER)) {
                     this.x = x;
                     this.y = y;
+                    System.out.printf("playerpos(x:%d, y:%d)\n", x, y);
                 }
             }
         }

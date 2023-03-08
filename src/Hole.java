@@ -37,7 +37,7 @@ public class Hole {
 
     public boolean isEmpty() {
         //return this.peg == null && this.holeStatus == HoleStatus.VACANT;
-        return this.holeStatus == HoleStatus.VACANT;
+        return this.holeStatus.equals(HoleStatus.VACANT);
     }
 
     public String getCoordinate() {

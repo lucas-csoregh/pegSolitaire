@@ -249,22 +249,16 @@ public class Board {
         }
         Player.Dir[] directions = new Player.Dir[4];
 
-        // EXTRA: get the 'f6' type name of each position so you can show it here
-        //sb.append(x).append(", ").append(y).append(" ").append("def\n");
         if(up) {
-            //sb.append(x).append(", ").append(y-2).append(" ").append("up\n");
             directions[valid] = Player.Dir.UP;
             valid++;
         } else if (down) {
-            //sb.append(x).append(", ").append(y+2).append(" ").append("down\n");
             directions[valid] = Player.Dir.DOWN;
             valid++;
         } else if (right) {
-            //sb.append(x+2).append(", ").append(y).append(" ").append("right\n");
             directions[valid] = Player.Dir.RIGHT;
             valid++;
         } else if (left) {
-            //sb.append(x-2).append(", ").append(y).append(" ").append("left\n");
             directions[valid] = Player.Dir.LEFT;
             valid++;
         }
@@ -322,20 +316,6 @@ public class Board {
         }
         return containsDirection;
     }
-
-    /*
-    public void specifyCoordinatePrompt(Scanner scanner) {
-        System.out.print("\nSpecify coordinate (ex. a1): ");
-        String answer = scanner.next();
-        char[] charr =  answer.toCharArray();
-        //System.out.println(charr);
-        if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
-            int[] xy = translateChessCoordinates(charr);
-            movePlayer(xy[0], xy[1]);
-        }
-        // TODO LATER: Write the code so that the user can switch to another peg at any time during the game
-    }
-    */
 
     public void specifyCoordinatePrompt(Player.Dir[] dirs, Hole[] coords) {
         /* Modes

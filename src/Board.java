@@ -104,7 +104,7 @@ public class Board {
     }
 
     public void movePlayer(int toX, int toY) {
-        if(containsCoordinate(getAvailablePositions(), toX, toY)) {
+        if(containsCoordinate(getAvailableCoordinates(), toX, toY)) {
             //System.out.println("valid coordinate");
 
             Hole fromHole = gamestate[player.getX()][player.getY()];
@@ -120,7 +120,7 @@ public class Board {
         } else {
             // IS COORDINATE
             System.out.println("Correct format, but not a valid option.\nPlease select one of the possible player coordinates listed above.");
-            specifyCoordinatePrompt(getAvailableDirections(player.getX(), player.getY()), getAvailablePositions());
+            specifyCoordinatePrompt(getAvailableDirections(player.getX(), player.getY()), getAvailableCoordinates());
         }
     }
 
@@ -137,13 +137,13 @@ public class Board {
         System.out.print(reset(english_cross));
     }
 
-    public Hole[] getAvailablePositions() {
+    public Hole[] getAvailableCoordinates() {
         // DO LATER: undo hard coding
-        Hole[] possiblePlayerPositions = new Hole[33];
-        int validPositions = 0;
+        Hole[] availableCoordinates = new Hole[33];
+        int coords = 0;
         int size = gamestate.length;
         for(int y=0; y<size; y++) {
-            for(int x = 0; x < size; x++) {
+            for(int x=0; x<size; x++) {
                 Player.Dir[] dirs = getAvailableDirections(x, y);
                 int validDirs = 0;
                 for(Player.Dir dir: dirs) {
@@ -153,13 +153,13 @@ public class Board {
                 }
 
                 if(validDirs > 0) {
-                    possiblePlayerPositions[validPositions] = gamestate[x][y];
-                    validPositions++;
+                    availableCoordinates[coords] = gamestate[x][y];
+                    coords++;
                 }
             }
         }
 
-        return possiblePlayerPositions;
+        return availableCoordinates;
     }
 
     public Player.Dir[] getAvailableDirections(int x, int y) {
@@ -251,7 +251,6 @@ public class Board {
         /* Modes
             1. choose coord
             2. chooose coord or direction
-            3. choose direction
          */
         int validDirs=0;
         int validCoords=0;
@@ -342,14 +341,14 @@ public class Board {
             }
         }
 
-        Hole[] possiblePositions = getAvailablePositions();
+        Hole[] possiblePositions = getAvailableCoordinates();
         for(Hole possiblePosition: possiblePositions) {
             if(possiblePosition != null) {
                 System.out.println(possiblePosition);
             }
         }
 
-        specifyCoordinatePrompt(getAvailableDirections(player.getX(), player.getY()), getAvailablePositions());
+        specifyCoordinatePrompt(getAvailableDirections(player.getX(), player.getY()), getAvailableCoordinates());
         refreshBoard();
     }
 }

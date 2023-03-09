@@ -64,19 +64,25 @@ public class Board {
         return chars[index -1];
     }
 
-    // draw the right thing based on the current enum from the loop
-    public void drawSquare(HoleStatus[][] gamestate, int x, int y, StringBuilder sb) {
 
-        if(gamestate[x][y] == HoleStatus.PEG) {
+    public void drawSquare(Object[][] gamestate, int x, int y, StringBuilder sb) {
+        HoleStatus status = HoleStatus.OFF_LIMITS;
+        if(gamestate instanceof HoleStatus[][] boardTemplate) {
+            status = boardTemplate[x][y];
+        } else if(gamestate instanceof Hole[][] board) {
+            status = board[x][y].getHoleStatus();
+        }
+
+        if(status.equals(HoleStatus.PEG)) {
             sb.append(" o ");
-        } else if(gamestate[x][y] == HoleStatus.PLAYER) {
+        } else if(status.equals(HoleStatus.PLAYER)) {
             // s for selected, selected = which PEG the player moves is up to the player
             sb.append(" S ");
-        } else if(gamestate[x][y] == HoleStatus.OFF_LIMITS) {
+        } else if(status.equals(HoleStatus.OFF_LIMITS)) {
             sb.append("   ");
-        } else if(gamestate[x][y] == HoleStatus.VACANT) {
+        } else if(status.equals(HoleStatus.VACANT)) {
             sb.append(" . ");
-        } else if(gamestate[x][y] == HoleStatus.RULER) {
+        } else if(status.equals(HoleStatus.RULER)) {
             if(y != 0) {
                 sb.append(" ").append(y).append(" ");
             } else {
@@ -84,27 +90,6 @@ public class Board {
             }
         }
     }
-
-    public void drawSquare(Hole[][] gamestate, int x, int y, StringBuilder sb) {
-
-        if(gamestate[x][y].getHoleStatus() == HoleStatus.PEG) {
-            sb.append(" o ");
-        } else if(gamestate[x][y].getHoleStatus() == HoleStatus.PLAYER) {
-            // s for selected, selected = which PEG the player moves is up to the player
-            sb.append(" S ");
-        } else if(gamestate[x][y].getHoleStatus() == HoleStatus.OFF_LIMITS) {
-            sb.append("   ");
-        } else if(gamestate[x][y].getHoleStatus() == HoleStatus.VACANT) {
-            sb.append(" . ");
-        } else if(gamestate[x][y].getHoleStatus() == HoleStatus.RULER) {
-            if(y != 0) {
-                sb.append(" ").append(y).append(" ");
-            } else {
-                sb.append(" ").append(getXchar(x)).append(" ");
-            }
-        }
-    }
-
 
     public String reset(HoleStatus[][] boardTemplate) {
         System.out.println("-- RESET --\n");

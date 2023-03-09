@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Board board = new Board();
+        Board gamestate = new Board();
 
         Scanner scanner = new Scanner(System.in);
 
@@ -16,22 +16,22 @@ public class Main {
             switch (answer) {
                 case "up":
                     // d2
-                    board.spawnPlayer(4, 2);
+                    gamestate.spawnPlayer(4, 2);
                     validAnswer = true;
                     break;
                 case "down":
                     // d6
-                    board.spawnPlayer(4, 6);
+                    gamestate.spawnPlayer(4, 6);
                     validAnswer = true;
                     break;
                 case "left":
                     // b4
-                    board.spawnPlayer(2, 4);
+                    gamestate.spawnPlayer(2, 4);
                     validAnswer = true;
                     break;
                 case "right":
                     // f4
-                    board.spawnPlayer(6, 4);
+                    gamestate.spawnPlayer(6, 4);
                     validAnswer = true;
                     break;
                 default:

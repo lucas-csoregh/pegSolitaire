@@ -44,27 +44,27 @@ public class Player {
     }
 
     //public void bunnyhop()
-    public void jump(Dir direction, Hole board[][]) {
-        Hole fromHole = board[x][y];
+    public void jump(Dir direction, Hole gamestate[][]) {
+        Hole fromHole = gamestate[x][y];
         // [3][3] is default, just filled it with something to avoid the `.. has might not have been initialized` errors
             // the contents don't matter
-        Hole takenPegHole = board[3][3];
-        Hole toHole = board[3][3];
+        Hole takenPegHole = gamestate[3][3];
+        Hole toHole = gamestate[3][3];
 
         //System.out.println("fromHole jump(Dir): " + fromHole);
 
         if(direction == Dir.UP) {
-            takenPegHole = board[x][y -1];
-            toHole = board[x][y -2];
+            takenPegHole = gamestate[x][y -1];
+            toHole = gamestate[x][y -2];
         } else if(direction == Dir.DOWN) {
-            takenPegHole = board[x][y +1];
-            toHole = board[x][y +2];
+            takenPegHole = gamestate[x][y +1];
+            toHole = gamestate[x][y +2];
         } else if(direction == Dir.LEFT) {
-            takenPegHole = board[x -1][y];
-            toHole = board[x -2][y];
+            takenPegHole = gamestate[x -1][y];
+            toHole = gamestate[x -2][y];
         } else if(direction == Dir.RIGHT) {
-            takenPegHole = board[x +1][y];
-            toHole = board[x +2][y];
+            takenPegHole = gamestate[x +1][y];
+            toHole = gamestate[x +2][y];
         }
 
         //System.out.println("toHole jump(Dir): " + toHole);

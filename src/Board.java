@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class Board {
 
     // gamestate
-    private Hole[][] grid = new Hole[8][8];
+    private Hole[][] gamestate = new Hole[8][8];
     private Player player;
 
     private int frames = 0;
@@ -65,18 +65,18 @@ public class Board {
     }
 
     // draw the right thing based on the current enum from the loop
-    public void drawSquare(HoleStatus[][] board, int x, int y, StringBuilder sb) {
+    public void drawSquare(HoleStatus[][] gamestate, int x, int y, StringBuilder sb) {
 
-        if(board[x][y] == HoleStatus.PEG) {
+        if(gamestate[x][y] == HoleStatus.PEG) {
             sb.append(" o ");
-        } else if(board[x][y] == HoleStatus.PLAYER) {
+        } else if(gamestate[x][y] == HoleStatus.PLAYER) {
             // s for selected, selected = which PEG the player moves is up to the player
             sb.append(" S ");
-        } else if(board[x][y] == HoleStatus.OFF_LIMITS) {
+        } else if(gamestate[x][y] == HoleStatus.OFF_LIMITS) {
             sb.append("   ");
-        } else if(board[x][y] == HoleStatus.VACANT) {
+        } else if(gamestate[x][y] == HoleStatus.VACANT) {
             sb.append(" . ");
-        } else if(board[x][y] == HoleStatus.RULER) {
+        } else if(gamestate[x][y] == HoleStatus.RULER) {
             if(y != 0) {
                 sb.append(" ").append(y).append(" ");
             } else {
@@ -85,18 +85,18 @@ public class Board {
         }
     }
 
-    public void drawSquare(Hole[][] board, int x, int y, StringBuilder sb) {
+    public void drawSquare(Hole[][] gamestate, int x, int y, StringBuilder sb) {
 
-        if(board[x][y].getHoleStatus() == HoleStatus.PEG) {
+        if(gamestate[x][y].getHoleStatus() == HoleStatus.PEG) {
             sb.append(" o ");
-        } else if(board[x][y].getHoleStatus() == HoleStatus.PLAYER) {
+        } else if(gamestate[x][y].getHoleStatus() == HoleStatus.PLAYER) {
             // s for selected, selected = which PEG the player moves is up to the player
             sb.append(" S ");
-        } else if(board[x][y].getHoleStatus() == HoleStatus.OFF_LIMITS) {
+        } else if(gamestate[x][y].getHoleStatus() == HoleStatus.OFF_LIMITS) {
             sb.append("   ");
-        } else if(board[x][y].getHoleStatus() == HoleStatus.VACANT) {
+        } else if(gamestate[x][y].getHoleStatus() == HoleStatus.VACANT) {
             sb.append(" . ");
-        } else if(board[x][y].getHoleStatus() == HoleStatus.RULER) {
+        } else if(gamestate[x][y].getHoleStatus() == HoleStatus.RULER) {
             if(y != 0) {
                 sb.append(" ").append(y).append(" ");
             } else {
@@ -108,21 +108,19 @@ public class Board {
 
     public String reset(HoleStatus[][] boardTemplate) {
         System.out.println("-- RESET --\n");
-        int pegCount = 0;
         int holeCount = 0;
-        int maxPegs = 32;
         //pegs = new Peg[maxPegs];
-        int maxHoles = 33;
         //private Peg[] pegs;
+        int maxHoles = 33;
         Hole[] validCoordinates = new Hole[maxHoles];
         StringBuilder sb = new StringBuilder();
 
         int size=boardTemplate.length;
-        // Draw the grid (/Looping over the HoleStatus[][] / Template)
+        // Draw the gamestate (/Looping over the HoleStatus[][] / Template)
         for(int y=0; y<size; y++) {
             for(int x=0; x<size; x++) {
                 Hole hole = new Hole(x, y, boardTemplate[x][y]);
-                grid[x][y] = hole;
+                gamestate[x][y] = hole;
 
                 //boolean createPeg = (boardTemplate[x][y] != HoleStatus.VACANT);
                 boolean validCoordinate = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.RULER);
@@ -141,15 +139,15 @@ public class Board {
     }
 
     public void movePlayer(int toX, int toY) {
-        if(containsCoordinate(getPossiblePlayerPositions(), toX, toY)) {
+        if(containsCoordinate(getAvailablePositions(), toX, toY)) {
             //System.out.println("valid coordinate");
 
-            Hole fromHole = grid[player.getX()][player.getY()];
+            Hole fromHole = gamestate[player.getX()][player.getY()];
 
             Board.history.add(fromHole);
             fromHole.setHoleStatus(HoleStatus.PEG);
 
-            Hole toHole = grid[toX][toY];
+            Hole toHole = gamestate[toX][toY];
             toHole.setHoleStatus(HoleStatus.PLAYER);
 
             //System.out.println();
@@ -158,14 +156,14 @@ public class Board {
             // IS COORDINATE
             System.out.println("Correct format, but not a valid option.\nPlease select one of the possible player coordinates listed above.");
             // TODO OPTIONAL show the options again to the user
-            specifyCoordinatePrompt(getValidDirections(player.getX(), player.getY()), getPossiblePlayerPositions());
+            specifyCoordinatePrompt(getAvailableDirections(player.getX(), player.getY()), getAvailablePositions());
         }
     }
 
     public void spawnPlayer(int x, int y) {
-        player = new Player(grid, x, y);
+        player = new Player(gamestate, x, y);
 
-        // refresh the board to show the player once the user has chosen the position they want to start in
+        // refresh the gamestate to show the player once the user has chosen the position they want to start in
         System.out.println();
         refreshBoard();
     }
@@ -175,14 +173,14 @@ public class Board {
         System.out.print(reset(english_cross));
     }
 
-    public Hole[] getPossiblePlayerPositions() {
+    public Hole[] getAvailablePositions() {
         // DO LATER: undo hard coding
         Hole[] possiblePlayerPositions = new Hole[33];
         int validPositions = 0;
-        int size = grid.length;
+        int size = gamestate.length;
         for(int y=0; y<size; y++) {
             for(int x = 0; x < size; x++) {
-                Player.Dir[] dirs = getValidDirections(x, y);
+                Player.Dir[] dirs = getAvailableDirections(x, y);
                 int validDirs = 0;
                 for(Player.Dir dir: dirs) {
                     if(dir != null) {
@@ -191,7 +189,7 @@ public class Board {
                 }
 
                 if(validDirs > 0) {
-                    possiblePlayerPositions[validPositions] = grid[x][y];
+                    possiblePlayerPositions[validPositions] = gamestate[x][y];
                     validPositions++;
                 }
             }
@@ -200,7 +198,7 @@ public class Board {
         return possiblePlayerPositions;
     }
 
-    public Player.Dir[] getValidDirections(int x, int y) {
+    public Player.Dir[] getAvailableDirections(int x, int y) {
         int valid = 0;
 
         boolean down = false;
@@ -209,16 +207,16 @@ public class Board {
         boolean right = false;
 
         if(y>=2) {
-            up = grid[x][y-2].getHoleStatus().equals(HoleStatus.VACANT) && grid[x][y-1].getHoleStatus().equals(HoleStatus.PEG);
+            up = gamestate[x][y-2].getHoleStatus().equals(HoleStatus.VACANT) && gamestate[x][y-1].getHoleStatus().equals(HoleStatus.PEG);
         }
         if(y < 6) {
-            down = grid[x][y+2].getHoleStatus().equals(HoleStatus.VACANT) && grid[x][y+1].getHoleStatus().equals(HoleStatus.PEG);
+            down = gamestate[x][y+2].getHoleStatus().equals(HoleStatus.VACANT) && gamestate[x][y+1].getHoleStatus().equals(HoleStatus.PEG);
         }
         if(x>=2) {
-            left = grid[x-2][y].getHoleStatus().equals(HoleStatus.VACANT) && grid[x-1][y].getHoleStatus().equals(HoleStatus.PEG);
+            left = gamestate[x-2][y].getHoleStatus().equals(HoleStatus.VACANT) && gamestate[x-1][y].getHoleStatus().equals(HoleStatus.PEG);
         }
         if(x < 6) {
-            right = grid[x+2][y].getHoleStatus().equals(HoleStatus.VACANT) && grid[x+1][y].getHoleStatus().equals(HoleStatus.PEG);
+            right = gamestate[x+2][y].getHoleStatus().equals(HoleStatus.VACANT) && gamestate[x+1][y].getHoleStatus().equals(HoleStatus.PEG);
         }
         Player.Dir[] directions = new Player.Dir[4];
 
@@ -243,7 +241,7 @@ public class Board {
         int x=0;
         int y=charr[1] - '0';
 
-        // make it automatically scale to a bigger board template (needs more characters, so add the rest of the alphabet)
+        // make it automatically scale to a bigger gamestate template (needs more characters, so add the rest of the alphabet)
         char[] strs = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
         for(int i=0; i<strs.length; i++) {
             if(strs[i] == charr[0]) {
@@ -313,7 +311,7 @@ public class Board {
         Scanner scanner = new Scanner(System.in);
         String answer = "";
         if(mode == 2) {
-            // a1 as in the coordinate scheme that reflects the rulers on the board
+            // a1 as in the coordinate scheme that reflects the rulers on the gamestate
             System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
             answer = scanner.next();
         } else if(mode == 1) {
@@ -344,20 +342,20 @@ public class Board {
                 dir = Player.Dir.RIGHT;
             }
             if(containsDirection(dirs, dir)) {
-                player.jump(dir, grid);
+                player.jump(dir, gamestate);
             }
         }
     }
 
-    // read board from gamestate (Hole[][] grid) and get new player action
+    // read gamestate from gamestate (Hole[][] gamestate) and get new player action
     public void refreshBoard() {
         frames++;
         System.out.println("move #" + frames);
-        int size = grid.length;
+        int size = gamestate.length;
         StringBuilder sb = new StringBuilder();
         for(int y=0; y<size; y++) {
             for (int x = 0; x < size; x++) {
-                drawSquare(grid, x, y, sb);
+                drawSquare(gamestate, x, y, sb);
             }
             sb.append("\n");
         }
@@ -365,10 +363,10 @@ public class Board {
         System.out.println(sb);
 
         //Peg peg = player.playerPeg;
-        player.getPlayerPos(grid);
+        player.getPlayerPos(gamestate);
         int x = player.getX();
         int y = player.getY();
-        Player.Dir[] dirs = getValidDirections(x, y);
+        Player.Dir[] dirs = getAvailableDirections(x, y);
 
         System.out.println("Options:");
         // show all valid directions
@@ -380,14 +378,14 @@ public class Board {
             }
         }
 
-        Hole[] possiblePositions = getPossiblePlayerPositions();
+        Hole[] possiblePositions = getAvailablePositions();
         for(Hole possiblePosition: possiblePositions) {
             if(possiblePosition != null) {
                 System.out.println(possiblePosition);
             }
         }
 
-        specifyCoordinatePrompt(getValidDirections(player.getX(), player.getY()), getPossiblePlayerPositions());
+        specifyCoordinatePrompt(getAvailableDirections(player.getX(), player.getY()), getAvailablePositions());
         refreshBoard();
     }
 }

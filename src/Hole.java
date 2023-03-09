@@ -1,5 +1,3 @@
-// TODO LATER add detailed documentation for everything
-
 public class Hole {
     private int x = 0;
     private int y = 0;

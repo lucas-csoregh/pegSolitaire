@@ -1,12 +1,17 @@
-// TODO BEFORE LAST code golf (iow try to make everything as short as possible)
-// TODO LAST make one or two coordinate classes (regular or chess)
-//      to do everything to do w coordinates if you think it would make your code more clean/impressive
 import java.util.Scanner;
 
 public class Board {
 
     // gamestate
     private Hole[][] gamestate = new Hole[8][8];
+
+    /* the coordinates in boardCoord
+     * show the shape of the board and allows us to
+     * check if we are stepping out of bounds
+     */
+    private Hole[] boardCoords = new Hole[33];
+    int intBoardCoords = 0;
+
     private Player player;
     private int numberOfMoves = 0;
     //static ArrayList<Hole> history = new ArrayList<>();
@@ -96,6 +101,10 @@ public class Board {
             for(int x=0; x<size; x++) {
                 Hole hole = new Hole(x, y, boardTemplate[x][y]);
                 gamestate[x][y] = hole;
+
+                boardCoords[intBoardCoords] = gamestate[x][y];
+                intBoardCoords++;
+
                 drawSquare(boardTemplate, x, y, sb);
             }
             sb.append("\n");
@@ -109,7 +118,10 @@ public class Board {
         Hole fromHole = gamestate[player.getX()][player.getY()];
 
         // TODO BUG this should set the hole to whatever it was before the player touched it
+        //      - could save the holes I move to in some sort of array and use that to fix this problem
+
         // TODO BUG, I can move to coordinates that are not available
+        //      - check if toHole is the right HoleStatus
         fromHole.setHoleStatus(HoleStatus.PEG);
 
         Hole toHole = gamestate[toX][toY];

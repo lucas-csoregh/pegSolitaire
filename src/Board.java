@@ -102,8 +102,10 @@ public class Board {
                 Hole hole = new Hole(x, y, boardTemplate[x][y]);
                 gamestate[x][y] = hole;
 
+                /*
                 boardCoords[intBoardCoords] = gamestate[x][y];
                 intBoardCoords++;
+                */
 
                 drawSquare(boardTemplate, x, y, sb);
             }
@@ -113,8 +115,6 @@ public class Board {
     }
 
     public void movePlayer(int toX, int toY) {
-        //System.out.println("valid coordinate");
-
         Hole fromHole = gamestate[player.getX()][player.getY()];
 
         // TODO BUG this should set the hole to whatever it was before the player touched it
@@ -127,7 +127,6 @@ public class Board {
         Hole toHole = gamestate[toX][toY];
         toHole.setHoleStatus(HoleStatus.PLAYER);
 
-        //System.out.println();
         readAndShowCurrentGamestate();
     }
 
@@ -263,30 +262,17 @@ public class Board {
          */
         Player.Dir[] dirs = getAvailableDirections(player.getX(), player.getY());
 
-        int validDirs=0;
-        int validCoords=0;
-        for(Player.Dir dir: dirs) {
-            if(dir!=null) {
-                validDirs++;
-            }
-        }
-
-
         Scanner scanner = new Scanner(System.in);
         String answer = "";
         // a1 as in the coordinate scheme that reflects the rulers on the gamestate
         System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
         answer = scanner.next();
 
-
-
         char[] charr =  answer.toCharArray();
         if(Character.isDigit(charr[1]) && Character.isLetter(charr[0]) && charr.length == 2) {
-            //System.out.println("is coordinate");
             int[] coord = translateChessCoordinates(charr);
             movePlayer(coord[0], coord[1]);
         }
-
 
         Player.Dir dir = Player.Dir.DOWN;
         if (answer.equals("up")) {
@@ -318,19 +304,16 @@ public class Board {
 
         System.out.println(sb);
 
-        //Peg peg = player.playerPeg;
         player.getPlayerPos(gamestate);
         int x = player.getX();
         int y = player.getY();
         Player.Dir[] dirs = getAvailableDirections(x, y);
 
         System.out.println("Options:");
-        // show all valid directions
-        int validDirs = 0;
+        // show all available directions
         for(Player.Dir dir: dirs) {
             if(dir!=null) {
                 System.out.println(dir.name());
-                validDirs++;
             }
         }
 

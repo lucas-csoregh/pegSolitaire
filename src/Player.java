@@ -71,7 +71,7 @@ public class Player {
 
         boolean toHoleIsEmpty = toHole.getHoleStatus() == HoleStatus.VACANT;
         if(toHoleIsEmpty) {
-            Board.history.add(fromHole);
+            //Board.history.add(fromHole);
             fromHole.setHoleStatus(HoleStatus.VACANT);
             takenPegHole.setHoleStatus(HoleStatus.VACANT);
             //taken.add(takenPegHole.takePeg());

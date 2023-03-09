@@ -1,9 +1,6 @@
 // TODO BEFORE LAST code golf (iow try to make everything as short as possible)
 // TODO LAST make one or two coordinate classes (regular or chess)
 //      to do everything to do w coordinates if you think it would make your code more clean/impressive
-// TODO MAYBE make playerSpawned an attribute of player instead of a local var
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Board {
@@ -11,12 +8,8 @@ public class Board {
     // gamestate
     private Hole[][] gamestate = new Hole[8][8];
     private Player player;
-
-    private int frames = 0;
-
-    static ArrayList<Hole> history = new ArrayList<>();
-
-
+    private int numberOfMoves = 0;
+    //static ArrayList<Hole> history = new ArrayList<>();
 
     HoleStatus[][] english_cross = {
             /*
@@ -92,30 +85,17 @@ public class Board {
     }
 
     public String reset(HoleStatus[][] boardTemplate) {
+        /* Doc:
+         * Resets the game by overwriting the current gamestate with a template
+         */
         System.out.println("-- RESET --\n");
-        int holeCount = 0;
-        //pegs = new Peg[maxPegs];
-        //private Peg[] pegs;
-        int maxHoles = 33;
-        Hole[] validCoordinates = new Hole[maxHoles];
         StringBuilder sb = new StringBuilder();
 
         int size=boardTemplate.length;
-        // Draw the gamestate (/Looping over the HoleStatus[][] / Template)
         for(int y=0; y<size; y++) {
             for(int x=0; x<size; x++) {
                 Hole hole = new Hole(x, y, boardTemplate[x][y]);
                 gamestate[x][y] = hole;
-
-                //boolean createPeg = (boardTemplate[x][y] != HoleStatus.VACANT);
-                boolean validCoordinate = (boardTemplate[x][y] != HoleStatus.OFF_LIMITS) && (boardTemplate[x][y] != HoleStatus.RULER);
-
-                // Conditionally add hole to valid coordinates
-                if(validCoordinate) {
-                    validCoordinates[holeCount] = hole;
-                    holeCount++;
-                }
-
                 drawSquare(boardTemplate, x, y, sb);
             }
             sb.append("\n");
@@ -128,8 +108,8 @@ public class Board {
             //System.out.println("valid coordinate");
 
             Hole fromHole = gamestate[player.getX()][player.getY()];
-
-            Board.history.add(fromHole);
+            
+            //Board.history.add(fromHole);
             fromHole.setHoleStatus(HoleStatus.PEG);
 
             Hole toHole = gamestate[toX][toY];
@@ -140,7 +120,6 @@ public class Board {
         } else {
             // IS COORDINATE
             System.out.println("Correct format, but not a valid option.\nPlease select one of the possible player coordinates listed above.");
-            // TODO OPTIONAL show the options again to the user
             specifyCoordinatePrompt(getAvailableDirections(player.getX(), player.getY()), getAvailablePositions());
         }
     }
@@ -334,8 +313,8 @@ public class Board {
 
     // read gamestate from gamestate (Hole[][] gamestate) and get new player action
     public void refreshBoard() {
-        frames++;
-        System.out.println("move #" + frames);
+        numberOfMoves++;
+        System.out.println("move #" + numberOfMoves);
         int size = gamestate.length;
         StringBuilder sb = new StringBuilder();
         for(int y=0; y<size; y++) {

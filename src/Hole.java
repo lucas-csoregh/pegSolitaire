@@ -1,4 +1,3 @@
-// TODO LATER change the names of everything to stuff that makes more sense like readGamestate instead of refreshBoard, yadayadad
 // TODO LATER add detailed documentation for everything
 
 public class Hole {

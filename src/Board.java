@@ -116,7 +116,7 @@ public class Board {
         toHole.setHoleStatus(HoleStatus.PLAYER);
 
         //System.out.println();
-        refreshBoard();
+        readAndShowCurrentGamestate();
     }
 
     public void spawnPlayer(int x, int y) {
@@ -124,7 +124,7 @@ public class Board {
 
         // refresh the gamestate to show the player once the user has chosen the position they want to start in
         System.out.println();
-        refreshBoard();
+        readAndShowCurrentGamestate();
     }
 
 
@@ -292,7 +292,7 @@ public class Board {
     }
 
     // read gamestate from gamestate (Hole[][] gamestate) and get new player action
-    public void refreshBoard() {
+    public void readAndShowCurrentGamestate() {
         numberOfMoves++;
         System.out.println("move #" + numberOfMoves);
         int size = gamestate.length;
@@ -323,6 +323,6 @@ public class Board {
         }
 
         specifyCoordinatePrompt();
-        refreshBoard();
+        readAndShowCurrentGamestate();
     }
 }

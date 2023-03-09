@@ -104,24 +104,19 @@ public class Board {
     }
 
     public void movePlayer(int toX, int toY) {
-        if(containsCoordinate(getAvailableCoordinates(), toX, toY)) {
-            //System.out.println("valid coordinate");
+        //System.out.println("valid coordinate");
 
-            Hole fromHole = gamestate[player.getX()][player.getY()];
-            
-            //Board.history.add(fromHole);
-            fromHole.setHoleStatus(HoleStatus.PEG);
+        Hole fromHole = gamestate[player.getX()][player.getY()];
 
-            Hole toHole = gamestate[toX][toY];
-            toHole.setHoleStatus(HoleStatus.PLAYER);
+        // TODO BUG this should set the hole to whatever it was before the player touched it
+        // TODO BUG, I can move to coordinates that are not available
+        fromHole.setHoleStatus(HoleStatus.PEG);
 
-            //System.out.println();
-            refreshBoard();
-        } else {
-            // IS COORDINATE
-            System.out.println("Correct format, but not a valid option.\nPlease select one of the possible player coordinates listed above.");
-            specifyCoordinatePrompt();
-        }
+        Hole toHole = gamestate[toX][toY];
+        toHole.setHoleStatus(HoleStatus.PLAYER);
+
+        //System.out.println();
+        refreshBoard();
     }
 
     public void spawnPlayer(int x, int y) {
@@ -137,6 +132,7 @@ public class Board {
         System.out.print(reset(english_cross));
     }
 
+    /*
     public Hole[] getAvailableCoordinates() {
         // DO LATER: undo hard coding
         Hole[] availableCoordinates = new Hole[33];
@@ -161,6 +157,7 @@ public class Board {
 
         return availableCoordinates;
     }
+     */
 
     public Player.Dir[] getAvailableDirections(int x, int y) {
         int valid = 0;
@@ -253,7 +250,6 @@ public class Board {
             2. chooose coord or direction
          */
         Player.Dir[] dirs = getAvailableDirections(player.getX(), player.getY());
-        Hole[] coords = getAvailableCoordinates();
 
         int validDirs=0;
         int validCoords=0;
@@ -262,54 +258,36 @@ public class Board {
                 validDirs++;
             }
         }
-        for(Hole coord: coords) {
-            if(coord!=null) {
-               validCoords++;
-            }
-        }
-        int mode =0;
-        if(validDirs > 0 && validCoords > 0) {
-            mode = 2;
-        } else if(validCoords > 0 && validDirs == 0) {
-            mode = 1;
-        }
+
 
         Scanner scanner = new Scanner(System.in);
         String answer = "";
-        if(mode == 2) {
-            // a1 as in the coordinate scheme that reflects the rulers on the gamestate
-            System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
-            answer = scanner.next();
-        } else if(mode == 1) {
-            System.out.print("\nSpecify coordinate (ex. a1): ");
-            answer = scanner.next();
+        // a1 as in the coordinate scheme that reflects the rulers on the gamestate
+        System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
+        answer = scanner.next();
+
+
+
+        char[] charr =  answer.toCharArray();
+        if(Character.isDigit(charr[1]) && Character.isLetter(charr[0]) && charr.length == 2) {
+            //System.out.println("is coordinate");
+            int[] coord = translateChessCoordinates(charr);
+            movePlayer(coord[0], coord[1]);
         }
 
 
-        if(mode == 2 || mode == 1) {
-            char[] charr =  answer.toCharArray();
-            if(Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
-                //System.out.println("is coordinate");
-                int[] coord = translateChessCoordinates(charr);
-                movePlayer(coord[0], coord[1]);
-            }
+        Player.Dir dir = Player.Dir.DOWN;
+        if (answer.equals("up")) {
+            dir = Player.Dir.UP;
+        } else if (answer.equals("down")) {
+            dir = Player.Dir.DOWN;
+        } else if (answer.equals("left")) {
+            dir = Player.Dir.LEFT;
+        } else if (answer.equals("right")) {
+            dir = Player.Dir.RIGHT;
         }
-
-
-        if(mode == 2) {
-            Player.Dir dir = Player.Dir.DOWN;
-            if (answer.equals("up")) {
-                dir = Player.Dir.UP;
-            } else if (answer.equals("down")) {
-                dir = Player.Dir.DOWN;
-            } else if (answer.equals("left")) {
-                dir = Player.Dir.LEFT;
-            } else if (answer.equals("right")) {
-                dir = Player.Dir.RIGHT;
-            }
-            if(containsDirection(dirs, dir)) {
-                player.jump(dir, gamestate);
-            }
+        if(containsDirection(dirs, dir)) {
+            player.jump(dir, gamestate);
         }
     }
 
@@ -341,13 +319,6 @@ public class Board {
             if(dir!=null) {
                 System.out.println(dir.name());
                 validDirs++;
-            }
-        }
-
-        Hole[] possiblePositions = getAvailableCoordinates();
-        for(Hole possiblePosition: possiblePositions) {
-            if(possiblePosition != null) {
-                System.out.println(possiblePosition);
             }
         }
 

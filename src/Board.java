@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Board {
-    //private Peg[] pegs;
-    private Hole[] validCoordinates;
 
     // gamestate
     private Hole[][] grid = new Hole[8][8];
@@ -16,13 +14,10 @@ public class Board {
 
     private int frames = 0;
 
-    private Player.Dir[] dirs;
-
     static ArrayList<Hole> history = new ArrayList<>();
 
 
 
-    // Functions like a mere template. Has no relevance anymore after the board has already been created.
     HoleStatus[][] english_cross = {
             /*
                 Template:
@@ -68,13 +63,6 @@ public class Board {
         char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
         return chars[index -1];
     }
-
-    /*
-    public Hole getHole(Peg peg) {
-        return grid[peg.getX()][peg.getY()];
-    }
-    */
-
 
     // draw the right thing based on the current enum from the loop
     public void drawSquare(HoleStatus[][] board, int x, int y, StringBuilder sb) {
@@ -125,7 +113,8 @@ public class Board {
         int maxPegs = 32;
         //pegs = new Peg[maxPegs];
         int maxHoles = 33;
-        validCoordinates = new Hole[maxHoles];
+        //private Peg[] pegs;
+        Hole[] validCoordinates = new Hole[maxHoles];
         StringBuilder sb = new StringBuilder();
 
         int size=boardTemplate.length;
@@ -142,18 +131,6 @@ public class Board {
                 if(validCoordinate) {
                     validCoordinates[holeCount] = hole;
                     holeCount++;
-
-                    /*
-                    if(createPeg) {
-                        Peg peg = new Peg(x, y);
-
-                        hole.setPeg(peg);
-
-                        pegs[pegCount] = peg;
-                        pegCount++;
-                    }
-
-                     */
                 }
 
                 drawSquare(boardTemplate, x, y, sb);
@@ -199,10 +176,6 @@ public class Board {
     }
 
     public Hole[] getPossiblePlayerPositions() {
-        // TODO BUG: If i wan to move my player to the new peg
-        //  i will bunnyhop to my old position with,
-        //  it doesn't work. It doesn't show my coordinate as an option because I'm still standing in it
-        
         // DO LATER: undo hard coding
         Hole[] possiblePlayerPositions = new Hole[33];
         int validPositions = 0;
@@ -236,16 +209,16 @@ public class Board {
         boolean right = false;
 
         if(y>=2) {
-            up = grid[x][y-2].isEmpty() && grid[x][y-1].getHoleStatus() == HoleStatus.PEG;
+            up = grid[x][y-2].getHoleStatus().equals(HoleStatus.VACANT) && grid[x][y-1].getHoleStatus().equals(HoleStatus.PEG);
         }
         if(y < 6) {
-            down = grid[x][y+2].isEmpty() && grid[x][y+1].getHoleStatus() == HoleStatus.PEG;
+            down = grid[x][y+2].getHoleStatus().equals(HoleStatus.VACANT) && grid[x][y+1].getHoleStatus().equals(HoleStatus.PEG);
         }
         if(x>=2) {
-            left = grid[x-2][y].isEmpty() && grid[x-1][y].getHoleStatus() == HoleStatus.PEG;
+            left = grid[x-2][y].getHoleStatus().equals(HoleStatus.VACANT) && grid[x-1][y].getHoleStatus().equals(HoleStatus.PEG);
         }
         if(x < 6) {
-            right = grid[x+2][y].isEmpty() && grid[x+1][y].getHoleStatus() == HoleStatus.PEG;
+            right = grid[x+2][y].getHoleStatus().equals(HoleStatus.VACANT) && grid[x+1][y].getHoleStatus().equals(HoleStatus.PEG);
         }
         Player.Dir[] directions = new Player.Dir[4];
 
@@ -272,11 +245,6 @@ public class Board {
 
         // make it automatically scale to a bigger board template (needs more characters, so add the rest of the alphabet)
         char[] strs = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
-        /*
-        String[] strs = {"a", "b", "c", "d", "e", "f", "g"};
-        String str = strs[x-1];
-        return str + y;
-        */
         for(int i=0; i<strs.length; i++) {
             if(strs[i] == charr[0]) {
                 x = i+1;
@@ -400,7 +368,7 @@ public class Board {
         player.getPlayerPos(grid);
         int x = player.getX();
         int y = player.getY();
-        dirs = getValidDirections(x, y);
+        Player.Dir[] dirs = getValidDirections(x, y);
 
         System.out.println("Options:");
         // show all valid directions

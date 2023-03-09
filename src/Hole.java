@@ -35,11 +35,6 @@ public class Hole {
         // TODO berekenen of er meer dan 1 knikker over is
     }
 
-    public boolean isEmpty() {
-        //return this.peg == null && this.holeStatus == HoleStatus.VACANT;
-        return this.holeStatus.equals(HoleStatus.VACANT);
-    }
-
     public String getCoordinate() {
         String[] strs = {"a", "b", "c", "d", "e", "f", "g"};
         String str = strs[x-1];

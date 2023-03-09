@@ -120,7 +120,7 @@ public class Board {
         } else {
             // IS COORDINATE
             System.out.println("Correct format, but not a valid option.\nPlease select one of the possible player coordinates listed above.");
-            specifyCoordinatePrompt(getAvailableDirections(player.getX(), player.getY()), getAvailableCoordinates());
+            specifyCoordinatePrompt();
         }
     }
 
@@ -247,11 +247,14 @@ public class Board {
         return containsDirection;
     }
 
-    public void specifyCoordinatePrompt(Player.Dir[] dirs, Hole[] coords) {
+    public void specifyCoordinatePrompt() {
         /* Modes
             1. choose coord
             2. chooose coord or direction
          */
+        Player.Dir[] dirs = getAvailableDirections(player.getX(), player.getY());
+        Hole[] coords = getAvailableCoordinates();
+
         int validDirs=0;
         int validCoords=0;
         for(Player.Dir dir: dirs) {
@@ -348,7 +351,7 @@ public class Board {
             }
         }
 
-        specifyCoordinatePrompt(getAvailableDirections(player.getX(), player.getY()), getAvailableCoordinates());
+        specifyCoordinatePrompt();
         refreshBoard();
     }
 }

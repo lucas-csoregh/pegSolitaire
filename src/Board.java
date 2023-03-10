@@ -9,6 +9,7 @@ public class Board {
     private Player player;
     private int numberOfMoves = 0;
     //static ArrayList<Hole> history = new ArrayList<>();
+    private int nPegs = 0;
 
     HoleStatus[][] english_cross = {
             /*
@@ -56,8 +57,8 @@ public class Board {
         return chars[index -1];
     }
 
-
     public void drawSquare(Object[][] gamestate, int x, int y, StringBuilder sb) {
+        nPegs = 0;
         HoleStatus status = HoleStatus.OFF_LIMITS;
         if(gamestate instanceof HoleStatus[][] boardTemplate) {
             status = boardTemplate[x][y];
@@ -67,9 +68,11 @@ public class Board {
 
         if(status.equals(HoleStatus.PEG)) {
             sb.append(" o ");
+            nPegs++;
         } else if(status.equals(HoleStatus.PLAYER)) {
             // s for selected, selected = which PEG the player moves is up to the player
             sb.append(" S ");
+            nPegs++;
         } else if(status.equals(HoleStatus.OFF_LIMITS)) {
             sb.append("   ");
         } else if(status.equals(HoleStatus.VACANT)) {
@@ -102,8 +105,6 @@ public class Board {
     }
 
     public boolean swapPlayerPeg(int toX, int toY) {
-        // TODO BUG: don't readAndShowCurrentGameState(); if the player didn't move that round
-
         Hole fromHole = gamestate[player.getX()][player.getY()];
 
         // Only allow user to swap to peg that has available directions once we get there.
@@ -113,9 +114,7 @@ public class Board {
             // Only allow user to swap between pegs and nothing else
             if(toHole.getHoleStatus().equals(HoleStatus.PEG)) {
                 fromHole.setHoleStatus(HoleStatus.PEG);
-
                 toHole.setHoleStatus(HoleStatus.PLAYER);
-
                 return true;
             }
         }
@@ -193,15 +192,6 @@ public class Board {
     }
 
     public void getUserInput(ArrayList<Player.Dir> dirs) {
-        /* TODO implement: Modes
-            1. choose coord
-            2. chooose coord or direction
-
-            why? because when there aren't any valid directions, you shouldn't
-            see the "Enter up/down/right/left or specify coordinate (ex. a1): " prompt,
-            but the "Specify coordinate (ex. a1): " prompt instead
-         */
-
         Scanner scanner = new Scanner(System.in);
         String answer = "";
         // a1 as in the coordinate scheme that reflects the rulers on each board
@@ -247,32 +237,36 @@ public class Board {
     public void readAndShowCurrentGamestate() {
         //boolean again = false;
 
-        numberOfMoves++;
-        System.out.println("move #" + numberOfMoves);
-        int size = gamestate.length;
-        StringBuilder sb = new StringBuilder();
-        for(int y=0; y<size; y++) {
-            for (int x = 0; x < size; x++) {
-                drawSquare(gamestate, x, y, sb);
+        if(nPegs != 1) {
+            numberOfMoves++;
+            System.out.println("move #" + numberOfMoves);
+            int size = gamestate.length;
+            StringBuilder sb = new StringBuilder();
+            for(int y=0; y<size; y++) {
+                for (int x = 0; x < size; x++) {
+                    drawSquare(gamestate, x, y, sb);
+                }
+                sb.append("\n");
             }
-            sb.append("\n");
-        }
 
-        System.out.println(sb);
+            System.out.println(sb);
 
-        player.getPlayerPos(gamestate);
-        int x = player.getX();
-        int y = player.getY();
-        ArrayList<Player.Dir> dirs = getAvailableDirections(x, y);
+            player.getPlayerPos(gamestate);
+            int x = player.getX();
+            int y = player.getY();
+            ArrayList<Player.Dir> dirs = getAvailableDirections(x, y);
 
-        if (dirs.size() > 0) {
-            // show all available directions
-            System.out.println("Directions:");
-            for(Player.Dir dir: dirs) {
-                System.out.println(dir.name());
+            if (dirs.size() > 0) {
+                // show all available directions
+                System.out.println("Directions:");
+                for(Player.Dir dir: dirs) {
+                    System.out.println(dir.name());
+                }
             }
-        }
 
-        getUserInput(dirs);
+            getUserInput(dirs);
+        } else {
+            System.out.println("YOU WON!");
+        }
     }
 }

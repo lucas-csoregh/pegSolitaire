@@ -9,7 +9,7 @@ public class Main {
         boolean validAnswer = false;
 
         while(!validAnswer) {
-            System.out.print("\nOptions:\nUP\nDOWN\nLEFT\nRIGHT\n\nEnter up/down/left/right: ");
+            System.out.print("\nDirections:\nUP\nDOWN\nLEFT\nRIGHT\n\nEnter up/down/left/right: ");
             String answer = scanner.next();
             answer = answer.toLowerCase();
 

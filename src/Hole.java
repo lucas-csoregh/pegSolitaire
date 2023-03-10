@@ -36,10 +36,6 @@ public class Hole {
         this.holeStatus = holeStatus;
     }
 
-    public void isEndGame() {
-        // TODO berekenen of er meer dan 1 knikker over is
-    }
-
     public String getCoordinate() {
         String[] strs = {"a", "b", "c", "d", "e", "f", "g"};
         String str = strs[x-1];

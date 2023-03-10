@@ -9,8 +9,11 @@ public class Board {
      * show the shape of the board and allows us to
      * check if we are stepping out of bounds
      */
+
+    /*
     private Hole[] boardCoords = new Hole[33];
     int intBoardCoords = 0;
+    */
 
     private Player player;
     private int numberOfMoves = 0;
@@ -103,9 +106,11 @@ public class Board {
                 gamestate[x][y] = hole;
 
                 /*
-                boardCoords[intBoardCoords] = gamestate[x][y];
-                intBoardCoords++;
-                */
+                if(hole.getHoleStatus().equals(HoleStatus.PEG)) {
+                    boardCoords[intBoardCoords] = gamestate[x][y];
+                    intBoardCoords++;
+                }
+                 */
 
                 drawSquare(boardTemplate, x, y, sb);
             }
@@ -117,17 +122,24 @@ public class Board {
     public void movePlayer(int toX, int toY) {
         Hole fromHole = gamestate[player.getX()][player.getY()];
 
+        // TODO BUG i can move to places that are empty, I should only be able to
+        //  swap between pegs
+
         // TODO BUG this should set the hole to whatever it was before the player touched it
         //      - could save the holes I move to in some sort of array and use that to fix this problem
 
-        // TODO BUG, I can move to coordinates that are not available
+        // TODO BUG, I can move to coordinates that are not available / on the board
         //      - check if toHole is the right HoleStatus
-        fromHole.setHoleStatus(HoleStatus.PEG);
+
 
         Hole toHole = gamestate[toX][toY];
-        toHole.setHoleStatus(HoleStatus.PLAYER);
+        if(toHole.getHoleStatus().equals(HoleStatus.PEG)) {
+            fromHole.setHoleStatus(HoleStatus.PEG);
 
-        readAndShowCurrentGamestate();
+            toHole.setHoleStatus(HoleStatus.PLAYER);
+
+            readAndShowCurrentGamestate();
+        }
     }
 
     public void spawnPlayer(int x, int y) {
@@ -256,9 +268,13 @@ public class Board {
     }
 
     public void specifyCoordinatePrompt() {
-        /* Modes
+        /* TODO implement: Modes
             1. choose coord
             2. chooose coord or direction
+
+            why? because when there aren't any valid directions, you shouldn't
+            see the "Enter up/down/right/left or specify coordinate (ex. a1): " prompt,
+            but the "Specify coordinate (ex. a1): " prompt instead
          */
         Player.Dir[] dirs = getAvailableDirections(player.getX(), player.getY());
 

@@ -1,3 +1,5 @@
+// DO MAYBE: Consider changing some arrays to arraylists
+
 import java.util.Scanner;
 
 public class Board {
@@ -119,26 +121,27 @@ public class Board {
         return sb.toString();
     }
 
-    public void movePlayer(int toX, int toY) {
+    public void swapPlayerPeg(int toX, int toY) {
         Hole fromHole = gamestate[player.getX()][player.getY()];
 
-        // TODO BUG i can move to places that are empty, I should only be able to
-        //  swap between pegs
+        // Only allow user to swap to peg that has available directions once we get there.
+        Player.Dir[] dirs = getAvailableDirections(toX, toY);
+        int nDirs = 0;
+        for(Player.Dir dir: dirs) {
+            if(dir!=null) {
+               nDirs++;
+            }
+        }
+        if(nDirs > 0) {
+            Hole toHole = gamestate[toX][toY];
+            // Only allow user to swap between pegs and nothing else
+            if(toHole.getHoleStatus().equals(HoleStatus.PEG)) {
+                fromHole.setHoleStatus(HoleStatus.PEG);
 
-        // TODO BUG this should set the hole to whatever it was before the player touched it
-        //      - could save the holes I move to in some sort of array and use that to fix this problem
+                toHole.setHoleStatus(HoleStatus.PLAYER);
 
-        // TODO BUG, I can move to coordinates that are not available / on the board
-        //      - check if toHole is the right HoleStatus
-
-
-        Hole toHole = gamestate[toX][toY];
-        if(toHole.getHoleStatus().equals(HoleStatus.PEG)) {
-            fromHole.setHoleStatus(HoleStatus.PEG);
-
-            toHole.setHoleStatus(HoleStatus.PLAYER);
-
-            readAndShowCurrentGamestate();
+                readAndShowCurrentGamestate();
+            }
         }
     }
 
@@ -154,33 +157,6 @@ public class Board {
     public Board() {
         System.out.print(reset(english_cross));
     }
-
-    /*
-    public Hole[] getAvailableCoordinates() {
-        // DO LATER: undo hard coding
-        Hole[] availableCoordinates = new Hole[33];
-        int coords = 0;
-        int size = gamestate.length;
-        for(int y=0; y<size; y++) {
-            for(int x=0; x<size; x++) {
-                Player.Dir[] dirs = getAvailableDirections(x, y);
-                int validDirs = 0;
-                for(Player.Dir dir: dirs) {
-                    if(dir != null) {
-                        validDirs++;
-                    }
-                }
-
-                if(validDirs > 0) {
-                    availableCoordinates[coords] = gamestate[x][y];
-                    coords++;
-                }
-            }
-        }
-
-        return availableCoordinates;
-    }
-     */
 
     public Player.Dir[] getAvailableDirections(int x, int y) {
         int valid = 0;
@@ -246,17 +222,6 @@ public class Board {
         return new int[]{x, y};
     }
 
-    public boolean containsCoordinate(Hole[] possiblePositions, int x, int y) {
-        boolean containsCoordinate = false;
-        for(Hole hole: possiblePositions) {
-            if(hole!= null && hole.getX() == x && hole.getY() == y) {
-                //System.out.println(hole.getX()+" "+hole.getY() +" | "+ x+" "+y);
-                containsCoordinate  = true;
-            }
-        }
-        return containsCoordinate;
-    }
-
     public boolean containsDirection(Player.Dir[] dirs, Player.Dir findDir) {
         boolean containsDirection = false;
         for(Player.Dir dir: dirs) {
@@ -287,7 +252,7 @@ public class Board {
         char[] charr =  answer.toCharArray();
         if(Character.isDigit(charr[1]) && Character.isLetter(charr[0]) && charr.length == 2) {
             int[] coord = translateChessCoordinates(charr);
-            movePlayer(coord[0], coord[1]);
+            swapPlayerPeg(coord[0], coord[1]);
         }
 
         Player.Dir dir = Player.Dir.DOWN;

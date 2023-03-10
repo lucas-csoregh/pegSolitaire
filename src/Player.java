@@ -43,16 +43,15 @@ public class Player {
         }
     }
 
-    //public void bunnyhop()
-    public boolean jump(Dir direction, Hole gamestate[][]) {
+    public boolean takepeg(Dir direction, Hole gamestate[][]) {
         Hole fromHole = gamestate[x][y];
-        // [3][3] is default, just filled it with something to avoid the `.. has might not have been initialized` errors
-            // the contents don't matter
+        // [3][3] is default, just filled it with something to avoid the 
+        // `.. has might not have been initialized` errors
+        // the contents don't matter
         Hole takenPegHole = gamestate[3][3];
         Hole toHole = gamestate[3][3];
 
-        //System.out.println("fromHole jump(Dir): " + fromHole);
-
+        //System.out.println("fromHole takepeg(Dir): " + fromHole);
         if(direction == Dir.UP) {
             takenPegHole = gamestate[x][y -1];
             toHole = gamestate[x][y -2];
@@ -67,14 +66,11 @@ public class Player {
             toHole = gamestate[x +2][y];
         }
 
-        //System.out.println("toHole jump(Dir): " + toHole);
-
-        boolean toHoleIsEmpty = toHole.getHoleStatus() == HoleStatus.VACANT;
-        if(toHoleIsEmpty) {
-            //Board.history.add(fromHole);
+        //System.out.println("toHole takepeg(Dir): " + toHole);
+        boolean toHoleAvailable = toHole.isVacant();
+        if(toHoleAvailable) {
             fromHole.setHoleStatus(HoleStatus.VACANT);
             takenPegHole.setHoleStatus(HoleStatus.VACANT);
-            //taken.add(takenPegHole.takePeg());
             toHole.setHoleStatus(HoleStatus.PLAYER);
             return true;
         }

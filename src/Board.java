@@ -142,20 +142,6 @@ public class Board {
         System.out.print(reset(english_cross));
     }
 
-    /*
-    public boolean pegOrPlayer(Hole hole) {
-        boolean vacant = hole.getHoleStatus().equals(HoleStatus.PEG);
-        boolean player = hole.getHoleStatus().equals(HoleStatus.PLAYER);
-
-        return vacant || player;
-    }
-
-    public boolean isVacant(Hole hole) {
-        return hole.getHoleStatus().equals(HoleStatus.VACANT);
-    }
-    */
-
-
     public Player.Dir[] getAvailableDirections(int x, int y) {
         // TODO change this from Player.Dir[] to ArrayList<Player.Dir>
         int valid = 0;
@@ -224,7 +210,7 @@ public class Board {
     public boolean containsDirection(Player.Dir[] dirs, Player.Dir findDir) {
         boolean containsDirection = false;
         for(Player.Dir dir: dirs) {
-            if(dir != null && dir == findDir) {
+            if(dir != null && dir.equals(findDir)) {
                 containsDirection = true;
             }
         }
@@ -244,7 +230,7 @@ public class Board {
 
         Scanner scanner = new Scanner(System.in);
         String answer = "";
-        // a1 as in the coordinate scheme that reflects the rulers on the gamestate
+        // a1 as in the coordinate scheme that reflects the rulers on each board
         System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
         answer = scanner.next();
 
@@ -272,7 +258,7 @@ public class Board {
         }
 
         if(containsDirection(dirs, dir)) {
-            boolean jumped = player.jump(dir, gamestate);
+            boolean jumped = player.takepeg(dir, gamestate);
             if(jumped) {
                 readAndShowCurrentGamestate();
             } else {

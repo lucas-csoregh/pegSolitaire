@@ -266,6 +266,7 @@ public class Board {
 
             getUserInput(dirs);
         } else {
+            // TODO: give special win if the last ball is in 4,4 aka dead center on the board
             System.out.println("YOU WON!");
         }
     }

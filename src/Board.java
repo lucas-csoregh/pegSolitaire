@@ -102,7 +102,7 @@ public class Board {
         return sb.toString();
     }
 
-    public void swapPlayerPeg(int toX, int toY) {
+    public boolean swapPlayerPeg(int toX, int toY) {
         // TODO BUG: don't readAndShowCurrentGameState(); if the player didn't move that round
 
         Hole fromHole = gamestate[player.getX()][player.getY()];
@@ -123,10 +123,10 @@ public class Board {
 
                 toHole.setHoleStatus(HoleStatus.PLAYER);
 
-                System.out.println("readAndShowCurrentGameState();");
-                readAndShowCurrentGamestate();
+                return true;
             }
         }
+        return false;
     }
 
     public void spawnPlayer(int x, int y) {
@@ -232,8 +232,65 @@ public class Board {
     }
 
 
+    public void getUserInput(Player.Dir[] dirs) {
+        /* TODO implement: Modes
+            1. choose coord
+            2. chooose coord or direction
+
+            why? because when there aren't any valid directions, you shouldn't
+            see the "Enter up/down/right/left or specify coordinate (ex. a1): " prompt,
+            but the "Specify coordinate (ex. a1): " prompt instead
+         */
+
+        Scanner scanner = new Scanner(System.in);
+        String answer = "";
+        // a1 as in the coordinate scheme that reflects the rulers on the gamestate
+        System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
+        answer = scanner.next();
+
+        char[] charr =  answer.toCharArray();
+        boolean swapped = false;
+        if(Character.isDigit(charr[1]) && Character.isLetter(charr[0]) && charr.length == 2) {
+            int[] coord = translateChessCoordinates(charr);
+            swapped = swapPlayerPeg(coord[0], coord[1]);
+            if(swapped) {
+                readAndShowCurrentGamestate();
+            } else {
+                getUserInput(dirs);
+            }
+        }
+
+        Player.Dir dir = Player.Dir.DOWN;
+        if (answer.equals("up")) {
+            dir = Player.Dir.UP;
+        } else if (answer.equals("down")) {
+            dir = Player.Dir.DOWN;
+        } else if (answer.equals("left")) {
+            dir = Player.Dir.LEFT;
+        } else if (answer.equals("right")) {
+            dir = Player.Dir.RIGHT;
+        }
+
+        if(containsDirection(dirs, dir)) {
+            boolean jumped = player.jump(dir, gamestate);
+            if(jumped) {
+                readAndShowCurrentGamestate();
+            } else {
+                getUserInput(dirs);
+            }
+        }
+
+        /*
+        if (again) {
+            readAndShowCurrentGamestate();
+        }
+        */
+
+    }
     // read gamestate from gamestate (Hole[][] gamestate) and get new player action
     public void readAndShowCurrentGamestate() {
+        //boolean again = false;
+
         numberOfMoves++;
         System.out.println("move #" + numberOfMoves);
         int size = gamestate.length;
@@ -260,41 +317,6 @@ public class Board {
             }
         }
 
-        /* TODO implement: Modes
-            1. choose coord
-            2. chooose coord or direction
-
-            why? because when there aren't any valid directions, you shouldn't
-            see the "Enter up/down/right/left or specify coordinate (ex. a1): " prompt,
-            but the "Specify coordinate (ex. a1): " prompt instead
-         */
-
-        Scanner scanner = new Scanner(System.in);
-        String answer = "";
-        // a1 as in the coordinate scheme that reflects the rulers on the gamestate
-        System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
-        answer = scanner.next();
-
-        char[] charr =  answer.toCharArray();
-        if(Character.isDigit(charr[1]) && Character.isLetter(charr[0]) && charr.length == 2) {
-            int[] coord = translateChessCoordinates(charr);
-            swapPlayerPeg(coord[0], coord[1]);
-        }
-
-        Player.Dir dir = Player.Dir.DOWN;
-        if (answer.equals("up")) {
-            dir = Player.Dir.UP;
-        } else if (answer.equals("down")) {
-            dir = Player.Dir.DOWN;
-        } else if (answer.equals("left")) {
-            dir = Player.Dir.LEFT;
-        } else if (answer.equals("right")) {
-            dir = Player.Dir.RIGHT;
-        }
-        if(containsDirection(dirs, dir)) {
-            player.jump(dir, gamestate);
-        }
-
-        readAndShowCurrentGamestate();
+        getUserInput(dirs);
     }
 }

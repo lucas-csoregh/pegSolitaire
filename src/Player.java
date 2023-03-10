@@ -44,7 +44,7 @@ public class Player {
     }
 
     //public void bunnyhop()
-    public void jump(Dir direction, Hole gamestate[][]) {
+    public boolean jump(Dir direction, Hole gamestate[][]) {
         Hole fromHole = gamestate[x][y];
         // [3][3] is default, just filled it with something to avoid the `.. has might not have been initialized` errors
             // the contents don't matter
@@ -76,6 +76,8 @@ public class Player {
             takenPegHole.setHoleStatus(HoleStatus.VACANT);
             //taken.add(takenPegHole.takePeg());
             toHole.setHoleStatus(HoleStatus.PLAYER);
+            return true;
         }
+        return false;
     }
 }

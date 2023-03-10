@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Board {
@@ -152,14 +153,16 @@ public class Board {
             right = gamestate[x+2][y].isVacant() && gamestate[x+1][y].pegOrPlayer();
         }
 
-
         if(up) {
             directions.add(Player.Dir.UP);
-        } else if (down) {
+        }
+        if (down) {
             directions.add(Player.Dir.DOWN);
-        } else if (right) {
+        }
+        if (right) {
             directions.add(Player.Dir.RIGHT);
-        } else if (left) {
+        }
+        if (left) {
             directions.add(Player.Dir.LEFT);
         }
 

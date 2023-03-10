@@ -43,7 +43,7 @@ public class Player {
         }
     }
 
-    public boolean takepeg(Dir direction, Hole gamestate[][]) {
+    public boolean takePeg(Dir direction, Hole gamestate[][]) {
         Hole fromHole = gamestate[x][y];
         // [3][3] is default, just filled it with something to avoid the 
         // `.. has might not have been initialized` errors
@@ -51,7 +51,7 @@ public class Player {
         Hole takenPegHole = gamestate[3][3];
         Hole toHole = gamestate[3][3];
 
-        //System.out.println("fromHole takepeg(Dir): " + fromHole);
+        //System.out.println("fromHole takePeg(Dir): " + fromHole);
         if(direction == Dir.UP) {
             takenPegHole = gamestate[x][y -1];
             toHole = gamestate[x][y -2];
@@ -66,7 +66,7 @@ public class Player {
             toHole = gamestate[x +2][y];
         }
 
-        //System.out.println("toHole takepeg(Dir): " + toHole);
+        //System.out.println("toHole takePeg(Dir): " + toHole);
         boolean toHoleAvailable = toHole.isVacant();
         if(toHoleAvailable) {
             fromHole.setHoleStatus(HoleStatus.VACANT);

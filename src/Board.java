@@ -236,13 +236,11 @@ public class Board {
 
         char[] charr =  answer.toCharArray();
         boolean swapped = false;
-        if(Character.isDigit(charr[1]) && Character.isLetter(charr[0]) && charr.length == 2) {
+        if(charr.length == 2 && Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
             int[] coord = translateChessCoordinates(charr);
             swapped = swapPlayerPeg(coord[0], coord[1]);
             if(swapped) {
                 readAndShowCurrentGamestate();
-            } else {
-                getUserInput(dirs);
             }
         }
 
@@ -258,20 +256,13 @@ public class Board {
         }
 
         if(containsDirection(dirs, dir)) {
-            boolean jumped = player.takepeg(dir, gamestate);
+            boolean jumped = player.takePeg(dir, gamestate);
             if(jumped) {
                 readAndShowCurrentGamestate();
-            } else {
-                getUserInput(dirs);
             }
         }
 
-        /*
-        if (again) {
-            readAndShowCurrentGamestate();
-        }
-        */
-
+        getUserInput(dirs);
     }
     // read gamestate from gamestate (Hole[][] gamestate) and get new player action
     public void readAndShowCurrentGamestate() {

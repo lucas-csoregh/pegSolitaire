@@ -1,5 +1,4 @@
-// DO MAYBE: Consider changing some arrays to arraylists
-
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Board {
@@ -108,14 +107,8 @@ public class Board {
         Hole fromHole = gamestate[player.getX()][player.getY()];
 
         // Only allow user to swap to peg that has available directions once we get there.
-        Player.Dir[] dirs = getAvailableDirections(toX, toY);
-        int nDirs = 0;
-        for(Player.Dir dir: dirs) {
-            if(dir!=null) {
-               nDirs++;
-            }
-        }
-        if(nDirs > 0) {
+        ArrayList<Player.Dir> dirs = getAvailableDirections(toX, toY);
+        if(dirs.size() > 0) {
             Hole toHole = gamestate[toX][toY];
             // Only allow user to swap between pegs and nothing else
             if(toHole.getHoleStatus().equals(HoleStatus.PEG)) {
@@ -131,9 +124,6 @@ public class Board {
 
     public void spawnPlayer(int x, int y) {
         player = new Player(gamestate, x, y);
-
-        // refresh the gamestate to show the player once the user has chosen the position they want to start in
-        System.out.println();
         readAndShowCurrentGamestate();
     }
 
@@ -142,9 +132,8 @@ public class Board {
         System.out.print(reset(english_cross));
     }
 
-    public Player.Dir[] getAvailableDirections(int x, int y) {
-        // TODO change this from Player.Dir[] to ArrayList<Player.Dir>
-        int valid = 0;
+    public ArrayList<Player.Dir> getAvailableDirections(int x, int y) {
+        ArrayList<Player.Dir> directions = new ArrayList<>();
 
         boolean down = false;
         boolean up = false;
@@ -163,20 +152,16 @@ public class Board {
         if(x < 6) {
             right = gamestate[x+2][y].isVacant() && gamestate[x+1][y].pegOrPlayer();
         }
-        Player.Dir[] directions = new Player.Dir[4];
+
 
         if(up) {
-            directions[valid] = Player.Dir.UP;
-            valid++;
+            directions.add(Player.Dir.UP);
         } else if (down) {
-            directions[valid] = Player.Dir.DOWN;
-            valid++;
+            directions.add(Player.Dir.DOWN);
         } else if (right) {
-            directions[valid] = Player.Dir.RIGHT;
-            valid++;
+            directions.add(Player.Dir.RIGHT);
         } else if (left) {
-            directions[valid] = Player.Dir.LEFT;
-            valid++;
+            directions.add(Player.Dir.LEFT);
         }
 
         return directions;
@@ -207,18 +192,7 @@ public class Board {
         return new int[]{x, y};
     }
 
-    public boolean containsDirection(Player.Dir[] dirs, Player.Dir findDir) {
-        boolean containsDirection = false;
-        for(Player.Dir dir: dirs) {
-            if(dir != null && dir.equals(findDir)) {
-                containsDirection = true;
-            }
-        }
-        return containsDirection;
-    }
-
-
-    public void getUserInput(Player.Dir[] dirs) {
+    public void getUserInput(ArrayList<Player.Dir> dirs) {
         /* TODO implement: Modes
             1. choose coord
             2. chooose coord or direction
@@ -231,7 +205,12 @@ public class Board {
         Scanner scanner = new Scanner(System.in);
         String answer = "";
         // a1 as in the coordinate scheme that reflects the rulers on each board
-        System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
+
+        if(dirs.size() > 0) {
+            System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
+        } else {
+            System.out.print("\nSpecify coordinate (ex. a1): ");
+        }
         answer = scanner.next();
 
         char[] charr =  answer.toCharArray();
@@ -255,7 +234,7 @@ public class Board {
             dir = Player.Dir.RIGHT;
         }
 
-        if(containsDirection(dirs, dir)) {
+        if(dirs.contains(dir)) {
             boolean jumped = player.takePeg(dir, gamestate);
             if(jumped) {
                 readAndShowCurrentGamestate();
@@ -284,12 +263,12 @@ public class Board {
         player.getPlayerPos(gamestate);
         int x = player.getX();
         int y = player.getY();
-        Player.Dir[] dirs = getAvailableDirections(x, y);
+        ArrayList<Player.Dir> dirs = getAvailableDirections(x, y);
 
-        System.out.println("Options:");
-        // show all available directions
-        for(Player.Dir dir: dirs) {
-            if(dir!=null) {
+        if (dirs.size() > 0) {
+            // show all available directions
+            System.out.println("Directions:");
+            for(Player.Dir dir: dirs) {
                 System.out.println(dir.name());
             }
         }

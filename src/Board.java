@@ -7,16 +7,6 @@ public class Board {
     // gamestate
     private Hole[][] gamestate = new Hole[8][8];
 
-    /* the coordinates in boardCoord
-     * show the shape of the board and allows us to
-     * check if we are stepping out of bounds
-     */
-
-    /*
-    private Hole[] boardCoords = new Hole[33];
-    int intBoardCoords = 0;
-    */
-
     private Player player;
     private int numberOfMoves = 0;
     //static ArrayList<Hole> history = new ArrayList<>();
@@ -95,9 +85,7 @@ public class Board {
     }
 
     public String reset(HoleStatus[][] boardTemplate) {
-        /* Doc:
-         * Resets the game by overwriting the current gamestate with a template
-         */
+        // Resets the game by overwriting the current gamestate with a template
         System.out.println("-- RESET --\n");
         StringBuilder sb = new StringBuilder();
 
@@ -106,13 +94,6 @@ public class Board {
             for(int x=0; x<size; x++) {
                 Hole hole = new Hole(x, y, boardTemplate[x][y]);
                 gamestate[x][y] = hole;
-
-                /*
-                if(hole.getHoleStatus().equals(HoleStatus.PEG)) {
-                    boardCoords[intBoardCoords] = gamestate[x][y];
-                    intBoardCoords++;
-                }
-                 */
 
                 drawSquare(boardTemplate, x, y, sb);
             }

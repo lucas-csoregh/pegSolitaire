@@ -13,6 +13,14 @@ public class Hole {
         return holeStatus;
     }
 
+    public boolean pegOrPlayer() {
+        return holeStatus.equals(HoleStatus.PEG) || holeStatus.equals(HoleStatus.PLAYER);
+    }
+
+    public boolean isVacant() {
+        return holeStatus.equals(HoleStatus.VACANT);
+    }
+
     public int getX() { return x; }
     public int getY() { return y; }
 

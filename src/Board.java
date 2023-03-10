@@ -142,7 +142,22 @@ public class Board {
         System.out.print(reset(english_cross));
     }
 
+    /*
+    public boolean pegOrPlayer(Hole hole) {
+        boolean vacant = hole.getHoleStatus().equals(HoleStatus.PEG);
+        boolean player = hole.getHoleStatus().equals(HoleStatus.PLAYER);
+
+        return vacant || player;
+    }
+
+    public boolean isVacant(Hole hole) {
+        return hole.getHoleStatus().equals(HoleStatus.VACANT);
+    }
+    */
+
+
     public Player.Dir[] getAvailableDirections(int x, int y) {
+        // TODO change this from Player.Dir[] to ArrayList<Player.Dir>
         int valid = 0;
 
         boolean down = false;
@@ -150,20 +165,17 @@ public class Board {
         boolean left = false;
         boolean right = false;
 
-        // TODO stop copying code, make a function that checks a coordinate
-        //  and make the condition -->
-        //  (coordiante.holestatus=vacant || coordinate.holestatus=player) && coordinate.holestatus=peg
         if(y>=2) {
-            up = gamestate[x][y-2].getHoleStatus().equals(HoleStatus.VACANT) && gamestate[x][y-1].getHoleStatus().equals(HoleStatus.PEG);
+            up = gamestate[x][y-2].isVacant() && gamestate[x][y-1].pegOrPlayer();
         }
         if(y < 6) {
-            down = gamestate[x][y+2].getHoleStatus().equals(HoleStatus.VACANT) && gamestate[x][y+1].getHoleStatus().equals(HoleStatus.PEG);
+            down = gamestate[x][y+2].isVacant() && gamestate[x][y+1].pegOrPlayer();
         }
         if(x>=2) {
-            left = gamestate[x-2][y].getHoleStatus().equals(HoleStatus.VACANT) && gamestate[x-1][y].getHoleStatus().equals(HoleStatus.PEG);
+            left = gamestate[x-2][y].isVacant() && gamestate[x-1][y].pegOrPlayer();
         }
         if(x < 6) {
-            right = gamestate[x+2][y].getHoleStatus().equals(HoleStatus.VACANT) && gamestate[x+1][y].getHoleStatus().equals(HoleStatus.PEG);
+            right = gamestate[x+2][y].isVacant() && gamestate[x+1][y].pegOrPlayer();
         }
         Player.Dir[] directions = new Player.Dir[4];
 

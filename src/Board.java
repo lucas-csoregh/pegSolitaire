@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 public class Board {
@@ -43,7 +42,7 @@ public class Board {
 
     public void spawnPlayer(int x, int y) {
         player = new Player(gamestate, x, y);
-        readAndShowCurrentGamestate();
+        showGamestateGetInput();
 
         // KEEP
         //history.add(gamestate);
@@ -70,7 +69,7 @@ public class Board {
             int[] coord = translateChessCoordinates(charr);
             boolean swapped = swapPlayerPeg(coord[0], coord[1]);
             if(swapped) {
-                readAndShowCurrentGamestate();
+                showGamestateGetInput();
             }
         }
 
@@ -88,7 +87,7 @@ public class Board {
         if(dirs.contains(dir)) {
             boolean jumped = player.takePeg(dir, gamestate);
             if(jumped) {
-                readAndShowCurrentGamestate();
+                showGamestateGetInput();
             }
         }
 
@@ -168,22 +167,29 @@ public class Board {
     /*********************
      * SETTING THE BOARD *
      *********************/
-    public void readAndShowCurrentGamestate() {
+
+    @Override
+    public String toString() {
+        // simply reads current gamestate
+        StringBuilder sb = new StringBuilder();
+        for(int y=0; y<gamestate.length; y++) {
+            for (int x = 0; x < gamestate.length; x++) {
+                drawSquare(gamestate, x, y, sb);
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    }
+
+    public void showGamestateGetInput() {
         //boolean again = false;
 
         if(nPegs != 1) {
             numberOfMoves++;
             System.out.println("move #" + numberOfMoves);
-            int size = gamestate.length;
-            StringBuilder sb = new StringBuilder();
-            for(int y=0; y<size; y++) {
-                for (int x = 0; x < size; x++) {
-                    drawSquare(gamestate, x, y, sb);
-                }
-                sb.append("\n");
-            }
 
-            System.out.println(sb);
+            System.out.println(this.toString());
 
             player.getPlayerPos(gamestate);
             int x = player.getX();

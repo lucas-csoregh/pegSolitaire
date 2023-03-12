@@ -3,19 +3,14 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class Board {
-
-    // gamestate
-    //private Hole[][] gamestate = new Hole[8][8];
     private Hole[][] gamestate;
 
     private Player player;
     private int numberOfMoves = 0;
 
     // TODO add gamestate to history each time it changes
-    static ArrayList<Hole[][]> history = new ArrayList<>();
+    //public static ArrayList<Hole[][]> history = new ArrayList<>();
     private int nPegs = 0;
-
-    // Englishcross
 
     public char getXchar(int index) {
         char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
@@ -71,15 +66,20 @@ public class Board {
         return sb.toString();
     }
 
+    public Board() {
+        System.out.print(reset(BoardTemplate.german));
+        getUserInput(new ArrayList<Player.Dir>());
+    }
+
     public boolean swapPlayerPeg(int toX, int toY) {
         if(this.player == null) {
             ArrayList<Player.Dir> dirs = getAvailableDirections(toX, toY);
             if(dirs.size() > 0) {
                 spawnPlayer(toX, toY);
+                return true;
             }
         } else {
             Hole fromHole = gamestate[player.getX()][player.getY()];
-
             // Only allow user to swap to peg that has available directions once we get there.
             ArrayList<Player.Dir> dirs = getAvailableDirections(toX, toY);
             if(dirs.size() > 0) {
@@ -88,23 +88,22 @@ public class Board {
                 if(toHole.getHoleStatus().equals(HoleStatus.PEG)) {
                     fromHole.setHoleStatus(HoleStatus.PEG);
                     toHole.setHoleStatus(HoleStatus.PLAYER);
+
+                    // KEEP
+                    //history.add(gamestate);
                     return true;
                 }
             }
         }
-
         return false;
     }
 
     public void spawnPlayer(int x, int y) {
         player = new Player(gamestate, x, y);
         readAndShowCurrentGamestate();
-    }
 
-
-    public Board() {
-        System.out.print(reset(BoardTemplate.german));
-        getUserInput(new ArrayList<Player.Dir>());
+        // KEEP
+        //history.add(gamestate);
     }
 
     public ArrayList<Player.Dir> getAvailableDirections(int x, int y) {
@@ -144,6 +143,7 @@ public class Board {
         return directions;
     }
 
+
     public int[] translateChessCoordinates(char[] charr) {
         int x=0;
         int y=charr[1] - '0';
@@ -172,20 +172,19 @@ public class Board {
     public void getUserInput(ArrayList<Player.Dir> dirs) {
         Scanner scanner = new Scanner(System.in);
         String answer = "";
-        // a1 as in the coordinate scheme that reflects the rulers on each board
 
         if(dirs.size() > 0) {
             System.out.print("\nEnter up/down/right/left or specify coordinate (ex. a1): ");
         } else {
+            // a1 as in the coordinate scheme that reflects the rulers on each board
             System.out.print("\nSpecify coordinate (ex. a1): ");
         }
         answer = scanner.next();
 
         char[] charr =  answer.toCharArray();
-        boolean swapped = false;
         if(charr.length == 2 && Character.isDigit(charr[1]) && Character.isLetter(charr[0])) {
             int[] coord = translateChessCoordinates(charr);
-            swapped = swapPlayerPeg(coord[0], coord[1]);
+            boolean swapped = swapPlayerPeg(coord[0], coord[1]);
             if(swapped) {
                 readAndShowCurrentGamestate();
             }
@@ -211,7 +210,7 @@ public class Board {
 
         getUserInput(dirs);
     }
-    // read gamestate from gamestate (Hole[][] gamestate) and get new player action
+
     public void readAndShowCurrentGamestate() {
         //boolean again = false;
 

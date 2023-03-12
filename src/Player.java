@@ -72,6 +72,10 @@ public class Player {
             fromHole.setHoleStatus(HoleStatus.VACANT);
             takenPegHole.setHoleStatus(HoleStatus.VACANT);
             toHole.setHoleStatus(HoleStatus.PLAYER);
+
+            // KEEP
+            //Board.history.add(gamestate);
+
             return true;
         }
         return false;

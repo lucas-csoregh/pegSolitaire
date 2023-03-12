@@ -9,7 +9,6 @@ public class Hole {
     
     private int x = 0;
     private int y = 0;
-    //private Peg peg;
 
     private Status status;
 
@@ -29,9 +28,6 @@ public class Hole {
         return status.equals(Hole.Status.VACANT);
     }
 
-    public int getX() { return x; }
-    public int getY() { return y; }
-
     public Hole() {
         this.x = 0;
         this.y = 0;
@@ -44,11 +40,15 @@ public class Hole {
         this.status = holeStatus;
     }
 
+    /*
     public String getCoordinate() {
         String[] strs = {"a", "b", "c", "d", "e", "f", "g"};
         String str = strs[x-1];
         return str + y;
     }
+
+    public int getX() { return x; }
+    public int getY() { return y; }
 
     @Override
     public String toString() {
@@ -58,4 +58,5 @@ public class Hole {
                 ", y=" + y +
                 '}';
     }
+    */
 }

@@ -1,34 +1,34 @@
 public class BoardTemplate {
-            /*
-                Template:
-                ---------
-                {2, 2, 2, 2, 2, 2, 2, 2},
-                {2, 1, 1, 0, 0, 0, 1, 1},
-                {2, 1, 1, 0, 0, 0, 1, 1},
-                {2, 0, 0, 0, 0, 0, 0, 0},
-                {2, 0, 0, 0, 3, 0, 0, 0},
-                {2, 0, 0, 0, 0, 0, 0, 0},
-                {2, 1, 1, 0, 0, 0, 1, 1},
-                {2, 1, 1, 0, 0, 0, 1, 1}
+    /*
+        Template:
+        ---------
+        {2, 2, 2, 2, 2, 2, 2, 2},
+        {2, 1, 1, 0, 0, 0, 1, 1},
+        {2, 1, 1, 0, 0, 0, 1, 1},
+        {2, 0, 0, 0, 0, 0, 0, 0},
+        {2, 0, 0, 0, 3, 0, 0, 0},
+        {2, 0, 0, 0, 0, 0, 0, 0},
+        {2, 1, 1, 0, 0, 0, 1, 1},
+        {2, 1, 1, 0, 0, 0, 1, 1}
 
-                0 = PEG
-                1 = off limits
-                2 = ruler
-                3 = empty
-                4 = player
+        0 = PEG
+        1 = off limits
+        2 = ruler
+        3 = empty
+        4 = player
 
 
-                CLI Result:
-                -----------
-                    a  b  c  d  e  f  g
-                 1        o  o  o
-                 2        o  o  o
-                 3  o  o  o  o  o  o  o
-                 4  o  o  o  .  o  o  o
-                 5  o  o  o  o  o  o  o
-                 6        o  o  o
-                 7        o  o  o
-            };*/
+        CLI Result:
+        -----------
+            a  b  c  d  e  f  g
+         1        o  o  o
+         2        o  o  o
+         3  o  o  o  o  o  o  o
+         4  o  o  o  .  o  o  o
+         5  o  o  o  o  o  o  o
+         6        o  o  o
+         7        o  o  o
+    };*/
 
     static Hole.Status[][] english_cross = {
             /*

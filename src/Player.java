@@ -35,7 +35,7 @@ public class Player {
                 if(gamestate[x][y].getHoleStatus().equals(Hole.Status.PLAYER)) {
                     this.x = x;
                     this.y = y;
-                    System.out.printf("playerpos(x:%d, y:%d)\n", x, y);
+                    System.out.printf("playerpos( chess: %s | x:%d | y:%d )\n", Board.getChessCoordinate(x, y), x, y);
                 }
             }
         }

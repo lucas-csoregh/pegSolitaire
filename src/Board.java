@@ -2,18 +2,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Board {
-    public static ArrayList<Hole[][]> history = new ArrayList<>();
-    private Hole[][] gamestate;
-    private Player player;
-    private int numberOfMoves = 0;
-    char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-    private int nPegs = 0;
+    static ArrayList<Hole[][]> history = new ArrayList<>();
+    static Hole[][] gamestate;
+    static Player player;
+    static int numberOfMoves = 0;
+    static char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    static int nPegs = 0;
 
     /***************
      * MOVE PLAYER *
      ***************/
     public boolean swapPlayerPeg(int toX, int toY) {
-        if(this.player == null) {
+        if(player == null) {
             ArrayList<Player.Dir> dirs = getAvailableDirections(toX, toY);
             if(dirs.size() > 0) {
                 spawnPlayer(toX, toY);
@@ -127,11 +127,15 @@ public class Board {
     }
 
 
-    public char getXchar(int index) {
+    static char getXchar(int index) {
         return alphabet[index -1];
     }
 
-    public int[] translateChessCoordinates(char[] charr) {
+    static public String getChessCoordinate(int x, int y) {
+        return getXchar(x) + Integer.toString(y);
+    }
+
+    static public int[] translateChessCoordinates(char[] charr) {
         int x=0;
         int y=charr[1] - '0';
 

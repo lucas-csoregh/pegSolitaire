@@ -1,5 +1,4 @@
 public class BoardTemplate {
-    static HoleStatus[][] english_cross = {
             /*
                 Template:
                 ---------
@@ -30,6 +29,21 @@ public class BoardTemplate {
                  6        o  o  o
                  7        o  o  o
             };*/
+
+    static HoleStatus[][] english_cross = {
+            /*
+            // ** LVL 2
+            // English cross (33 holes)
+
+                    a  b  c  d  e  f  g
+                 1        o  o  o
+                 2        o  o  o
+                 3  o  o  o  o  o  o  o
+                 4  o  o  o  .  o  o  o
+                 5  o  o  o  o  o  o  o
+                 6        o  o  o
+                 7        o  o  o
+            */
             {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
             {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
@@ -44,6 +58,7 @@ public class BoardTemplate {
             /*
             // ** LVL 2
             // 17 century French style (37 holes)
+
                         a  b  c  d  e  f  g
                      1        o  o  o
                      2     o  o  o  o  o
@@ -68,6 +83,7 @@ public class BoardTemplate {
             /*
             // ** LVL 3
             // George Bell 20th century Asymmetrical (39 holes)
+
                        a  b  c  d  e  f  g  h
                     1        o  o  o
                     2        o  o  o
@@ -94,6 +110,7 @@ public class BoardTemplate {
             /*
             // ** LVL 4
             // Diamond (41 holes)
+
                        a  b  c  d  e  f  g  h  i
                     1              o
                     2           o  o  o
@@ -123,6 +140,7 @@ public class BoardTemplate {
             /*
             // ** LVL 5
             // German style (45 holes)
+
                        a  b  c  d  e  f  g  h  i
                     1           o  o  o
                     2           o  o  o

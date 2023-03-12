@@ -4,8 +4,7 @@ public class Main {
     public static void main(String[] args) {
         Board gamestate = new Board();
 
-        Scanner scanner = new Scanner(System.in);
-
+        /*
         boolean validAnswer = false;
 
         while(!validAnswer) {
@@ -38,5 +37,6 @@ public class Main {
                     break;
             }
         }
+        */
     }
 }

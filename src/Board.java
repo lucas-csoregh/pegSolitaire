@@ -5,56 +5,20 @@ import java.util.Scanner;
 public class Board {
 
     // gamestate
-    private Hole[][] gamestate = new Hole[8][8];
+    //private Hole[][] gamestate = new Hole[8][8];
+    private Hole[][] gamestate;
 
     private Player player;
     private int numberOfMoves = 0;
-    //static ArrayList<Hole> history = new ArrayList<>();
+
+    // TODO add gamestate to history each time it changes
+    static ArrayList<Hole[][]> history = new ArrayList<>();
     private int nPegs = 0;
 
-    HoleStatus[][] english_cross = {
-            /*
-                Template:
-                ---------
-                {2, 2, 2, 2, 2, 2, 2, 2},
-                {2, 1, 1, 0, 0, 0, 1, 1},
-                {2, 1, 1, 0, 0, 0, 1, 1},
-                {2, 0, 0, 0, 0, 0, 0, 0},
-                {2, 0, 0, 0, 3, 0, 0, 0},
-                {2, 0, 0, 0, 0, 0, 0, 0},
-                {2, 1, 1, 0, 0, 0, 1, 1},
-                {2, 1, 1, 0, 0, 0, 1, 1}
-
-                0 = PEG
-                1 = off limits
-                2 = ruler
-                3 = empty
-                4 = player
-
-
-                CLI Result:
-                -----------
-                    a  b  c  d  e  f  g
-                 1        o  o  o
-                 2        o  o  o
-                 3  o  o  o  o  o  o  o
-                 4  o  o  o  .  o  o  o
-                 5  o  o  o  o  o  o  o
-                 6        o  o  o
-                 7        o  o  o
-            };*/
-            {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.VACANT, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
-    };
+    // Englishcross
 
     public char getXchar(int index) {
-        char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
+        char[] chars = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
         return chars[index -1];
     }
 
@@ -88,6 +52,8 @@ public class Board {
     }
 
     public String reset(HoleStatus[][] boardTemplate) {
+        // set the gamestate dimensions to match those of the current boardtemplate
+        gamestate = new Hole[boardTemplate.length][boardTemplate[0].length];
         // Resets the game by overwriting the current gamestate with a template
         System.out.println("-- RESET --\n");
         StringBuilder sb = new StringBuilder();
@@ -106,19 +72,27 @@ public class Board {
     }
 
     public boolean swapPlayerPeg(int toX, int toY) {
-        Hole fromHole = gamestate[player.getX()][player.getY()];
+        if(this.player == null) {
+            ArrayList<Player.Dir> dirs = getAvailableDirections(toX, toY);
+            if(dirs.size() > 0) {
+                spawnPlayer(toX, toY);
+            }
+        } else {
+            Hole fromHole = gamestate[player.getX()][player.getY()];
 
-        // Only allow user to swap to peg that has available directions once we get there.
-        ArrayList<Player.Dir> dirs = getAvailableDirections(toX, toY);
-        if(dirs.size() > 0) {
-            Hole toHole = gamestate[toX][toY];
-            // Only allow user to swap between pegs and nothing else
-            if(toHole.getHoleStatus().equals(HoleStatus.PEG)) {
-                fromHole.setHoleStatus(HoleStatus.PEG);
-                toHole.setHoleStatus(HoleStatus.PLAYER);
-                return true;
+            // Only allow user to swap to peg that has available directions once we get there.
+            ArrayList<Player.Dir> dirs = getAvailableDirections(toX, toY);
+            if(dirs.size() > 0) {
+                Hole toHole = gamestate[toX][toY];
+                // Only allow user to swap between pegs and nothing else
+                if(toHole.getHoleStatus().equals(HoleStatus.PEG)) {
+                    fromHole.setHoleStatus(HoleStatus.PEG);
+                    toHole.setHoleStatus(HoleStatus.PLAYER);
+                    return true;
+                }
             }
         }
+
         return false;
     }
 
@@ -129,7 +103,8 @@ public class Board {
 
 
     public Board() {
-        System.out.print(reset(english_cross));
+        System.out.print(reset(BoardTemplate.german));
+        getUserInput(new ArrayList<Player.Dir>());
     }
 
     public ArrayList<Player.Dir> getAvailableDirections(int x, int y) {

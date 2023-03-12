@@ -1,24 +1,32 @@
 public class Hole {
+    public enum Status {
+        PEG,
+        OFF_LIMITS,
+        RULER,
+        VACANT,
+        PLAYER
+    }
+    
     private int x = 0;
     private int y = 0;
     //private Peg peg;
 
-    private HoleStatus holeStatus;
+    private Status status;
 
-    public void setHoleStatus(HoleStatus holeStatus) {
-        this.holeStatus = holeStatus;
+    public void setHoleStatus(Status status) {
+        this.status = status;
     }
 
-    public HoleStatus getHoleStatus() {
-        return holeStatus;
+    public Status getHoleStatus() {
+        return status;
     }
 
     public boolean pegOrPlayer() {
-        return holeStatus.equals(HoleStatus.PEG) || holeStatus.equals(HoleStatus.PLAYER);
+        return status.equals(Hole.Status.PEG) || status.equals(Hole.Status.PLAYER);
     }
 
     public boolean isVacant() {
-        return holeStatus.equals(HoleStatus.VACANT);
+        return status.equals(Hole.Status.VACANT);
     }
 
     public int getX() { return x; }
@@ -27,13 +35,13 @@ public class Hole {
     public Hole() {
         this.x = 0;
         this.y = 0;
-        this.holeStatus = HoleStatus.OFF_LIMITS;
+        this.status = Status.OFF_LIMITS;
     }
 
-    public Hole(int x, int y, HoleStatus holeStatus) {
+    public Hole(int x, int y, Status holeStatus) {
         this.x = x;
         this.y = y;
-        this.holeStatus = holeStatus;
+        this.status = holeStatus;
     }
 
     public String getCoordinate() {

@@ -30,7 +30,7 @@ public class BoardTemplate {
                  7        o  o  o
             };*/
 
-    static HoleStatus[][] english_cross = {
+    static Hole.Status[][] english_cross = {
             /*
             // ** LVL 2
             // English cross (33 holes)
@@ -44,17 +44,17 @@ public class BoardTemplate {
                  6        o  o  o
                  7        o  o  o
             */
-            {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.VACANT, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
+            {Hole.Status.OFF_LIMITS, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.VACANT, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS}
     };
 
-    static HoleStatus[][] french = {
+    static Hole.Status[][] french = {
             /*
             // ** LVL 2
             // 17 century French style (37 holes)
@@ -69,17 +69,17 @@ public class BoardTemplate {
                      7        o  o  o
             */
 
-            {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.VACANT, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
+            {Hole.Status.OFF_LIMITS, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.VACANT, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS}
     };
 
-    static HoleStatus[][] asymmetrical = {
+    static Hole.Status[][] asymmetrical = {
             /*
             // ** LVL 3
             // George Bell 20th century Asymmetrical (39 holes)
@@ -95,18 +95,18 @@ public class BoardTemplate {
                     8        o  o  o
             */
 
-            {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.VACANT, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
+            {Hole.Status.OFF_LIMITS, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.VACANT, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS}
     };
 
-    static HoleStatus[][] diamond = {
+    static Hole.Status[][] diamond = {
             /*
             // ** LVL 4
             // Diamond (41 holes)
@@ -123,20 +123,20 @@ public class BoardTemplate {
                     9              o
             */
 
-            {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.VACANT, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
+            {Hole.Status.OFF_LIMITS, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.VACANT, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS}
 
     };
 
-    static HoleStatus[][] german = {
+    static Hole.Status[][] german = {
             /*
             // ** LVL 5
             // German style (45 holes)
@@ -153,15 +153,15 @@ public class BoardTemplate {
                     9           o  o  o
             */
 
-            {HoleStatus.OFF_LIMITS, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER, HoleStatus.RULER},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.VACANT, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS},
-            {HoleStatus.RULER, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.PEG, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS, HoleStatus.OFF_LIMITS}
+            {Hole.Status.OFF_LIMITS, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER, Hole.Status.RULER},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.VACANT, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS},
+            {Hole.Status.RULER, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.PEG, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS, Hole.Status.OFF_LIMITS}
     };
 }

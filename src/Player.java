@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Player {
     public enum Dir {
         UP,
@@ -13,7 +11,7 @@ public class Player {
         for(int Y=0; Y<size; Y++) {
             for (int X = 0; X < size; X++) {
                if(X==x && Y==y) {
-                   gamestate[x][y].setHoleStatus(HoleStatus.PLAYER);
+                   gamestate[x][y].setHoleStatus(Hole.Status.PLAYER);
                }
             }
         }
@@ -34,7 +32,7 @@ public class Player {
         int size = gamestate.length;
         for(int y=0; y<size; y++) {
             for(int x=0; x<size; x++) {
-                if(gamestate[x][y].getHoleStatus().equals(HoleStatus.PLAYER)) {
+                if(gamestate[x][y].getHoleStatus().equals(Hole.Status.PLAYER)) {
                     this.x = x;
                     this.y = y;
                     System.out.printf("playerpos(x:%d, y:%d)\n", x, y);
@@ -69,13 +67,9 @@ public class Player {
         //System.out.println("toHole takePeg(Dir): " + toHole);
         boolean toHoleAvailable = toHole.isVacant();
         if(toHoleAvailable) {
-            fromHole.setHoleStatus(HoleStatus.VACANT);
-            takenPegHole.setHoleStatus(HoleStatus.VACANT);
-            toHole.setHoleStatus(HoleStatus.PLAYER);
-
-            // KEEP
-            //Board.history.add(gamestate);
-
+            fromHole.setHoleStatus(Hole.Status.VACANT);
+            takenPegHole.setHoleStatus(Hole.Status.VACANT);
+            toHole.setHoleStatus(Hole.Status.PLAYER);
             return true;
         }
         return false;

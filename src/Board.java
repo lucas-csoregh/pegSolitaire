@@ -2,8 +2,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Board {
-    // TODO add gamestate to history each time it changes
-    //public static ArrayList<Hole[][]> history = new ArrayList<>();
+    public static ArrayList<Hole[][]> history = new ArrayList<>();
     private Hole[][] gamestate;
     private Player player;
     private int numberOfMoves = 0;
@@ -27,12 +26,9 @@ public class Board {
             if(dirs.size() > 0) {
                 Hole toHole = gamestate[toX][toY];
                 // Only allow user to swap between pegs and nothing else
-                if(toHole.getHoleStatus().equals(HoleStatus.PEG)) {
-                    fromHole.setHoleStatus(HoleStatus.PEG);
-                    toHole.setHoleStatus(HoleStatus.PLAYER);
-
-                    // KEEP
-                    //history.add(gamestate);
+                if(toHole.getHoleStatus().equals(Hole.Status.PEG)) {
+                    fromHole.setHoleStatus(Hole.Status.PEG);
+                    toHole.setHoleStatus(Hole.Status.PLAYER);
                     return true;
                 }
             }
@@ -43,9 +39,6 @@ public class Board {
     public void spawnPlayer(int x, int y) {
         player = new Player(gamestate, x, y);
         showGamestateGetInput();
-
-        // KEEP
-        //history.add(gamestate);
     }
 
 
@@ -90,7 +83,6 @@ public class Board {
                 showGamestateGetInput();
             }
         }
-
         getUserInput(dirs);
     }
 
@@ -167,7 +159,6 @@ public class Board {
     /*********************
      * SETTING THE BOARD *
      *********************/
-
     @Override
     public String toString() {
         // simply reads current gamestate
@@ -183,7 +174,8 @@ public class Board {
     }
 
     public void showGamestateGetInput() {
-        //boolean again = false;
+        // adding history right here because we call this function every time right after we've moved
+        history.add(gamestate);
 
         if(nPegs != 1) {
             numberOfMoves++;
@@ -214,25 +206,25 @@ public class Board {
 
     public void drawSquare(Object[][] gamestate, int x, int y, StringBuilder sb) {
         nPegs = 0;
-        HoleStatus status = HoleStatus.OFF_LIMITS;
-        if(gamestate instanceof HoleStatus[][] boardTemplate) {
+        Hole.Status status = Hole.Status.OFF_LIMITS;
+        if(gamestate instanceof Hole.Status[][] boardTemplate) {
             status = boardTemplate[x][y];
         } else if(gamestate instanceof Hole[][] board) {
             status = board[x][y].getHoleStatus();
         }
 
-        if(status.equals(HoleStatus.PEG)) {
+        if(status.equals(Hole.Status.PEG)) {
             sb.append(" o ");
             nPegs++;
-        } else if(status.equals(HoleStatus.PLAYER)) {
+        } else if(status.equals(Hole.Status.PLAYER)) {
             // s for selected, selected = which PEG the player moves is up to the player
             sb.append(" S ");
             nPegs++;
-        } else if(status.equals(HoleStatus.OFF_LIMITS)) {
+        } else if(status.equals(Hole.Status.OFF_LIMITS)) {
             sb.append("   ");
-        } else if(status.equals(HoleStatus.VACANT)) {
+        } else if(status.equals(Hole.Status.VACANT)) {
             sb.append(" . ");
-        } else if(status.equals(HoleStatus.RULER)) {
+        } else if(status.equals(Hole.Status.RULER)) {
             if(y != 0) {
                 sb.append(" ").append(y).append(" ");
             } else {
@@ -241,7 +233,7 @@ public class Board {
         }
     }
 
-    public String reset(HoleStatus[][] boardTemplate) {
+    public String reset(Hole.Status[][] boardTemplate) {
         // set the gamestate dimensions to match those of the current boardtemplate
         gamestate = new Hole[boardTemplate.length][boardTemplate[0].length];
         // Resets the game by overwriting the current gamestate with a template

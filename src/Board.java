@@ -1,7 +1,13 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -216,6 +222,71 @@ public class Board extends Application {
         }
     }
 
+    public void fxAddPeg(int x, int y) {
+        //System.out.println("button added");
+        Button bt = new Button();
+        bt.setPrefSize(70,70);
+        bt.setShape(new Circle(1.5));
+
+        // Create a border
+        /*
+        Border border = new Border(new BorderStroke(
+                Color.RED,
+                BorderStrokeStyle.SOLID,
+                null,
+                new BorderWidths(4)));
+        */
+
+        // Set the border on the button
+        //bt.setBorder(border);
+
+
+        gridpane.add(bt, x, y);
+
+        bt.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.printf("%s\n", Board.getChessCoordinate(x, y));
+                // add your custom code here
+            }
+        });
+    }
+
+    public void fxAddHole(int x, int y) {
+        //System.out.println("button added");
+        Button bt = new Button();
+        bt.setPrefSize(70,70);
+        bt.setShape(new Circle(1.5));
+
+        bt.setDisable(true);
+        // Create a border
+        Border border = new Border(new BorderStroke(
+                Color.RED,
+                BorderStrokeStyle.SOLID,
+                null,
+                new BorderWidths(4)));
+
+        // Set the border on the button
+        bt.setBorder(border);
+
+        //bt.setPadding(new Insets(30, 30, 30, 30));
+        gridpane.add(bt, x, y);
+    }
+
+    public void fxAddRuler(int x, int y) {
+        Label label = new Label();
+        if(y == 0) {
+            label.setText(String.valueOf(getXchar(x)));
+            label.setAlignment(Pos.CENTER);
+        } else if (x == 0) {
+            label.setText(String.valueOf(y));
+        }
+        label.setAlignment(Pos.CENTER);
+        label.setStyle("-fx-font-size: 25");
+        GridPane.setHalignment(label, HPos.CENTER);
+        gridpane.add(label, x, y);
+    }
+
 
     public void drawSquare(Object[][] gamestate, int x, int y, StringBuilder sb) {
         nPegs = 0;
@@ -230,14 +301,7 @@ public class Board extends Application {
             sb.append(" o ");
             nPegs++;
 
-
-            System.out.println("button added");
-            Button bt = new Button();
-            bt.setPrefSize(70,70);
-            bt.setShape(new Circle(1.5));
-            //bt.setPadding(new Insets(30, 30, 30, 30));
-            gridpane.add(bt, x, y);
-
+            fxAddPeg(x, y);
         } else if(status.equals(Hole.Status.PLAYER)) {
             // s for selected, selected = which PEG the player moves is up to the player
             sb.append(" S ");
@@ -246,7 +310,10 @@ public class Board extends Application {
             sb.append("   ");
         } else if(status.equals(Hole.Status.VACANT)) {
             sb.append(" . ");
+
+            fxAddHole(x, y);
         } else if(status.equals(Hole.Status.RULER)) {
+            fxAddRuler(x, y);
             if(y != 0) {
                 sb.append(" ").append(y).append(" ");
             } else {
@@ -288,23 +355,9 @@ public class Board extends Application {
 
         System.out.print(reset(BoardTemplate.german));
 
-        /*
-        for(int y=0; y<8; y++) {
-            for(int x=0; x<8; x++) {
-                Button bt = new Button();
-                bt.setPrefSize(70,70);
-                bt.setShape(new Circle(1.5));
-                //bt.setPadding(new Insets(30, 30, 30, 30));
-                gridpane.add(bt, x, y);
-
-                gridpane.setVgap(15);
-                gridpane.setHgap(15);
-            }
-        }
-         */
-
         gridpane.setVgap(15);
         gridpane.setHgap(15);
+        gridpane.setAlignment(Pos.CENTER);
         Scene mijnEersteScene = new Scene(gridpane);
         mijnStage.setScene(mijnEersteScene);
         mijnStage.show();

@@ -1,13 +1,22 @@
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Board {
+public class Board extends Application {
     static ArrayList<Hole[][]> history = new ArrayList<>();
     static Hole[][] gamestate;
     static Player player;
     static int numberOfMoves = 0;
     static char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     static int nPegs = 0;
+
+    GridPane gridpane = new GridPane();
 
     /***************
      * MOVE PLAYER *
@@ -196,7 +205,7 @@ public class Board {
                 // show all available directions
                 System.out.println("Directions:");
                 for(Player.Dir dir: dirs) {
-                    System.out.println(dir.name());
+                    System.out.println(dir.name().toLowerCase());
                 }
             }
 
@@ -220,6 +229,15 @@ public class Board {
         if(status.equals(Hole.Status.PEG)) {
             sb.append(" o ");
             nPegs++;
+
+
+            System.out.println("button added");
+            Button bt = new Button();
+            bt.setPrefSize(70,70);
+            bt.setShape(new Circle(1.5));
+            //bt.setPadding(new Insets(30, 30, 30, 30));
+            gridpane.add(bt, x, y);
+
         } else if(status.equals(Hole.Status.PLAYER)) {
             // s for selected, selected = which PEG the player moves is up to the player
             sb.append(" S ");
@@ -258,8 +276,42 @@ public class Board {
     }
 
     public Board() {
-        System.out.print(reset(BoardTemplate.german));
+        System.out.println("Board constructor called");
+        //System.out.print(reset(BoardTemplate.german));
         // passing 0 directions bc we know the player needs to spawn first
-        getUserInput(new ArrayList<Player.Dir>());
+        //getUserInput(new ArrayList<Player.Dir>());
+    }
+
+    @Override
+    public void start(Stage mijnStage) {
+        System.out.println("start");
+
+        System.out.print(reset(BoardTemplate.german));
+
+        /*
+        for(int y=0; y<8; y++) {
+            for(int x=0; x<8; x++) {
+                Button bt = new Button();
+                bt.setPrefSize(70,70);
+                bt.setShape(new Circle(1.5));
+                //bt.setPadding(new Insets(30, 30, 30, 30));
+                gridpane.add(bt, x, y);
+
+                gridpane.setVgap(15);
+                gridpane.setHgap(15);
+            }
+        }
+         */
+
+        gridpane.setVgap(15);
+        gridpane.setHgap(15);
+        Scene mijnEersteScene = new Scene(gridpane);
+        mijnStage.setScene(mijnEersteScene);
+        mijnStage.show();
+    }
+
+
+    public static void main(String[] args) {
+        Application.launch(args);
     }
 }

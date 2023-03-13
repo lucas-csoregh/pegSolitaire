@@ -215,7 +215,7 @@ public class Board extends Application {
                 }
             }
 
-            getUserInput(dirs);
+            //getUserInput(dirs);
         } else {
             // TODO: give special win if the last ball is in 4,4 aka dead center on the board
             System.out.println("YOU WON!");
@@ -228,25 +228,42 @@ public class Board extends Application {
         bt.setPrefSize(70,70);
         bt.setShape(new Circle(1.5));
 
-        // Create a border
-        /*
-        Border border = new Border(new BorderStroke(
-                Color.RED,
-                BorderStrokeStyle.SOLID,
-                null,
-                new BorderWidths(4)));
-        */
-
-        // Set the border on the button
-        //bt.setBorder(border);
-
-
         gridpane.add(bt, x, y);
 
         bt.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 System.out.printf("%s\n", Board.getChessCoordinate(x, y));
+                // add your custom code here
+                boolean swapped = swapPlayerPeg(x, y);
+                if(swapped) {
+                    showGamestateGetInput();
+                }
+            }
+        });
+    }
+
+
+    public void fxAddPlayer(int x, int y) {
+        Button bt = new Button();
+        bt.setPrefSize(70,70);
+        bt.setShape(new Circle(1.5));
+
+        Border border = new Border(new BorderStroke(
+                Color.RED,
+                BorderStrokeStyle.SOLID,
+                null,
+                new BorderWidths(4)));
+
+        // Set the border on the button
+        bt.setBorder(border);
+
+        gridpane.add(bt, x, y);
+
+        bt.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.printf("player at %s\n", Board.getChessCoordinate(x, y));
                 // add your custom code here
             }
         });
@@ -257,14 +274,14 @@ public class Board extends Application {
         Button bt = new Button();
         bt.setPrefSize(70,70);
         bt.setShape(new Circle(1.5));
+        //bt.setStyle("-fx-background-color: black");
 
-        bt.setDisable(true);
         // Create a border
         Border border = new Border(new BorderStroke(
-                Color.RED,
+                Color.BLACK,
                 BorderStrokeStyle.SOLID,
                 null,
-                new BorderWidths(4)));
+                new BorderWidths(20)));
 
         // Set the border on the button
         bt.setBorder(border);
@@ -306,6 +323,8 @@ public class Board extends Application {
             // s for selected, selected = which PEG the player moves is up to the player
             sb.append(" S ");
             nPegs++;
+
+            fxAddPlayer(x, y);
         } else if(status.equals(Hole.Status.OFF_LIMITS)) {
             sb.append("   ");
         } else if(status.equals(Hole.Status.VACANT)) {

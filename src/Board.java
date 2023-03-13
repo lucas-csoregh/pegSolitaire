@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -288,7 +289,22 @@ public class Board extends Application {
 
         //bt.setPadding(new Insets(30, 30, 30, 30));
         gridpane.add(bt, x, y);
+
+        /* TODO
+        when (clicking or) double clicking on a hole,
+        the game assumes you want to move (and take a peg) in that direction
+        and the fromHole becomes your current playerPos,
+        toHole is the double-clicked hole of course
+         */
+
+        bt.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getClickCount() == 2) {
+                System.out.println("Double Clicked!");
+                // execute your desired code here
+            }
+        });
     }
+
 
     public void fxAddRuler(int x, int y) {
         Label label = new Label();

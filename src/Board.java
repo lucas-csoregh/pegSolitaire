@@ -6,12 +6,19 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.util.ArrayList;
+
+
+// TODO ASAP add HUD w a timer and # of pegs left (incl player)
+
+// TODO MAYBE
+//  give pegs and holes that are available coordinates to move or swap to a
+//  subtle (not full opacity) color coding to the player can see the available
+//  choices visually
 
 public class Board extends Application {
     static ArrayList<Hole[][]> history = new ArrayList<>();
@@ -214,10 +221,6 @@ public class Board extends Application {
             }
         });
     }
-    // TODO MAYBE
-    //  give pegs and holes that are available coordinates to move or swap to a
-    //  subtle (not full opacity) color coding to the player can see the available
-    //  choices visually
 
 
     public void fxAddRuler(int x, int y) {

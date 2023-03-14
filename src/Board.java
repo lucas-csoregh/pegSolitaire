@@ -29,11 +29,12 @@ public class Board extends Application {
      * MOVE PLAYER *
      ***************/
     public boolean swapPlayerPeg(int toX, int toY) {
+        boolean swapped = false;
         if(player == null) {
             ArrayList<Player.Dir> dirs = getAvailableDirections(toX, toY);
             if(dirs.size() > 0) {
                 spawnPlayer(toX, toY);
-                return true;
+                swapped = true;
             }
         } else {
             Hole fromHole = gamestate[player.getX()][player.getY()];
@@ -45,16 +46,17 @@ public class Board extends Application {
                 if(toHole.getHoleStatus().equals(Hole.Status.PEG)) {
                     fromHole.setHoleStatus(Hole.Status.PEG);
                     toHole.setHoleStatus(Hole.Status.PLAYER);
-                    return true;
+                    swapped = true;
                 }
             }
         }
-        return false;
+        showGamestateGetInput();
+        return swapped;
     }
 
     public void spawnPlayer(int x, int y) {
         player = new Player(gamestate, x, y);
-        showGamestateGetInput();
+        //showGamestateGetInput();
     }
 
 
@@ -262,11 +264,7 @@ public class Board extends Application {
             @Override
             public void handle(ActionEvent event) {
                 System.out.printf("%s\n", Board.getChessCoordinate(x, y));
-                // add your custom code here
                 boolean swapped = swapPlayerPeg(x, y);
-                if(swapped) {
-                    showGamestateGetInput();
-                }
             }
         });
     }

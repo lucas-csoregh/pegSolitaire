@@ -20,7 +20,7 @@ public class Hole {
         return status;
     }
 
-    public boolean pegOrPlayer() {
+    public boolean isPegOrPlayer() {
         return status.equals(Hole.Status.PEG) || status.equals(Hole.Status.PLAYER);
     }
 

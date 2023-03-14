@@ -105,6 +105,30 @@ public class Board extends Application {
     /******************************
      * COORDINATES AND DIRECTIONS *
      ******************************/
+    /*
+    public boolean isValidDestionation(int x, int y) {
+        Hole toHole = gamestate[x][y];
+
+        player.getPlayerPos(gamestate);
+        int pX = player.getX();
+        int pY = player.getY();
+        Hole fromHole = gamestate[pX][pY];
+
+        // TODO check if toHole is
+        //     * Hole.Status.VACANT
+        //     * two coordinates away
+
+        // TODO check if betweenHole is
+        //     * Hole.Status.PEG
+        //     * one coordinate away
+
+        // TODO check if fromHole is
+        //     * two coordinates away
+
+        return false;
+    }
+    */
+
     public ArrayList<Player.Dir> getAvailableDirections(int x, int y) {
         ArrayList<Player.Dir> directions = new ArrayList<>();
 
@@ -299,11 +323,21 @@ public class Board extends Application {
 
         bt.setOnMouseClicked((MouseEvent event) -> {
             if (event.getClickCount() == 2) {
-                System.out.println("Double Clicked!");
-                // execute your desired code here
+                System.out.printf("Double clicked hole at coord: %s\n", Board.getChessCoordinate(x, y));
+                // TODO Check if it is a valid coordinate to move to
+                //  this will require you to rework the takePeg function in the Player class
+                //System.out.printf("passed x:%d, y:%d", x, y);
+                boolean taken = player.takePeg(gamestate, x, y);
+                if(taken) {
+                    showGamestateGetInput();
+                }
             }
         });
     }
+    // TODO MAYBE
+    //  give pegs and holes that are available coordinates to move or swap to a
+    //  subtle (not full opacity) color coding to the player can see the available
+    //  choices visually
 
 
     public void fxAddRuler(int x, int y) {

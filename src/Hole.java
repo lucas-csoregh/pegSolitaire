@@ -24,6 +24,9 @@ public class Hole {
         return status.equals(Hole.Status.PEG) || status.equals(Hole.Status.PLAYER);
     }
 
+    public boolean isPeg() {
+        return status.equals(Hole.Status.PEG);
+    }
     public boolean isVacant() {
         return status.equals(Hole.Status.VACANT);
     }
@@ -40,15 +43,9 @@ public class Hole {
         this.status = holeStatus;
     }
 
-    /*
-    public String getCoordinate() {
-        String[] strs = {"a", "b", "c", "d", "e", "f", "g"};
-        String str = strs[x-1];
-        return str + y;
-    }
-
     public int getX() { return x; }
     public int getY() { return y; }
+
 
     @Override
     public String toString() {
@@ -58,5 +55,11 @@ public class Hole {
                 ", y=" + y +
                 '}';
     }
-    */
+    public String getCoordinate() {
+        String[] strs = {"a", "b", "c", "d", "e", "f", "g"};
+        String str = strs[x-1];
+        return str + y;
+    }
+
+
 }

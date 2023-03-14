@@ -74,4 +74,73 @@ public class Player {
         }
         return false;
     }
+
+    public boolean toHoleDown(Hole[][] gamestate, Hole toHole, Hole fromHole) {
+        boolean equalX = toHole.getX() == fromHole.getX();
+        //boolean equalY = toHole.getY() == fromHole.getY();
+        Hole bholeDown = new Hole();
+        Hole takenPegHole = new Hole();
+
+        boolean toHoleIsDown = (toHole.getY() +2) == fromHole.getY() && equalX;
+        if(toHoleIsDown && toHole.isVacant()) {
+            //System.out.println("fromHole is down 2 blocks from toHole");
+            bholeDown = gamestate[x][y+1];
+            boolean bholeDownCorrectPos = (fromHole.getY()+1) == bholeDown.getY();
+            if(bholeDownCorrectPos && bholeDown.isPeg()) {
+                //System.out.println("bholeDown is available");
+                // MOVE PLAYER
+                return true;
+            }
+        }
+
+
+        return false;
+    }
+    public boolean takePeg(Hole[][] gamestate, int x, int y) {
+        Hole fromHole = gamestate[this.x][this.y];
+        Hole toHole = gamestate[x][y];
+        Hole takenPegHole = null;
+
+
+        if(toHoleDown(gamestate, toHole, fromHole)) {
+            takenPegHole = gamestate[x][y+1];
+        }
+
+        if(takenPegHole != null) {
+            fromHole.setHoleStatus(Hole.Status.VACANT);
+            takenPegHole.setHoleStatus(Hole.Status.VACANT);
+            toHole.setHoleStatus(Hole.Status.PLAYER);
+            return true;
+        } else {
+            return false;
+        }
+
+        /*
+        //System.out.println("fromHole takePeg(Dir): " + fromHole);
+        if(direction == Dir.UP) {
+            takenPegHole = gamestate[x][y -1];
+            toHole = gamestate[x][y -2];
+        } else if(direction == Dir.DOWN) {
+            takenPegHole = gamestate[x][y +1];
+            toHole = gamestate[x][y +2];
+        } else if(direction == Dir.LEFT) {
+            takenPegHole = gamestate[x -1][y];
+            toHole = gamestate[x -2][y];
+        } else if(direction == Dir.RIGHT) {
+            takenPegHole = gamestate[x +1][y];
+            toHole = gamestate[x +2][y];
+        }
+        */
+
+        //System.out.println("toHole takePeg(Dir): " + toHole);
+        /*
+        boolean toHoleAvailable = toHole.isVacant();
+        if(toHoleAvailable) {
+            fromHole.setHoleStatus(Hole.Status.VACANT);
+            takenPegHole.setHoleStatus(Hole.Status.VACANT);
+            toHole.setHoleStatus(Hole.Status.PLAYER);
+            return true;
+        }
+        */
+    }
 }

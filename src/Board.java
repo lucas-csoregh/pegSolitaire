@@ -61,6 +61,8 @@ public class Board extends Application {
     /*********
      * INPUT *
      *********/
+
+    /*
     public void getUserInput(ArrayList<Player.Dir> dirs) {
         Scanner scanner = new Scanner(System.in);
         String answer = "";
@@ -101,6 +103,7 @@ public class Board extends Application {
         }
         getUserInput(dirs);
     }
+     */
 
     /******************************
      * COORDINATES AND DIRECTIONS *
@@ -140,13 +143,13 @@ public class Board extends Application {
         if(y>=2) {
             up = gamestate[x][y-2].isVacant() && gamestate[x][y-1].pegOrPlayer();
         }
-        if(y < 6) {
+        if(y < gamestate.length-2) {
             down = gamestate[x][y+2].isVacant() && gamestate[x][y+1].pegOrPlayer();
         }
         if(x>=2) {
             left = gamestate[x-2][y].isVacant() && gamestate[x-1][y].pegOrPlayer();
         }
-        if(x < 6) {
+        if(x < gamestate.length-2) {
             right = gamestate[x+2][y].isVacant() && gamestate[x+1][y].pegOrPlayer();
         }
 

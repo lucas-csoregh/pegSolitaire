@@ -41,6 +41,7 @@ public class Player {
         }
     }
 
+    /*
     public boolean takePeg(Dir direction, Hole gamestate[][]) {
         Hole fromHole = gamestate[x][y];
         // [3][3] is default, just filled it with something to avoid the 
@@ -79,7 +80,6 @@ public class Player {
         boolean equalX = toHole.getX() == fromHole.getX();
         //boolean equalY = toHole.getY() == fromHole.getY();
         Hole bholeDown = new Hole();
-        Hole takenPegHole = new Hole();
 
         boolean toHoleIsDown = (toHole.getY() +2) == fromHole.getY() && equalX;
         if(toHoleIsDown && toHole.isVacant()) {
@@ -89,6 +89,7 @@ public class Player {
             if(bholeDownCorrectPos && bholeDown.isPeg()) {
                 //System.out.println("bholeDown is available");
                 // MOVE PLAYER
+                System.out.println("DOWN");
                 return true;
             }
         }
@@ -96,15 +97,106 @@ public class Player {
 
         return false;
     }
+    public boolean toHoleUp(Hole[][] gamestate, Hole toHole, Hole fromHole) {
+        boolean equalX = toHole.getX() == fromHole.getX();
+        //boolean equalY = toHole.getY() == fromHole.getY();
+        Hole bholeUp = new Hole();
+
+        boolean toHoleIsUp = (toHole.getY() -2) == fromHole.getY() && equalX;
+        if(toHoleIsUp && toHole.isVacant()) {
+            //System.out.println("fromHole is Up 2 blocks from toHole");
+            bholeUp = gamestate[x][y-1];
+            boolean bholeUpCorrectPos = (fromHole.getY()-1) == bholeUp.getY();
+            if(bholeUpCorrectPos && bholeUp.isPeg()) {
+                //System.out.println("bholeUp is available");
+                // MOVE PLAYER
+                System.out.println("UP");
+                return true;
+            }
+        }
+
+
+        return false;
+    }
+    */
+
+
+    public boolean toHoleRight(Hole[][] gamestate, Hole toHole, Hole fromHole) {
+        boolean equalY = toHole.getY() == fromHole.getY();
+        Hole bholeRight = new Hole();
+
+        boolean toHoleIsRight = (toHole.getX() +2) == fromHole.getX() && equalY;
+        if(toHoleIsRight && toHole.isVacant()) {
+            System.out.println("fromHole is Right 2 blocks from toHole");
+            System.out.printf("gamestate.length:%d , x+1: %d\n",  gamestate.length, (x+1));
+            if(x+1 < gamestate.length) {
+                bholeRight = gamestate[x+1][y];
+            } else {
+                return false;
+            }
+            boolean bholeRightCorrectPos = (fromHole.getX()+1) == bholeRight.getX();
+            if(bholeRightCorrectPos && bholeRight.isPeg()) {
+                //System.out.println("bholeRight is available");
+                // MOVE PLAYER
+                System.out.println("RIGHT");
+                return true;
+            }
+        }
+
+
+        return false;
+    }
+
+    /*
+    public boolean toHoleLeft(Hole[][] gamestate, Hole toHole, Hole fromHole) {
+        boolean equalY = toHole.getY() == fromHole.getY();
+        Hole bholeLeft = new Hole();
+
+        boolean toHoleIsLeft = (toHole.getX() -2) == fromHole.getX() && equalY;
+        if(toHoleIsLeft && toHole.isVacant()) {
+            System.out.println("fromHole is Left 2 blocks from toHole");
+            if(x-1 >= 2) {
+                bholeLeft = gamestate[x - 1][y];
+            }
+            boolean bholeLeftCorrectPos = (fromHole.getX()-1) == bholeLeft.getX();
+            if(bholeLeftCorrectPos && bholeLeft.isPeg()) {
+                //System.out.println("bholeLeft is available");
+                // MOVE PLAYER
+                System.out.println("LEFT");
+                return true;
+            }
+        }
+
+
+        return false;
+    }
+    */
+
     public boolean takePeg(Hole[][] gamestate, int x, int y) {
         Hole fromHole = gamestate[this.x][this.y];
         Hole toHole = gamestate[x][y];
         Hole takenPegHole = null;
 
 
+        /*
         if(toHoleDown(gamestate, toHole, fromHole)) {
             takenPegHole = gamestate[x][y+1];
         }
+
+        if(toHoleUp(gamestate, toHole, fromHole)) {
+            takenPegHole = gamestate[x][y-1];
+        }
+        */
+
+        if(toHoleRight(gamestate, toHole, fromHole)) {
+            takenPegHole = gamestate[x+1][y];
+        }
+
+        /*
+        if(toHoleLeft(gamestate, toHole, fromHole)) {
+            takenPegHole = gamestate[x-1][y];
+        }
+        */
 
         if(takenPegHole != null) {
             fromHole.setHoleStatus(Hole.Status.VACANT);
